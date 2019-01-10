@@ -1,0 +1,10 @@
+.weapon-teaser {
+  transition: all 0.15s ease-out;
+  /* border: 1px solid transparent; */
+  /* padding: 6px; */
+}
+
+.weapon-teaser:hover {
+  /* border-left-color: #6d7da1; */
+  /* border-color: #6d7da1; */
+}

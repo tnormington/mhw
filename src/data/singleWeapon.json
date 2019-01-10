@@ -1,0 +1,145 @@
+{
+  "id": 405,
+  "slug": "diablos-shatterer-2",
+  "name": "Diablos Shatterer 2",
+  "type": "hammer",
+  "rarity": 7,
+  "attack": {
+    "display": 1196,
+    "raw": 230
+  },
+  "attributes": {
+    "damageType": "blunt",
+    "defense": 0
+  },
+  "sharpness": {
+    "red": 25,
+    "orange": 12,
+    "yellow": 15,
+    "green": 30,
+    "blue": 5,
+    "white": 0
+  },
+  "durability": [
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 20,
+      "white": 0
+    },
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 30,
+      "white": 0
+    },
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 40,
+      "white": 0
+    },
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 50,
+      "white": 0
+    },
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 50,
+      "white": 10
+    },
+    {
+      "red": 100,
+      "orange": 50,
+      "yellow": 60,
+      "green": 120,
+      "blue": 50,
+      "white": 20
+    }
+  ],
+  "slots": [
+    {
+      "rank": 2
+    }
+  ],
+  "elements": [
+    {
+      "type": "ice",
+      "damage": 150,
+      "hidden": true
+    }
+  ],
+  "crafting": {
+    "craftable": false,
+    "previous": 404,
+    "branches": [],
+    "craftingMaterials": [],
+    "upgradeMaterials": [
+      {
+        "quantity": 2,
+        "item": {
+          "id": 408,
+          "name": "Nergigante Horn+",
+          "description": "Rare Nergigante material. Obtained by breaking its horns. Stout, used in many weapons.",
+          "rarity": 7,
+          "carryLimit": 0,
+          "sellPrice": 0,
+          "buyPrice": 0
+        }
+      },
+      {
+        "quantity": 3,
+        "item": {
+          "id": 368,
+          "name": "Black Spiral Horn+",
+          "description": "Rare Black Diablos material. Obtained by breaking its horns. Stout, used in many weapons.",
+          "rarity": 6,
+          "carryLimit": 0,
+          "sellPrice": 0,
+          "buyPrice": 0
+        }
+      },
+      {
+        "quantity": 4,
+        "item": {
+          "id": 366,
+          "name": "Black Diablos Carapace",
+          "description": "Rare Black Diablos material. Mostly obtained by carving. Broadly used for many purposes.",
+          "rarity": 6,
+          "carryLimit": 0,
+          "sellPrice": 0,
+          "buyPrice": 0
+        }
+      },
+      {
+        "quantity": 1,
+        "item": {
+          "id": 173,
+          "name": "Wyvern Gem",
+          "description": "Throughout a wyvern's life, impurities gather and form this peculiar gem.",
+          "rarity": 7,
+          "carryLimit": 0,
+          "sellPrice": 0,
+          "buyPrice": 0
+        }
+      }
+    ]
+  },
+  "assets": {
+    "icon": "https://assets.mhw-db.com/weapons/hammer/icons/cf2ea70d6676eba4ba5fd93455adb2e5.82bc4e94ed82b92a0b9f9fcf255c814b0dbd941e.png",
+    "image": "https://assets.mhw-db.com/weapons/hammer/3d89ebe1f7bcbd2cc4e492fcf669744237f963e2.cbf414e8e504f5fc98dbaf0826ef3a58.png"
+  }
+}
