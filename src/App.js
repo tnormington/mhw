@@ -59,7 +59,15 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    const { data } = await axios.get("https://mhw-db.com/weapons")
+    // TODO: Write an API to collect and serve up live data
+    let data = []
+    if (window.location.hostname === "localhost") {
+      data = await axios.get("https://mhw-db.com/weapons")
+      data = data.data
+    } else {
+      data = require("./data/allWeapons.json")
+    }
+
     const filters = this.gatherWeaponFilters(data)
 
     this.setState({
