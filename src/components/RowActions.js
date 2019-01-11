@@ -1,6 +1,8 @@
 import React from "react"
 import colors from "../colors"
 
+import ReactTooltip from "react-tooltip"
+
 export default ({
   isCompared,
   isFavorite,
@@ -11,7 +13,15 @@ export default ({
   open
 }) => (
   <div style={style}>
+    <ReactTooltip
+      id="row-action-tooltip"
+      effect="solid"
+      getContent={tip => tip}
+    />
+
     <button
+      data-for="row-action-tooltip"
+      data-tip={`${isCompared ? "Remove from" : "Add to"} comparison list`}
       className="no-active no-pad"
       style={{
         marginLeft: "10px",
@@ -23,6 +33,8 @@ export default ({
     </button>
 
     <button
+      data-for="row-action-tooltip"
+      data-tip={`${isFavorite ? "Remove from" : "Add to"} favorite list`}
       className="no-active no-pad"
       style={{
         marginLeft: "10px",

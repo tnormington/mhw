@@ -8,7 +8,6 @@ import ItemList from "./ItemList"
 
 import colors from "../colors"
 
-import ReactTooltip from "react-tooltip"
 import Collapsible from "react-collapsible"
 import RowActions from "./RowActions"
 
