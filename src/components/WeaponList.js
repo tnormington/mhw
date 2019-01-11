@@ -104,6 +104,7 @@ export default class WeaponList extends Component {
               toggleComparison={toggleComparison}
               key={weapon.id.toString()}
               weapon={weapon}
+              weapons={weapons}
               userOptions={userOptions}
               selectedMaterials={selectedMaterials}
             />

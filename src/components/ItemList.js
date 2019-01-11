@@ -2,28 +2,20 @@ import React from "react"
 
 import Item from "./Item"
 
-export default ({ label, items, selectedItems }) => {
+export default ({ label, items, selectedItems, previous }) => {
   return (
     <div>
       <label style={{ marginBottom: "6px" }}>{label}</label>
+      {previous && (
+        <Item item={previous} iconSrc={previous.assets.icon} />
+      )}
       {items.map(item => {
         const { quantity, item: i } = item
 
-        // console.dir(selectedItems)
-        // debugger
-        // const isSelected = selectedItems
-        //   ? selectedItems.find(findMe => findMe.id === i.id)
-        //   : false
-
-        // console.log(i.id)
         const isSelected = selectedItems.find(findItem => {
-          // console.log(findItem.value, i.id)
-          // debugger
           return findItem.value === i.id
         })
-
-        // if (isSelected) debugger
-        // console.log(isSelected)
+        
         return (
           <Item
             key={i.name}

@@ -22,6 +22,7 @@ export default class WeaponTeaser extends Component {
 
   render() {
     const {
+      weapons,
       weapon,
       toggleFavorite,
       userOptions,
@@ -130,6 +131,7 @@ export default class WeaponTeaser extends Component {
 
             {weapon.crafting.upgradeMaterials.length > 0 && (
               <ItemList
+                previous={weapons.find(w => w.id === weapon.crafting.previous)}
                 label="Upgrade Materials"
                 items={weapon.crafting.upgradeMaterials}
                 selectedItems={selectedMaterials}
