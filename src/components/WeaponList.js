@@ -5,6 +5,7 @@ import colors from "../colors"
 
 import { FixedSizeList as List } from "react-window"
 import { debug } from "util"
+import OrderButtons from "./OrderButtons"
 
 export default class WeaponList extends Component {
   render() {
@@ -13,7 +14,10 @@ export default class WeaponList extends Component {
       toggleComparison,
       toggleFavorite,
       userOptions,
-      filters
+      filters,
+      order,
+      orders,
+      handleOrderClick
     } = this.props
 
     let selectedMaterials = false
@@ -28,6 +32,12 @@ export default class WeaponList extends Component {
           background: colors.darkGrey,
           width: "100%"
         }}>
+        <OrderButtons
+          orders={orders}
+          order={order}
+          handleOrderClick={handleOrderClick}
+        />
+
         {!weapons.size && <div>No weapons found</div>}
 
         {weapons.map(weapon => {

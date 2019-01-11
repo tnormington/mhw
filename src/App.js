@@ -543,6 +543,8 @@ class App extends Component {
           toggleFavorite={toggleFavorite}
           userOptions={userOptions}
           order={order}
+          orders={orders}
+          handleOrderClick={handleOrderClick}
           filters={filters}
         />
         {/* )} */}

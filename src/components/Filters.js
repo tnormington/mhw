@@ -110,11 +110,11 @@ export default class Filters extends Component {
           </React.Fragment>
         )}
 
-        <OrderButtons
+        {/* <OrderButtons
           orders={orders}
           order={order}
           handleOrderClick={handleOrderClick}
-        />
+        /> */}
 
         <span
           style={{
