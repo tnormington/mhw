@@ -81,7 +81,7 @@ class App extends Component {
       data = await axios.get("https://mhw-db.com/weapons")
       data = data.data
     } else {
-      // data = require("./data/allWeapons.json")
+      data = require("./data/allWeapons.json")
     }
 
     const filters = this.gatherWeaponFilters(data)
