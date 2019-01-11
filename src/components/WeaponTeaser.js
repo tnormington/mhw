@@ -6,7 +6,11 @@ import "./WeaponTeaser.css"
 import SharpnessMeter from "./SharpnessMeter"
 import ItemList from "./ItemList"
 
+import colors from "../colors"
+
+import ReactTooltip from "react-tooltip"
 import Collapsible from "react-collapsible"
+import RowActions from "./RowActions"
 
 export default class WeaponTeaser extends Component {
   constructor(props) {
@@ -49,6 +53,7 @@ export default class WeaponTeaser extends Component {
     return (
       <div style={style}>
         <Collapsible
+          // open={true}
           transitionTime={200}
           trigger={
             <div
@@ -68,29 +73,29 @@ export default class WeaponTeaser extends Component {
                 />
               )}
 
-              <div style={{ marginLeft: hasIcon ? "" : "40px" }}>
-                {weapon.name}
-                <button
-                  className="no-active no-pad"
+              <div style={{ marginLeft: hasIcon ? "" : "40px", width: "100%" }}>
+                <div
                   style={{
-                    marginLeft: "10px",
-                    color: isCompared ? "#287CD8" : "",
-                    border: "none"
-                  }}
-                  onClick={e => toggleComparison(e, weapon.id)}>
-                  <i className="fas fa-clipboard-list" />
-                </button>
-
-                <button
-                  className="no-active no-pad"
-                  style={{
-                    marginLeft: "10px",
-                    color: isFavorite ? "#DB9839" : "",
-                    border: "none"
-                  }}
-                  onClick={e => toggleFavorite(e, weapon.id)}>
-                  <i className={isFavorite ? "fas fa-star" : "far fa-star"} />
-                </button>
+                    display: "flex",
+                    alignItems: "center",
+                    borderBottom: `1px solid ${colors.lightGrey}`,
+                    marginBottom: "4px",
+                    paddingBottom: "4px"
+                  }}>
+                  {weapon.name}
+                  <RowActions
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      flex: 1
+                    }}
+                    isCompared={isCompared}
+                    isFavorite={isFavorite}
+                    toggleComparison={toggleComparison}
+                    toggleFavorite={toggleFavorite}
+                    item={weapon}
+                  />
+                </div>
                 <div style={{ display: "flex", flexWrap: "wrap" }}>
                   <Meta label="Rarity" value={weapon.rarity} />
                   <Meta label="Attack" value={weapon.attack.display} />
@@ -120,12 +125,18 @@ export default class WeaponTeaser extends Component {
             </div>
           }>
           <div
-            style={{ color: "#fff", marginLeft: "40px", marginBottom: "10px" }}>
+            style={{
+              color: "#fff",
+              marginLeft: "40px",
+              marginBottom: "10px",
+              display: "flex"
+            }}>
             {weapon.crafting.craftingMaterials.length > 0 && (
               <ItemList
                 label="Crafting Materials"
                 items={weapon.crafting.craftingMaterials}
                 selectedItems={selectedMaterials}
+                style={{ marginRight: "10px" }}
               />
             )}
 
@@ -138,6 +149,13 @@ export default class WeaponTeaser extends Component {
               />
             )}
           </div>
+          {weapon.assets.image && (
+            <img
+              style={{ marginLeft: "40px" }}
+              src={weapon.assets.image}
+              alt={`In game image of ${weapon.name}`}
+            />
+          )}
         </Collapsible>
       </div>
     )

@@ -420,7 +420,7 @@ class App extends Component {
         return { userOptions }
       },
       () => {
-        this.orderWeapons()
+        this.filterWeapons()
         this.saveUserOptions()
       }
     )

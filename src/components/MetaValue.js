@@ -12,6 +12,8 @@ import paralysis from "../icons/Paralysis.png"
 import sleep from "../icons/Sleep.png"
 import blast from "../icons/Blastblight.png"
 
+import colors from "../colors"
+
 export default ({ value, color, style }) => {
   let imageSrc = false
 
@@ -53,7 +55,7 @@ export default ({ value, color, style }) => {
     <div
       style={{
         ...style,
-        color: color ? color : "#6D7DA1",
+        color: color ? color : colors.lightGrey,
         fontSize: "12px",
         display: "flex",
         alignItems: "center"

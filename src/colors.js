@@ -8,7 +8,8 @@ const colors = {
   blue: "#287CD8",
   darkBlue: "#1046C8",
   purple: "#7551D4",
-  darkGrey: "#121724"
+  darkGrey: "#121724",
+  lightGrey: "#6D7DA1"
 }
 
 export default colors

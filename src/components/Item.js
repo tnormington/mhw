@@ -5,7 +5,7 @@ export default ({ item, quantity, highlight, iconSrc }) => {
   return (
     <div style={{ fontSize: "14px", color: highlight ? colors.blue : "#fff", display: 'flex', alignItems: 'center' }}>
       {iconSrc && (
-        <img src={iconSrc} style={{ width: '20px', height: '20px', objectFit: 'contain'}} />
+        <img src={iconSrc} style={{ width: '20px', height: '20px', objectFit: 'contain', marginRight: '6px'}} />
       )}
       {item.name}
       {quantity ? (
