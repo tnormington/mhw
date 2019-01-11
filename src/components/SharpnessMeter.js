@@ -22,8 +22,8 @@ export default ({ sharpness }) => {
         width: "80px",
         position: "relative",
         display: "flex",
-        background: "#121724",
-        border: "#6D7DA1"
+        background: "rgb(5, 8, 14)",
+        border: "1px solid #6D7DA1"
       }}>
       {keys.map(key => {
         return (

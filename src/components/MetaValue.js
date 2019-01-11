@@ -1,5 +1,7 @@
 import React from "react"
 
+import { titleize } from "../util"
+
 import ice from "../icons/mhw-ice-damage.png"
 import water from "../icons/mhw-water-elemental-damage.png"
 import thunder from "../icons/mhw-thunder-damage.png"
@@ -49,11 +51,20 @@ export default ({ value, color, style }) => {
 
   return (
     <div
-      style={{ ...style, color: color ? color : "#6D7DA1", fontSize: "12px", display: 'flex', alignItems: 'center' }}>
-      {value}
+      style={{
+        ...style,
+        color: color ? color : "#6D7DA1",
+        fontSize: "12px",
+        display: "flex",
+        alignItems: "center"
+      }}>
+      {typeof value === "string" ? titleize(value) : value}
       {imageSrc && (
-          <img src={imageSrc} alt={`Icon of ${value} status effect`} style={{ width: '20px', height: '20px', objectFit: 'contain'
-        }} />
+        <img
+          src={imageSrc}
+          alt={`Icon of ${value} status effect`}
+          style={{ width: "20px", height: "20px", objectFit: "contain" }}
+        />
       )}
     </div>
   )

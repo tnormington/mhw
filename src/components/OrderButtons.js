@@ -6,8 +6,6 @@ export default class OrderButtons extends Component {
   render() {
     const { orders, order, handleOrderClick } = this.props
 
-    console.log(order.toJS())
-
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ display: "block", marginBottom: "6px" }}>
@@ -15,22 +13,12 @@ export default class OrderButtons extends Component {
         </label>
         {orders.size > 0 &&
           orders.map(key => {
-            // o = a string representing the order button label
-
-            // const currentObjectOrder = searchArray("key", order, o)
-
             let direction = false
-            console.log(order.find(obj => obj.key === key))
 
             if (order.find(obj => obj.key === key)) {
               const currentObjectOrder = order.find(obj => obj.key === key)
               direction = currentObjectOrder.direction
             }
-
-            // if (currentObjectOrder) {
-            //   // An active order object
-            //   direction = currentObjectOrder.direction
-            // }
 
             return (
               <button

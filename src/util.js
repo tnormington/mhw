@@ -1,3 +1,5 @@
+import { Range } from "immutable"
+
 export const searchArray = (key, arr, value) => {
   let result = false
   arr.forEach(item => {
@@ -7,6 +9,19 @@ export const searchArray = (key, arr, value) => {
   })
 
   return result
+}
+
+export const titleize = title => {
+  if (!title) return false
+  return title.charAt(0).toUpperCase() + title.slice(1).replace(/-/g, " ")
+}
+
+export const chunkList = (list, chunkSize = 5) => {
+  if (!list) return false
+
+  return Range(0, list.count(), chunkSize).map(chunkStart =>
+    list.slice(chunkStart, chunkStart + chunkSize)
+  )
 }
 
 // export const checkForOrderObject = order => {

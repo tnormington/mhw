@@ -1,15 +1,24 @@
 import React, { Component } from "react"
 import { List, Map } from "immutable"
 
+// Global Styles
+import "react-select/dist/react-select.css"
+import "react-virtualized-select/styles.css"
+
 import "./App.css"
 
-import TabGroup from "./components/TabGroup"
+import ReactPaginate from "react-paginate"
 
 import axios from "axios"
-import OrderButtons from "./components/OrderButtons"
 
-import { searchArray } from "./util"
+import { searchArray, chunkList } from "./util"
+
+import Filters from "./components/Filters"
+// import TabGroup from "./components/TabGroup"
+// import OrderButtons from "./components/OrderButtons"
 import WeaponList from "./components/WeaponList"
+
+// import colors from "./colors"
 
 const defaultFilters = Map({
   search: "",
@@ -17,7 +26,8 @@ const defaultFilters = Map({
   elementTypes: List(),
   rarity: List(),
   damageTypes: List(),
-  groups: List()
+  groups: List(),
+  materials: List()
 })
 
 const defaultUserOptions = {
@@ -33,12 +43,15 @@ class App extends Component {
       loading: true,
       weapons: null,
 
-      filteredWeapons: null,
-      weaponTypes: null,
+      filteredWeapons: List(),
+      weaponTypes: List(),
       filters: Map(defaultFilters),
       order: List(),
       orders: List(["rarity", "attack"]),
-      userOptions: Map(defaultUserOptions)
+      userOptions: Map(defaultUserOptions),
+      page: 0,
+      itemsPerPage: 16,
+      materials: List()
     }
 
     this.handleWeaponTypeClick = this.handleTabClick.bind(this, "weaponTypes")
@@ -56,6 +69,9 @@ class App extends Component {
     this.saveUserOptions = this.saveUserOptions.bind(this)
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.filterWeapons = this.filterWeapons.bind(this)
+    this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
+    this.handleMaterialChange = this.handleSelectChange.bind(this, "materials")
   }
 
   async componentWillMount() {
@@ -65,18 +81,22 @@ class App extends Component {
       data = await axios.get("https://mhw-db.com/weapons")
       data = data.data
     } else {
-      data = require("./data/allWeapons.json")
+      // data = require("./data/allWeapons.json")
     }
 
     const filters = this.gatherWeaponFilters(data)
 
+    const { itemsPerPage } = this.state
+
     this.setState({
       weapons: List(data),
       filteredWeapons: List(data),
+      pageCount: Math.floor(data.length / itemsPerPage),
       weaponTypes: filters.types,
       damageTypes: filters.damageTypes,
       elementTypes: filters.elements,
       rarities: filters.rarities,
+      materials: filters.materials,
       loading: false
     })
   }
@@ -99,7 +119,8 @@ class App extends Component {
     let types = List(),
       elements = List(),
       rarities = List(),
-      damageTypes = List()
+      damageTypes = List(),
+      materials = List()
 
     weapons.forEach(w => {
       if (!types.includes(w.type)) types = types.push(w.type)
@@ -118,13 +139,33 @@ class App extends Component {
             elements = elements.push(element.type)
         })
       }
+
+      // Crafting/Upgrade materials
+      const items = w.crafting.craftable
+        ? w.crafting.craftingMaterials
+        : w.crafting.upgradeMaterials
+      if (items.length) {
+        items.forEach(({ item }) => {
+          const itemObj = Map({
+            value: item.id,
+            label: item.name
+          })
+          if (!materials.includes(itemObj)) materials = materials.push(itemObj)
+        })
+
+        // sort by name alphabetically ascending
+        materials = materials.sort((a, b) => {
+          return a.get("label") > b.get("label")
+        })
+      }
     })
 
     return {
       types,
       elements,
       rarities,
-      damageTypes
+      damageTypes,
+      materials
     }
   }
 
@@ -146,6 +187,16 @@ class App extends Component {
     }, this.filterWeapons)
   }
 
+  handleSelectChange(key, value) {
+    // console.log("key: ", key, "value: ", value)
+    this.setState(
+      prev => ({
+        filters: prev.filters.set(key, List(value))
+      }),
+      this.filterWeapons
+    )
+  }
+
   checkItemFilter(item) {
     // this method is used in the .filter CB, it checks an item against the current filters set
     const { filters, userOptions } = this.state
@@ -156,7 +207,8 @@ class App extends Component {
       damageTypes = filters.get("damageTypes"),
       groups = filters.get("groups"),
       favorites = userOptions.get("favorites"),
-      comparisons = userOptions.get("comparisons")
+      comparisons = userOptions.get("comparisons"),
+      materials = filters.get("materials")
 
     // default let all items through
     let result = true
@@ -183,12 +235,44 @@ class App extends Component {
       return false
 
     if (elementTypes.size > 0) {
-      result = false
-      elementTypes.forEach(type => {
-        if (searchArray("type", item.elements, type)) {
-          result = true
-        }
-      })
+      const weaponElements = List(item.elements).map(e => e.type)
+
+      if (elementTypes.isSubset(weaponElements)) {
+        result = true
+      } else {
+        return false
+      }
+    }
+
+    // check selected materials
+
+    if (materials.size) {
+      const { craftingMaterials, upgradeMaterials } = item.crafting
+
+      const weaponMaterials = item.crafting.craftable
+        ? craftingMaterials
+        : upgradeMaterials
+
+      // materials.forEach(mat => {
+      //   if (weaponMaterials.every(weaponMat => mat.value === weaponMat.item.id))
+      //     result = true
+      // })
+
+      const selectedMaterialIdList = materials.map(mat => mat.value)
+      const weaponMaterialIdList = List(weaponMaterials.map(mat => mat.item.id))
+
+      if (selectedMaterialIdList.isSubset(weaponMaterialIdList)) {
+        result = true
+      } else {
+        return false
+      }
+      // console.log(selectedMaterialIdList.toJS())
+      // console.log(weaponMaterialIdList.toJS())
+      // debugger
+
+      // weaponMaterials.forEach(weaponMat => {
+
+      // })
     }
 
     return result
@@ -274,27 +358,48 @@ class App extends Component {
   }
 
   clearAllFilters() {
-    this.setState({
-      filters: Map(defaultFilters),
-      order: []
-    })
+    this.setState(
+      {
+        filters: Map(defaultFilters),
+        order: List(),
+        page: 0
+      },
+      this.filterWeapons
+    )
   }
 
   filterWeapons() {
     this.setState(prev => {
       const filteredWeapons = prev.weapons.filter(this.checkItemFilter)
-      return { filteredWeapons }
+      const pageCount = Math.floor(filteredWeapons.size / prev.itemsPerPage)
+
+      let newPage = Number(prev.page)
+      if (newPage >= pageCount) {
+        if (pageCount > 0) {
+          newPage = pageCount - 1
+        } else {
+          newPage = 0
+        }
+      }
+
+      return {
+        filteredWeapons,
+        pageCount,
+        page: newPage
+      }
     }, this.orderWeapons)
   }
 
-  toggleUserOption(key, id) {
+  toggleUserOption(key, e, id) {
+    // e.preventDefault()
+    e.stopPropagation()
     this.setState(
       prev => {
         let { userOptions } = prev
-        console.log(userOptions)
+        // console.log(userOptions)
         let userOption = userOptions.get(key)
-        console.log("key: ", key)
-        console.log(userOption)
+        // console.log("key: ", key)
+        // console.log(userOption)
 
         if (!userOption) {
           // create the userOption and add id to it
@@ -336,10 +441,22 @@ class App extends Component {
   handleSearchChange(e) {
     const val = e.target.value
     this.setState(prev => {
-      // const filters = Object.assign({}, prev.filters, { search: val })
-      // const newState = update(prev, { filters: { search: { $set: val } } })
-      const filters = prev.filters.set("search", val)
-      return { filters }
+      return { filters: prev.filters.set("search", val) }
+    })
+  }
+
+  getCurrentPageItems() {
+    const { page, itemsPerPage, filteredWeapons } = this.state
+
+    if (filteredWeapons.size <= itemsPerPage) return filteredWeapons
+    const chunkedList = chunkList(filteredWeapons, itemsPerPage)
+    return chunkedList.get(page)
+  }
+
+  handlePageChange(data) {
+    // const { filteredWeapons, itemsPerPage } = this.state
+    this.setState({
+      page: data.selected
     })
   }
 
@@ -355,23 +472,32 @@ class App extends Component {
       userOptions,
       damageTypes,
       filteredWeapons,
-      weapons
+      weapons,
+      itemsPerPage,
+      pageCount,
+      page,
+      materials
     } = this.state
 
     const {
       checkItemFilter,
-      handleElementTypeClick,
-      handleWeaponTypeClick,
-      handleRarityClick,
-      handleOrderClick,
       clearAllFilters,
-      toggleFavorite,
-      toggleComparison,
-      handleDamageTypeClick,
-      handleGroupClick,
       clearUserOptions,
-      handleSearchChange
+      getCurrentPageItems,
+      handleDamageTypeClick,
+      handleElementTypeClick,
+      handleGroupClick,
+      handleOrderClick,
+      handlePageChange,
+      handleRarityClick,
+      handleSearchChange,
+      handleMaterialChange,
+      handleWeaponTypeClick,
+      toggleComparison,
+      toggleFavorite
     } = this
+
+    const currentPageItems = getCurrentPageItems()
 
     if (loading)
       return (
@@ -388,87 +514,52 @@ class App extends Component {
       )
 
     return (
-      <div>
-        <TabGroup
-          activeTabs={filters.get("groups")}
-          tabs={["favorites", "comparisons"]}
-          handleTabClick={handleGroupClick}
-          label="Custom Groups"
-        />
-
-        <label style={{ marginBottom: "6px", display: "block" }}>
-          Keyword Search
-        </label>
-        <input
-          type="text"
-          value={filters.get("search")}
-          onChange={handleSearchChange}
-          style={{ marginBottom: "10px", width: "100%" }}
-        />
-
-        {weaponTypes && (
-          <TabGroup
-            activeTabs={filters.get("weaponTypes")}
-            tabs={weaponTypes}
-            handleTabClick={handleWeaponTypeClick}
-            label="Weapon Type"
-            clean={true}
-          />
-        )}
-        {elementTypes && (
-          <TabGroup
-            activeTabs={filters.get("elementTypes")}
-            tabs={elementTypes}
-            handleTabClick={handleElementTypeClick}
-            label="Element"
-          />
-        )}
-        {rarities && (
-          <TabGroup
-            activeTabs={filters.get("rarity")}
-            tabs={rarities}
-            handleTabClick={handleRarityClick}
-            label="Rarity"
-          />
-        )}
-        {damageTypes && (
-          <TabGroup
-            activeTabs={filters.get("damageTypes")}
-            tabs={damageTypes}
-            handleTabClick={handleDamageTypeClick}
-            label="Damage Type"
-            clean={true}
-          />
-        )}
-
-        <OrderButtons
+      <React.Fragment>
+        <Filters
+          filters={filters}
+          handleGroupClick={handleGroupClick}
+          handleSearchChange={handleSearchChange}
+          weaponTypes={weaponTypes}
+          handleWeaponTypeClick={handleWeaponTypeClick}
+          elementTypes={elementTypes}
+          handleElementTypeClick={handleElementTypeClick}
+          damageTypes={damageTypes}
+          handleDamageTypeClick={handleDamageTypeClick}
           orders={orders}
           order={order}
           handleOrderClick={handleOrderClick}
+          filteredWeapons={filteredWeapons}
+          clearAllFilters={clearAllFilters}
+          clearUserOptions={clearUserOptions}
+          rarities={rarities}
+          handleRarityClick={handleRarityClick}
+          handleMaterialChange={handleMaterialChange}
+          materials={materials}
         />
-
-        <button
-          style={{ marginBottom: "10px", marginRight: "10px" }}
-          onClick={clearAllFilters}>
-          Reset All Filters <i className="fas fa-window-close" />
-        </button>
-        <button
-          style={{ marginBottom: "10px", marginRight: "10px" }}
-          onClick={clearUserOptions}>
-          Clear User Options <i className="fas fa-window-close" />
-        </button>
-
-        {weapons && (
+        {currentPageItems && currentPageItems.size > 0 && (
           <WeaponList
-            weapons={filteredWeapons}
+            weapons={currentPageItems}
             toggleComparison={toggleComparison}
             toggleFavorite={toggleFavorite}
             userOptions={userOptions}
             order={order}
-            // checkItemFilter={checkItemFilter}
+            filters={filters}
           />
         )}
-      </div>
+        {filteredWeapons.size > itemsPerPage && (
+          <div className="pagination">
+            <ReactPaginate
+              pageCount={pageCount}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={2}
+              onPageChange={handlePageChange}
+              forcePage={page}
+              previousLabel={<i className="fas fa-arrow-left" />}
+              nextLabel={<i className="fas fa-arrow-right" />}
+            />
+          </div>
+        )}
+      </React.Fragment>
     )
   }
 }
