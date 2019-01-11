@@ -30,7 +30,7 @@ export default class WeaponList extends Component {
     return (
       <div
         style={{
-          padding: "10px 10px 36px 10px",
+          padding: "10px 24px 36px 10px",
           background: colors.darkGrey,
           width: "100%"
         }}>
