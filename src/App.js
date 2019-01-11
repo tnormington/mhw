@@ -536,16 +536,16 @@ class App extends Component {
           handleMaterialChange={handleMaterialChange}
           materials={materials}
         />
-        {currentPageItems && currentPageItems.size > 0 && (
-          <WeaponList
-            weapons={currentPageItems}
-            toggleComparison={toggleComparison}
-            toggleFavorite={toggleFavorite}
-            userOptions={userOptions}
-            order={order}
-            filters={filters}
-          />
-        )}
+        {/* {currentPageItems && currentPageItems.size > 0 && ( */}
+        <WeaponList
+          weapons={currentPageItems}
+          toggleComparison={toggleComparison}
+          toggleFavorite={toggleFavorite}
+          userOptions={userOptions}
+          order={order}
+          filters={filters}
+        />
+        {/* )} */}
         {filteredWeapons.size > itemsPerPage && (
           <div className="pagination">
             <ReactPaginate

@@ -126,36 +126,44 @@ export default class WeaponTeaser extends Component {
           }>
           <div
             style={{
-              color: "#fff",
               marginLeft: "40px",
-              marginBottom: "10px",
-              display: "flex"
+              marginBottom: "10px"
+              // paddingBottom: "10px",
+              // borderBottom: `1px solid ${colors.lightGrey}`
             }}>
-            {weapon.crafting.craftingMaterials.length > 0 && (
-              <ItemList
-                label="Crafting Materials"
-                items={weapon.crafting.craftingMaterials}
-                selectedItems={selectedMaterials}
-                style={{ marginRight: "10px" }}
-              />
-            )}
+            <div
+              style={{
+                color: "#fff",
+                marginBottom: "10px",
+                display: "flex"
+              }}>
+              {weapon.crafting.craftingMaterials.length > 0 && (
+                <ItemList
+                  label="Crafting Materials"
+                  items={weapon.crafting.craftingMaterials}
+                  selectedItems={selectedMaterials}
+                  style={{ marginRight: "10px" }}
+                />
+              )}
 
-            {weapon.crafting.upgradeMaterials.length > 0 && (
-              <ItemList
-                previous={weapons.find(w => w.id === weapon.crafting.previous)}
-                label="Upgrade Materials"
-                items={weapon.crafting.upgradeMaterials}
-                selectedItems={selectedMaterials}
+              {weapon.crafting.upgradeMaterials.length > 0 && (
+                <ItemList
+                  previous={weapons.find(
+                    w => w.id === weapon.crafting.previous
+                  )}
+                  label="Upgrade Materials"
+                  items={weapon.crafting.upgradeMaterials}
+                  selectedItems={selectedMaterials}
+                />
+              )}
+            </div>
+            {weapon.assets.image && (
+              <img
+                src={weapon.assets.image}
+                alt={`In game image of ${weapon.name}`}
               />
             )}
           </div>
-          {weapon.assets.image && (
-            <img
-              style={{ marginLeft: "40px" }}
-              src={weapon.assets.image}
-              alt={`In game image of ${weapon.name}`}
-            />
-          )}
         </Collapsible>
       </div>
     )

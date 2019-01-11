@@ -28,6 +28,8 @@ export default class WeaponList extends Component {
           background: colors.darkGrey,
           width: "100%"
         }}>
+        {!weapons.size && <div>No weapons found</div>}
+
         {weapons.map(weapon => {
           return (
             <WeaponTeaser
