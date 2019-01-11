@@ -51,7 +51,8 @@ class App extends Component {
       userOptions: Map(defaultUserOptions),
       page: 0,
       itemsPerPage: 16,
-      materials: List()
+      materials: List(),
+      expanded: List()
     }
 
     this.handleWeaponTypeClick = this.handleTabClick.bind(this, "weaponTypes")
@@ -72,6 +73,7 @@ class App extends Component {
     this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleMaterialChange = this.handleSelectChange.bind(this, "materials")
+    this.handleCollapseClick = this.handleCollapseClick.bind(this)
   }
 
   async componentWillMount() {
@@ -195,6 +197,21 @@ class App extends Component {
       }),
       this.filterWeapons
     )
+  }
+
+  handleCollapseClick(id) {
+    this.setState(prev => {
+      let expanded
+      if (prev.expanded.includes(id)) {
+        //remove it
+        expanded = prev.expanded.delete(prev.expanded.indexOf(id))
+      } else {
+        // add it
+        expanded = prev.expanded.push(id)
+      }
+
+      return { expanded }
+    })
   }
 
   checkItemFilter(item) {
@@ -476,7 +493,8 @@ class App extends Component {
       itemsPerPage,
       pageCount,
       page,
-      materials
+      materials,
+      expanded
     } = this.state
 
     const {
@@ -484,6 +502,7 @@ class App extends Component {
       clearAllFilters,
       clearUserOptions,
       getCurrentPageItems,
+      handleCollapseClick,
       handleDamageTypeClick,
       handleElementTypeClick,
       handleGroupClick,
@@ -536,7 +555,6 @@ class App extends Component {
           handleMaterialChange={handleMaterialChange}
           materials={materials}
         />
-        {/* {currentPageItems && currentPageItems.size > 0 && ( */}
         <WeaponList
           weapons={currentPageItems}
           toggleComparison={toggleComparison}
@@ -545,9 +563,10 @@ class App extends Component {
           order={order}
           orders={orders}
           handleOrderClick={handleOrderClick}
+          handleCollapseClick={handleCollapseClick}
           filters={filters}
+          expanded={expanded}
         />
-        {/* )} */}
         {filteredWeapons.size > itemsPerPage && (
           <div className="pagination">
             <ReactPaginate

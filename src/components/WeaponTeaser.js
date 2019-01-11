@@ -32,7 +32,9 @@ export default class WeaponTeaser extends Component {
       userOptions,
       toggleComparison,
       style,
-      selectedMaterials
+      selectedMaterials,
+      handleCollapseClick,
+      open
     } = this.props
 
     let isFavorite = false,
@@ -53,7 +55,8 @@ export default class WeaponTeaser extends Component {
     return (
       <div style={style}>
         <Collapsible
-          // open={true}
+          open={open}
+          handleTriggerClick={() => handleCollapseClick(weapon.id)}
           transitionTime={200}
           trigger={
             <div
@@ -94,6 +97,7 @@ export default class WeaponTeaser extends Component {
                     toggleComparison={toggleComparison}
                     toggleFavorite={toggleFavorite}
                     item={weapon}
+                    open={open}
                   />
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap" }}>

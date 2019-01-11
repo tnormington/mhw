@@ -17,7 +17,9 @@ export default class WeaponList extends Component {
       filters,
       order,
       orders,
-      handleOrderClick
+      handleOrderClick,
+      handleCollapseClick,
+      expanded
     } = this.props
 
     let selectedMaterials = false
@@ -50,6 +52,8 @@ export default class WeaponList extends Component {
               weapons={weapons}
               userOptions={userOptions}
               selectedMaterials={selectedMaterials}
+              handleCollapseClick={handleCollapseClick}
+              open={expanded.includes(weapon.id)}
             />
           )
         })}
