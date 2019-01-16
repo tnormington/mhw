@@ -708,12 +708,14 @@ class App extends Component {
               order={order}
               handleOrderClick={handleOrderClick}
             />
-            <TabGroup
-              activeTabs={filters.get("groups")}
-              tabs={["favorites", "comparisons"]}
-              handleTabClick={handleGroupClick}
-              label="Custom Groups"
-            />
+            <div style={{ marginBottom: "10px" }}>
+              <TabGroup
+                activeTabs={filters.get("groups")}
+                tabs={["favorites", "comparisons"]}
+                handleTabClick={handleGroupClick}
+                label="Custom Groups"
+              />
+            </div>
           </div>
           <WeaponListContainer
             weapons={currentPageItems}

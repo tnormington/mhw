@@ -45,23 +45,25 @@ export default ({ item, filters, items, open }) => {
             <div>
               <h4 style={{ margin: "0 0 10px" }}>{item.name}</h4>
               <WeaponTeaserMeta weapon={item} showSharpness={true} />
-              {item.crafting.craftingMaterials.length > 0 && (
-                <ItemList
-                  label="Crafting Materials"
-                  items={item.crafting.craftingMaterials}
-                  selectedItems={selectedMaterials}
-                  style={{ marginRight: "10px" }}
-                />
-              )}
+              <div style={{ display: "flex" }}>
+                {item.crafting.craftingMaterials.length > 0 && (
+                  <ItemList
+                    label="Crafting Materials"
+                    items={item.crafting.craftingMaterials}
+                    selectedItems={selectedMaterials}
+                    style={{ marginRight: "10px" }}
+                  />
+                )}
 
-              {item.crafting.upgradeMaterials.length > 0 && (
-                <ItemList
-                  previous={items.find(w => w.id === item.crafting.previous)}
-                  label="Upgrade Materials"
-                  items={item.crafting.upgradeMaterials}
-                  selectedItems={selectedMaterials}
-                />
-              )}
+                {item.crafting.upgradeMaterials.length > 0 && (
+                  <ItemList
+                    previous={items.find(w => w.id === item.crafting.previous)}
+                    label="Upgrade Materials"
+                    items={item.crafting.upgradeMaterials}
+                    selectedItems={selectedMaterials}
+                  />
+                )}
+              </div>
             </div>
           </div>
         )}

@@ -11,32 +11,41 @@ export default class OrderButtons extends Component {
         <label style={{ display: "block", marginBottom: "6px" }}>
           Order By
         </label>
-        {orders.size > 0 &&
-          orders.map(key => {
-            let direction = false
+        <div
+          style={{
+            marginLeft: "1px",
+            marginTop: "1px",
+            position: "relative",
+            zIndex: 1
+          }}>
+          {orders.size > 0 &&
+            orders.map(key => {
+              let direction = false
 
-            if (order.find(obj => obj.key === key)) {
-              const currentObjectOrder = order.find(obj => obj.key === key)
-              direction = currentObjectOrder.direction
-            }
+              if (order.find(obj => obj.key === key)) {
+                const currentObjectOrder = order.find(obj => obj.key === key)
+                direction = currentObjectOrder.direction
+              }
 
-            return (
-              <button
-                style={{ marginRight: "10px" }}
-                key={key}
-                onClick={() => handleOrderClick(key)}
-                className={direction ? "active" : ""}>
-                {key}
-                {direction && direction === "ASC" && (
-                  <i className="fas fa-angle-double-up fa-fw" />
-                )}
-                {direction && direction === "DESC" && (
-                  <i className="fas fa-angle-double-down fa-fw" />
-                )}
-                {!direction && <i className="fas fa-sort fa-fw" />}
-              </button>
-            )
-          })}
+              return (
+                <button
+                  // style={{ marginRight: "10px", marginBottom: "10px" }}
+                  style={{ marginLeft: "-1px", marginTop: "-1px" }}
+                  key={key}
+                  onClick={() => handleOrderClick(key)}
+                  className={direction ? "active" : ""}>
+                  {key}
+                  {direction && direction === "ASC" && (
+                    <i className="fas fa-angle-double-up fa-fw" />
+                  )}
+                  {direction && direction === "DESC" && (
+                    <i className="fas fa-angle-double-down fa-fw" />
+                  )}
+                  {!direction && <i className="fas fa-sort fa-fw" />}
+                </button>
+              )
+            })}
+        </div>
       </div>
     )
   }
