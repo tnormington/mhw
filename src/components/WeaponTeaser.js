@@ -63,7 +63,7 @@ export default class WeaponTeaser extends PureComponent {
           ...style,
           display: "flex",
           color: "#fff",
-          backgroundColor: highlight ? colors.grey : ""
+          backgroundColor: highlight ? colors.medGrey : ""
         }}>
         {1 === 0 && hasIcon && (
           <img
@@ -84,9 +84,12 @@ export default class WeaponTeaser extends PureComponent {
             style={{
               display: "flex",
               alignItems: "center",
-              borderBottom: `2px solid ${colors.grey}`,
+              borderBottom: `2px solid ${
+                highlight ? colors.lightGrey : colors.grey
+              }`,
               marginBottom: "4px",
-              paddingBottom: "4px"
+              paddingBottom: "4px",
+              transition: "all 0.15s ease-out"
             }}>
             {weapon.name}
             <RowActions
@@ -104,28 +107,6 @@ export default class WeaponTeaser extends PureComponent {
             />
           </div>
           <WeaponTeaserMeta weapon={weapon} />
-          {/* <div style={{ display: "flex", flexWrap: "wrap" }}>
-            <Meta label="Rarity" value={weapon.rarity} />
-            <Meta label="Attack" value={weapon.attack.display} />
-            <Meta label="Weapon Type" value={weapon.type} />
-            <Meta label="Damage Type" value={weapon.attributes.damageType} />
-            {1 === 0 && weapon.elements.length > 0 && (
-              <ElementsMeta
-                style={{ marginRight: "10px" }}
-                elements={weapon.elements}
-              />
-            )}
-            {1 === 0 && weapon.sharpness && (
-              <div>
-                <label
-                  className="sm"
-                  style={{ marginBottom: "6px", display: "block" }}>
-                  Sharpness
-                </label>
-                <SharpnessMeter sharpness={weapon.sharpness} />
-              </div>
-            )}
-          </div> */}
         </div>
       </div>
     )

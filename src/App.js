@@ -682,7 +682,7 @@ class App extends Component {
         <div className="right-column">
           <div
             style={{
-              padding: "10px",
+              padding: "10px 10px 0 10px",
               display: "flex",
               justifyContent: "space-between"
             }}>
