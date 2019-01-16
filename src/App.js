@@ -83,6 +83,7 @@ class App extends Component {
     this.handleExpandAll = this.handleExpandAll.bind(this)
     this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
     this.handleWeaponClick = this.handleWeaponClick.bind(this)
+    this.clearSearchFilter = this.clearSearchFilter.bind(this)
   }
 
   async componentWillMount() {
@@ -217,7 +218,7 @@ class App extends Component {
 
       // prev.filters[key] = filterValues
       const filters = prev.filters.set(key, filterValues)
-      console.log("filters: ", filters.toJS())
+      // console.log("filters: ", filters.toJS())
       return { filters }
     }, this.filterWeapons)
   }
@@ -315,10 +316,18 @@ class App extends Component {
       groups = filters.get("groups"),
       favorites = userOptions.get("favorites"),
       comparisons = userOptions.get("comparisons"),
-      materials = filters.get("materials")
+      materials = filters.get("materials"),
+      search = filters.get("search")
 
     // default let all items through
     let result = true
+
+    // check search keywords
+
+    if (search) {
+      result = false
+      if (item.name.toLowerCase().includes(search.toLowerCase())) result = true
+    }
 
     // check item groups
     if (groups.size > 0) {
@@ -478,21 +487,21 @@ class App extends Component {
   filterWeapons() {
     this.setState(prev => {
       const filteredWeapons = prev.weapons.filter(this.checkItemFilter)
-      const pageCount = Math.floor(filteredWeapons.size / prev.itemsPerPage)
+      // const pageCount = Math.floor(filteredWeapons.size / prev.itemsPerPage)
 
-      let newPage = Number(prev.page)
-      if (newPage >= pageCount) {
-        if (pageCount > 0) {
-          newPage = pageCount - 1
-        } else {
-          newPage = 0
-        }
-      }
+      // let newPage = Number(prev.page)
+      // if (newPage >= pageCount) {
+      //   if (pageCount > 0) {
+      //     newPage = pageCount - 1
+      //   } else {
+      //     newPage = 0
+      //   }
+      // }
 
       return {
-        filteredWeapons,
-        pageCount,
-        page: newPage
+        filteredWeapons
+        // pageCount,
+        // page: newPage
       }
     }, this.orderWeapons)
   }
@@ -549,7 +558,14 @@ class App extends Component {
     const val = e.target.value
     this.setState(prev => {
       return { filters: prev.filters.set("search", val) }
-    })
+    }, this.filterWeapons)
+  }
+
+  clearSearchFilter() {
+    this.setState(
+      prev => ({ filters: prev.filters.set("search", "") }),
+      this.filterWeapons
+    )
   }
 
   getCurrentPageItems() {
@@ -605,7 +621,8 @@ class App extends Component {
       toggleComparison,
       toggleFavorite,
       handleExpandAll,
-      handleWeaponClick
+      handleWeaponClick,
+      clearSearchFilter
     } = this
 
     // a list of weapon ids the user currently has selected
@@ -659,6 +676,7 @@ class App extends Component {
             handleRarityClick={handleRarityClick}
             handleMaterialChange={handleMaterialChange}
             materials={materials}
+            clearSearchFilter={clearSearchFilter}
           />
         </div>
         <div className="right-column">

@@ -29,7 +29,8 @@ export default class Filters extends Component {
       rarities,
       handleRarityClick,
       materials,
-      handleMaterialChange
+      handleMaterialChange,
+      clearSearchFilter
     } = this.props
 
     return (
@@ -49,15 +50,30 @@ export default class Filters extends Component {
           label="Custom Groups"
         /> */}
 
-        <label style={{ marginBottom: "6px", display: "block" }}>
-          Keyword Search
-        </label>
-        <input
-          type="text"
-          value={filters.get("search")}
-          onChange={handleSearchChange}
-          style={{ marginBottom: "10px", width: "100%" }}
-        />
+        <div style={{ position: "relative" }}>
+          <label style={{ marginBottom: "6px", display: "block" }}>
+            Keyword Search
+          </label>
+          <input
+            type="text"
+            value={filters.get("search")}
+            onChange={handleSearchChange}
+            style={{ marginBottom: "10px", width: "100%" }}
+          />
+          {filters.get("search") && (
+            <button
+              style={{
+                position: "absolute",
+                top: "31px",
+                right: "12px",
+                border: "none"
+              }}
+              className="no-pad no-active"
+              onClick={clearSearchFilter}>
+              <i className="fas fa-window-close" />
+            </button>
+          )}
+        </div>
 
         {weaponTypes && (
           <TabGroup

@@ -145,7 +145,7 @@ export default class WeaponList extends Component {
               onScroll={this.onScroll}
               height={height}
               itemCount={filteredWeapons.size}
-              itemSize={78}
+              itemSize={83}
               width={width}
               overscanCount={10}
               itemData={filteredWeapons.toArray()}

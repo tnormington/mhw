@@ -17,7 +17,7 @@ export default ({ item, filters, items, open }) => {
     selectedMaterials = filters.get("materials")
   }
 
-  console.log("item: ", item)
+  // console.log("item: ", item)
 
   return (
     <div className="item-window" style={{ background: colors.darkGrey }}>

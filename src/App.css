@@ -23,11 +23,17 @@ input {
   display: flex;
   flex-direction: column; */
   display: grid;
-  grid-template-columns: 500px auto;
+  grid-template-columns: 700px auto;
   grid-template-rows: auto;
   /* grid-template-rows: 500px auto; */
   height: 100vh;
   width: 100vw;
+}
+
+@media (max-width: 1200px) {
+  #root {
+    grid-template-columns: 500px auto;
+  }
 }
 
 .left-column {
