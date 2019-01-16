@@ -11,12 +11,15 @@ import ReactPaginate from "react-paginate"
 
 import axios from "axios"
 
-import { searchArray, chunkList } from "./util"
+import { searchArray, chunkList, removeOrAddFromList } from "./util"
 
 import Filters from "./components/Filters"
 // import TabGroup from "./components/TabGroup"
-// import OrderButtons from "./components/OrderButtons"
+import OrderButtons from "./components/OrderButtons"
 import WeaponList from "./components/WeaponList"
+import TabGroup from "./components/TabGroup"
+import ItemWindow from "./components/ItemWindow"
+import WeaponListContainer from "./components/WeaponListContainer"
 
 // import colors from "./colors"
 
@@ -30,25 +33,28 @@ const defaultFilters = Map({
   materials: List()
 })
 
-const defaultUserOptions = {
+const defaultUserOptions = Map({
   favorites: [],
-  comparisons: []
-}
+  comparisons: [],
+  selectedWeapons: List(),
+  expandAll: false,
+  selectedWeapon: null
+})
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loading: true,
-      weapons: null,
-
-      filteredWeapons: List(),
-      weaponTypes: List(),
-      filters: Map(defaultFilters),
-      order: List(),
-      orders: List(["rarity", "attack"]),
-      userOptions: Map(defaultUserOptions),
+      loading: true, // toggle this to hide/show the entire app
+      weapons: null, // a static list of weapons, if used as reference for other dynamic state props
+      filteredWeapons: List(), // dynamic list of weapons to apply filters, chunk up, and display
+      weaponTypes: List(), // static list of all weapon types
+      filters: Map(defaultFilters), // dynamic map of varying filters
+      // TODO: move order into the filters Map
+      order: List(), // dynamic list of order objects set by user, used to set weapon list order
+      orders: List(["rarity", "attack"]), // a static list of possible order properties
+      userOptions: Map(defaultUserOptions), //
       page: 0,
       itemsPerPage: 16,
       materials: List(),
@@ -74,6 +80,9 @@ class App extends Component {
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleMaterialChange = this.handleSelectChange.bind(this, "materials")
     this.handleCollapseClick = this.handleCollapseClick.bind(this)
+    this.handleExpandAll = this.handleExpandAll.bind(this)
+    this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
+    this.handleWeaponClick = this.handleWeaponClick.bind(this)
   }
 
   async componentWillMount() {
@@ -104,14 +113,38 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const userOptions = JSON.parse(
-      window.localStorage.getItem("mhw_user-settings")
+    let userOptions = Map(
+      JSON.parse(window.localStorage.getItem("mhw_user-settings"))
     )
 
     // if (!userOptions.comparisons) userOptions.comparisons = []
 
+    // Loop over each defaultUserOption,
+    // check it the type
+    // check if user has option set
+    // set key to correct type
+
+    userOptions = userOptions.map((option, key) => {
+      const defaultOption = defaultUserOptions.get(key)
+      // let optKey = userOptions[key]
+
+      if (List.isList(defaultOption)) {
+        // optKey = List(optKey)
+        return List(option)
+      } else if (Map.isMap(defaultOption)) {
+        // optKey = Map(optKey)
+        return Map(option)
+      } else {
+        // optKey = optKey
+        return option
+      }
+    })
+
+    // console.log(userOptions)
+
     if (userOptions) {
-      this.setState({ userOptions: Map(userOptions) })
+      userOptions = defaultUserOptions.merge(userOptions)
+      this.setState({ userOptions })
     }
 
     // console.log(this.state.data)
@@ -197,6 +230,63 @@ class App extends Component {
       }),
       this.filterWeapons
     )
+  }
+
+  handleExpandAll() {
+    const allIds = this.state.weapons.map(item => item.id)
+    this.setState(prev => {
+      const expandAll = prev.userOptions.get("expandAll")
+
+      return {
+        expanded: expandAll ? List() : allIds,
+        userOptions: prev.userOptions.set("expandAll", !expandAll)
+      }
+    }, this.saveUserOptions)
+  }
+
+  // TODO: setup mass selection of weapons for bulk actions
+  // ie: set multiple weapons as favorite in 1 click
+  toggleWeaponToSelectedList(id) {
+    this.setState(prev => {
+      let selectedWeapons = prev.userOptions.get("selectedWeapons")
+
+      selectedWeapons = removeOrAddFromList(List(selectedWeapons), id)
+
+      const userOptions = prev.userOptions.set(
+        "selectedWeapons",
+        selectedWeapons
+      )
+
+      return { userOptions }
+    }, this.saveUserOptions)
+  }
+
+  handleWeaponClick(id) {
+    this.setState(prev => {
+      if (prev.userOptions.get("selectedWeapon") === id) {
+        // remove as selected weapon
+        return {
+          userOptions: prev.userOptions.set("selectedWeapon", null)
+        }
+      } else {
+        // make selected weapon
+        return {
+          userOptions: prev.userOptions.set("selectedWeapon", id)
+        }
+      }
+    })
+  }
+
+  checkExpandAllUserOption(userOptions) {
+    const expandAll = userOptions.get("expandAll")
+
+    if (expandAll) {
+      this.setState(prev => {
+        return {
+          expanded: prev.weapons.map(item => item.id)
+        }
+      })
+    }
   }
 
   handleCollapseClick(id) {
@@ -513,10 +603,18 @@ class App extends Component {
       handleMaterialChange,
       handleWeaponTypeClick,
       toggleComparison,
-      toggleFavorite
+      toggleFavorite,
+      handleExpandAll,
+      handleWeaponClick
     } = this
 
+    // a list of weapon ids the user currently has selected
+    const selectedWeapons = userOptions.get("selectedWeapons")
+    // a single id representing the selected weapon, for display in the item window
+    const selectedWeapon = userOptions.get("selectedWeapon")
     const currentPageItems = getCurrentPageItems()
+
+    // console.log(selectedWeapons)
 
     if (loading)
       return (
@@ -534,52 +632,72 @@ class App extends Component {
 
     return (
       <React.Fragment>
-        <Filters
-          filters={filters}
-          handleGroupClick={handleGroupClick}
-          handleSearchChange={handleSearchChange}
-          weaponTypes={weaponTypes}
-          handleWeaponTypeClick={handleWeaponTypeClick}
-          elementTypes={elementTypes}
-          handleElementTypeClick={handleElementTypeClick}
-          damageTypes={damageTypes}
-          handleDamageTypeClick={handleDamageTypeClick}
-          orders={orders}
-          order={order}
-          handleOrderClick={handleOrderClick}
-          filteredWeapons={filteredWeapons}
-          clearAllFilters={clearAllFilters}
-          clearUserOptions={clearUserOptions}
-          rarities={rarities}
-          handleRarityClick={handleRarityClick}
-          handleMaterialChange={handleMaterialChange}
-          materials={materials}
-        />
-        <WeaponList
-          weapons={currentPageItems}
-          toggleComparison={toggleComparison}
-          toggleFavorite={toggleFavorite}
-          userOptions={userOptions}
-          order={order}
-          orders={orders}
-          handleOrderClick={handleOrderClick}
-          handleCollapseClick={handleCollapseClick}
-          filters={filters}
-          expanded={expanded}
-        />
-        {filteredWeapons.size > itemsPerPage && (
-          <div className="pagination">
-            <ReactPaginate
-              pageCount={pageCount}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              onPageChange={handlePageChange}
-              forcePage={page}
-              previousLabel={<i className="fas fa-arrow-left" />}
-              nextLabel={<i className="fas fa-arrow-right" />}
+        <div className="left-column">
+          <ItemWindow
+            filters={filters}
+            items={weapons}
+            open={selectedWeapon != null}
+            item={weapons.find(item => item.id === selectedWeapon)}
+          />
+          <Filters
+            filters={filters}
+            handleGroupClick={handleGroupClick}
+            handleSearchChange={handleSearchChange}
+            weaponTypes={weaponTypes}
+            handleWeaponTypeClick={handleWeaponTypeClick}
+            elementTypes={elementTypes}
+            handleElementTypeClick={handleElementTypeClick}
+            damageTypes={damageTypes}
+            handleDamageTypeClick={handleDamageTypeClick}
+            orders={orders}
+            order={order}
+            handleOrderClick={handleOrderClick}
+            filteredWeapons={filteredWeapons}
+            clearAllFilters={clearAllFilters}
+            clearUserOptions={clearUserOptions}
+            rarities={rarities}
+            handleRarityClick={handleRarityClick}
+            handleMaterialChange={handleMaterialChange}
+            materials={materials}
+          />
+        </div>
+        <div className="right-column">
+          <div
+            style={{
+              padding: "10px",
+              display: "flex",
+              justifyContent: "space-between"
+            }}>
+            <OrderButtons
+              orders={orders}
+              order={order}
+              handleOrderClick={handleOrderClick}
+            />
+            <TabGroup
+              activeTabs={filters.get("groups")}
+              tabs={["favorites", "comparisons"]}
+              handleTabClick={handleGroupClick}
+              label="Custom Groups"
             />
           </div>
-        )}
+          <WeaponListContainer
+            weapons={currentPageItems}
+            toggleComparison={toggleComparison}
+            toggleFavorite={toggleFavorite}
+            userOptions={userOptions}
+            order={order}
+            orders={orders}
+            handleOrderClick={handleOrderClick}
+            handleCollapseClick={handleCollapseClick}
+            filters={filters}
+            expanded={expanded}
+            handleExpandAll={handleExpandAll}
+            handleWeaponClick={handleWeaponClick}
+            selectedWeapons={selectedWeapons}
+            selectedWeapon={selectedWeapon}
+            filteredWeapons={filteredWeapons}
+          />
+        </div>
       </React.Fragment>
     )
   }

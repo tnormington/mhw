@@ -1,19 +1,29 @@
 import React, { Component } from "react"
 import Tab from "./Tab"
 
+import Collapsible from "react-collapsible"
+
 export default class TabGroup extends Component {
   render() {
     const { tabs, activeTabs, handleTabClick, label, clean } = this.props
 
     return (
-      <div>
-        <label style={{ marginBottom: "6px", display: "block" }}>{label}</label>
+      <Collapsible
+        open={true}
+        trigger={
+          <label style={{ marginBottom: "6px", display: "block" }}>
+            {label}
+          </label>
+        }>
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
             marginBottom: "10px",
-            position: "relative"
+            position: "relative",
+            marginLeft: "1px",
+            marginTop: "1px",
+            zIndex: 1
           }}>
           {tabs.map(type => (
             <Tab
@@ -24,6 +34,7 @@ export default class TabGroup extends Component {
                 justifyContent: "center",
                 marginLeft: "-1px",
                 marginTop: "-1px"
+                // zIndex: 11
               }}
               label={type}
               onClick={handleTabClick}
@@ -33,7 +44,7 @@ export default class TabGroup extends Component {
             />
           ))}
         </div>
-      </div>
+      </Collapsible>
     )
   }
 }

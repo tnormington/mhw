@@ -34,19 +34,20 @@ export default class Filters extends Component {
 
     return (
       <div
+        className="filters"
         style={{
-          padding: "10px 10px 0 10px",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          width: "50%"
+          padding: "10px 10px 0 10px"
+          // position: "fixed",
+          // left: 0,
+          // top: 0,
+          // width: "50%"
         }}>
-        <TabGroup
+        {/* <TabGroup
           activeTabs={filters.get("groups")}
           tabs={["favorites", "comparisons"]}
           handleTabClick={handleGroupClick}
           label="Custom Groups"
-        />
+        /> */}
 
         <label style={{ marginBottom: "6px", display: "block" }}>
           Keyword Search

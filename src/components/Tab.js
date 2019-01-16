@@ -15,6 +15,7 @@ import chargeBlade from "../icons/mhw_charge-blade-icon.png"
 import insectGlaive from "../icons/mhw_insect-glaive-icon.png"
 import heavyBowgun from "../icons/mhw_heavy-bowgun-icon.png"
 import bow from "../icons/mhw_bow-icon.png"
+import { elementColors } from "../colors"
 
 export default ({ label, onClick, active, clean, style }) => {
   let icon = false,
@@ -65,31 +66,31 @@ export default ({ label, onClick, active, clean, style }) => {
       icon = bow
       break
     case "fire":
-      color = "#DB9839"
+      color = elementColors.fire
       break
     case "dragon":
-      color = "#7551D4"
+      color = elementColors.dragon
       break
     case "blast":
-      color = "#D96060"
+      color = elementColors.blast
       break
     case "sleep":
-      color = "#1046C8"
+      color = elementColors.sleep
       break
     case "water":
-      color = "#287CD8"
+      color = elementColors.water
       break
     case "ice":
-      color = "#51C1D4"
+      color = elementColors.ice
       break
     case "thunder":
-      color = "#D9C660"
+      color = elementColors.thunder
       break
     case "paralysis":
-      color = "#F3FFB1"
+      color = elementColors.paralysis
       break
     case "poison":
-      color = "#539A1B"
+      color = elementColors.poison
       break
     case "favorites":
       faIcon = <i style={{ marginLeft: "10px" }} className="fas fa-star" />

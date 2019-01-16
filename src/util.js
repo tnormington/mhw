@@ -1,4 +1,4 @@
-import { Range } from "immutable"
+import { Range, List } from "immutable"
 
 export const searchArray = (key, arr, value) => {
   let result = false
@@ -56,4 +56,21 @@ export const chunkList = (list, chunkSize = 5) => {
 
 export const basicCopy = item => {
   return JSON.parse(JSON.stringify(item))
+}
+
+export function removeOrAddFromList(list, item) {
+  if (!List.isList(list))
+    throw "must provide list to removeOrAddFromList util method"
+
+  if (list.includes(item)) {
+    // remove it
+    console.log("items exists, removing...")
+    list = list.delete(list.indexOf(item))
+  } else {
+    // add it
+    console.log("item does not exist, adding...")
+    list = list.push(item)
+  }
+
+  return list
 }

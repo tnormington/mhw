@@ -9,16 +9,51 @@ body {
   background: #1f2533;
   color: #fff;
   font-family: "Noto Sans", sans-serif;
-  padding-left: 50%;
+  /* padding-left: 50%; */
 }
 
 input {
   color: #fff;
 }
 
+/* GRID LAYOUT */
+
 #root {
-  min-height: 100vh;
+  /* min-height: 100vh;
   display: flex;
+  flex-direction: column; */
+  display: grid;
+  grid-template-columns: 500px auto;
+  grid-template-rows: auto;
+  /* grid-template-rows: 500px auto; */
+  height: 100vh;
+  width: 100vw;
+}
+
+.left-column {
+  overflow-y: scroll;
+  grid-column: 1;
+}
+
+.right-column {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.weapon-list {
+  /* grid-column-start: 2; */
+  width: 100%;
+  height: 100%;
+  /* grid-row-start: 1;
+  grid-row-end: span 2; */
+  /* grid-row: 1 / span 2; */
+  /* grid- */
+}
+
+.item-window {
+  /* grid-row: 1; */
+  padding: 0 10px;
 }
 
 label {
@@ -44,7 +79,19 @@ button {
   font-size: 14px;
   cursor: pointer;
   transition: all 0.15s ease-out;
-  z-index: 1;
+  /* z-index: 100; */
+}
+
+button.fab {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #6d7da1;
+  color: #121724;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 button.no-pad {
@@ -55,7 +102,7 @@ button:hover,
 button:focus {
   border-color: #fff;
   color: #fff;
-  z-index: 2;
+  z-index: 200;
 }
 
 button:active:not(.no-active) {
@@ -82,12 +129,12 @@ input[type="text"]::placeholder {
 }
 
 .pagination {
-  position: fixed;
-  bottom: 0;
+  /* position: fixed;
+  bottom: 0; */
   /* -1px to the right to make up for negative margin left below */
-  right: -1px;
-  width: 50%;
-  z-index: 10;
+  /* right: -1px; */
+  /* width: 50%; */
+  /* z-index: 10; */
   background: #1f2533;
 }
 

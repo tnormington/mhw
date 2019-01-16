@@ -3,39 +3,43 @@ import MetaValue from "./MetaValue"
 
 import "./ElementsMeta.css"
 
+import { elementColors } from "../colors"
+
 export default ({ elements, style }) => (
   <div>
-    <label className="sm" style={{ display: 'block' }}>Elements</label>
+    <label className="sm" style={{ display: "block" }}>
+      Elements
+    </label>
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       {elements.map(e => {
         let color = null
         switch (e.type) {
           case "fire":
-            color = "#DB9839"
+            color = elementColors.fire
             break
           case "dragon":
-            color = "#7551D4"
+            color = elementColors.dragon
             break
           case "blast":
-            color = "#D96060"
+            color = elementColors.blast
             break
           case "sleep":
-            color = "#1046C8"
+            color = elementColors.sleep
             break
           case "water":
-            color = "#287CD8"
+            color = elementColors.water
             break
           case "ice":
-            color = "#51C1D4"
+            color = elementColors.ice
             break
           case "thunder":
-            color = "#D9C660"
+            color = elementColors.thunder
             break
           case "paralysis":
-            color = "#F3FFB1"
+            color = elementColors.paralysis
             break
           case "poison":
-            color = "#539A1B"
+            color = elementColors.poison
             break
           default:
             break

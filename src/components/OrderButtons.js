@@ -7,7 +7,7 @@ export default class OrderButtons extends Component {
     const { orders, order, handleOrderClick } = this.props
 
     return (
-      <div style={{ marginBottom: "10px" }}>
+      <div>
         <label style={{ display: "block", marginBottom: "6px" }}>
           Order By
         </label>

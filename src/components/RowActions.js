@@ -45,7 +45,7 @@ export default ({
       <i className={isFavorite ? "fas fa-star" : "far fa-star"} />
     </button>
 
-    <button
+    {/* <button
       className="no-active no-pad"
       style={{
         marginLeft: "10px",
@@ -60,6 +60,6 @@ export default ({
           transform: open ? "rotateX(180deg)" : ""
         }}
       />
-    </button>
+    </button> */}
   </div>
 )
