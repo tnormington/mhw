@@ -53,7 +53,7 @@ class App extends Component {
       filters: Map(defaultFilters), // dynamic map of varying filters
       // TODO: move order into the filters Map
       order: List(), // dynamic list of order objects set by user, used to set weapon list order
-      orders: List(["rarity", "attack"]), // a static list of possible order properties
+      orders: List(["rarity", "attack", "elemental damage"]), // a static list of possible order properties
       userOptions: Map(defaultUserOptions), //
       page: 0,
       itemsPerPage: 16,
@@ -456,6 +456,23 @@ class App extends Component {
             if (o.key === "attack") {
               aVal = a.attack.display
               bVal = b.attack.display
+            }
+
+            // handle elemental damage
+            if (o.key === "elemental damage") {
+              // if there are no elements on the a item, we push a back
+              if (!a.elements) return false
+              // if there are no elements on the second item, we leave a in the front
+              if (!b.elements) return true
+
+              aVal = a.elements.reduce(
+                (total, element) => total + element.damage,
+                0
+              )
+              bVal = b.elements.reduce(
+                (total, element) => total + element.damage,
+                0
+              )
             }
 
             if (o.direction === "ASC") {
