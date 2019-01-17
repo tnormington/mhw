@@ -35,6 +35,7 @@ export default class WeaponTeaser extends PureComponent {
       selectedMaterials,
       handleCollapseClick,
       handleWeaponClick,
+      selectedWeapon,
       open,
       highlight
     } = this.props
@@ -106,7 +107,7 @@ export default class WeaponTeaser extends PureComponent {
               open={open}
             />
           </div>
-          <WeaponTeaserMeta weapon={weapon} />
+          <WeaponTeaserMeta weapon={weapon} selectedWeapon={selectedWeapon} />
         </div>
       </div>
     )

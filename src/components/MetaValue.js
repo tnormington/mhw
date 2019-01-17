@@ -14,7 +14,7 @@ import blast from "../icons/Blastblight.png"
 
 import colors from "../colors"
 
-export default ({ value, color, style }) => {
+export default ({ value, color, style, makeTitle }) => {
   let imageSrc = false
 
   if (typeof value === "string") {
@@ -60,7 +60,7 @@ export default ({ value, color, style }) => {
         display: "flex",
         alignItems: "center"
       }}>
-      {typeof value === "string" ? titleize(value) : value}
+      {makeTitle ? titleize(value) : value}
       {imageSrc && (
         <img
           src={imageSrc}

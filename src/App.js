@@ -11,7 +11,12 @@ import ReactPaginate from "react-paginate"
 
 import axios from "axios"
 
-import { searchArray, chunkList, removeOrAddFromList } from "./util"
+import {
+  searchArray,
+  chunkList,
+  removeOrAddFromList,
+  mapAndMerge
+} from "./util"
 
 import Filters from "./components/Filters"
 // import TabGroup from "./components/TabGroup"
@@ -20,6 +25,8 @@ import WeaponList from "./components/WeaponList"
 import TabGroup from "./components/TabGroup"
 import ItemWindow from "./components/ItemWindow"
 import WeaponListContainer from "./components/WeaponListContainer"
+import InfoModal from "./components/InfoModal"
+import InfoMenu from "./components/InfoMenu"
 
 // import colors from "./colors"
 
@@ -58,7 +65,8 @@ class App extends Component {
       page: 0,
       itemsPerPage: 16,
       materials: List(),
-      expanded: List()
+      expanded: List(),
+      infoMenuOpen: false
     }
 
     this.handleWeaponTypeClick = this.handleTabClick.bind(this, "weaponTypes")
@@ -84,6 +92,8 @@ class App extends Component {
     this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
     this.handleWeaponClick = this.handleWeaponClick.bind(this)
     this.clearSearchFilter = this.clearSearchFilter.bind(this)
+    this.handleInfoMenuToggleClick = this.handleInfoMenuToggleClick.bind(this)
+    this.clearUserOptions = this.clearUserOptions.bind(this)
   }
 
   async componentWillMount() {
@@ -125,30 +135,8 @@ class App extends Component {
     // check if user has option set
     // set key to correct type
 
-    userOptions = userOptions.map((option, key) => {
-      const defaultOption = defaultUserOptions.get(key)
-      // let optKey = userOptions[key]
-
-      if (List.isList(defaultOption)) {
-        // optKey = List(optKey)
-        return List(option)
-      } else if (Map.isMap(defaultOption)) {
-        // optKey = Map(optKey)
-        return Map(option)
-      } else {
-        // optKey = optKey
-        return option
-      }
-    })
-
-    // console.log(userOptions)
-
-    if (userOptions) {
-      userOptions = defaultUserOptions.merge(userOptions)
-      this.setState({ userOptions })
-    }
-
-    // console.log(this.state.data)
+    userOptions = mapAndMerge(defaultUserOptions, userOptions)
+    this.setState({ userOptions })
   }
 
   gatherWeaponFilters(weapons) {
@@ -276,6 +264,10 @@ class App extends Component {
         }
       }
     })
+  }
+
+  handleInfoMenuToggleClick() {
+    this.setState(prev => ({ infoMenuOpen: !prev.infoMenuOpen }))
   }
 
   checkExpandAllUserOption(userOptions) {
@@ -504,21 +496,9 @@ class App extends Component {
   filterWeapons() {
     this.setState(prev => {
       const filteredWeapons = prev.weapons.filter(this.checkItemFilter)
-      // const pageCount = Math.floor(filteredWeapons.size / prev.itemsPerPage)
-
-      // let newPage = Number(prev.page)
-      // if (newPage >= pageCount) {
-      //   if (pageCount > 0) {
-      //     newPage = pageCount - 1
-      //   } else {
-      //     newPage = 0
-      //   }
-      // }
 
       return {
         filteredWeapons
-        // pageCount,
-        // page: newPage
       }
     }, this.orderWeapons)
   }
@@ -569,6 +549,10 @@ class App extends Component {
 
   clearUserOptions() {
     window.localStorage.removeItem("mhw_user-settings")
+    // this.setState({ userOptions: })
+
+    // userOptions = mapAndMerge(defaultUserOptions)
+    this.setState({ userOptions: defaultUserOptions })
   }
 
   handleSearchChange(e) {
@@ -617,7 +601,8 @@ class App extends Component {
       pageCount,
       page,
       materials,
-      expanded
+      expanded,
+      infoMenuOpen
     } = this.state
 
     const {
@@ -639,7 +624,8 @@ class App extends Component {
       toggleFavorite,
       handleExpandAll,
       handleWeaponClick,
-      clearSearchFilter
+      clearSearchFilter,
+      handleInfoMenuToggleClick
     } = this
 
     // a list of weapon ids the user currently has selected
@@ -666,6 +652,11 @@ class App extends Component {
 
     return (
       <React.Fragment>
+        <InfoMenu
+          open={infoMenuOpen}
+          onToggleClick={handleInfoMenuToggleClick}
+          resetUserData={clearUserOptions}
+        />
         <div className="left-column">
           <ItemWindow
             filters={filters}
@@ -718,7 +709,7 @@ class App extends Component {
             </div>
           </div>
           <WeaponListContainer
-            weapons={currentPageItems}
+            weapons={weapons}
             toggleComparison={toggleComparison}
             toggleFavorite={toggleFavorite}
             userOptions={userOptions}
@@ -735,6 +726,7 @@ class App extends Component {
             filteredWeapons={filteredWeapons}
           />
         </div>
+        {/* <InfoModal show={true} /> */}
       </React.Fragment>
     )
   }

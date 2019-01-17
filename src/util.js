@@ -1,4 +1,4 @@
-import { Range, List } from "immutable"
+import { Range, List, Map } from "immutable"
 
 export const searchArray = (key, arr, value) => {
   let result = false
@@ -74,3 +74,38 @@ export function removeOrAddFromList(list, item) {
 
   return list
 }
+
+// map over properties in fresh Map and set to data type of default
+// if there are no properties in fresh array, set to default property
+
+export function mapAndMerge(defaults, fresh) {
+  if (!Map.isMap(defaults) || !Map.isMap(fresh))
+    throw "must pass Map to mapAndMerge util method"
+
+  let result
+
+  result = fresh.map((option, key) => {
+    const defaultOption = defaults.get(key)
+    // let optKey = userOptions[key]
+
+    if (List.isList(defaultOption)) {
+      // optKey = List(optKey)
+      return List(option)
+    } else if (Map.isMap(defaultOption)) {
+      // optKey = Map(optKey)
+      return Map(option)
+    } else {
+      // optKey = optKey
+      return option
+    }
+  })
+
+  if (result) result = defaults.merge(fresh)
+
+  return result
+}
+
+// // compare numbers a to b, return a string of the difference ie. a = 3 b = 5; output would be '-2'
+// export function compareNumbersToString(a, b) {
+
+// }

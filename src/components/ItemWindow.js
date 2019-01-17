@@ -44,7 +44,7 @@ export default ({ item, filters, items, open }) => {
             )}
             <div>
               <h4 style={{ margin: "0 0 10px" }}>{item.name}</h4>
-              <WeaponTeaserMeta weapon={item} showSharpness={true} />
+              <WeaponTeaserMeta weapon={item} full={true} />
               <div style={{ display: "flex" }}>
                 {item.crafting.craftingMaterials.length > 0 && (
                   <ItemList

@@ -76,12 +76,14 @@ export default class WeaponList extends Component {
         selectedMaterials={selectedMaterials}
         handleCollapseClick={handleCollapseClick}
         handleWeaponClick={handleWeaponClick}
+        selectedWeapon={weapons.find(w => w.id === selectedWeapon)}
         open={expanded.includes(weapon.id)}
         highlight={highlight}
         style={{
           ...style,
           //  height: "100px",
-          padding: "10px"
+          padding: "10px",
+          paddingRight: "24px"
         }}
       />
     )

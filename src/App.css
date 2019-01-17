@@ -21,6 +21,16 @@ body {
   /* padding-left: 50%; */
 }
 
+a {
+  color: #287cd8;
+  transition: all 0.15s ease-out;
+}
+
+a:hover {
+  /* color: #fff; */
+  text-decoration: none;
+}
+
 input {
   color: #fff;
 }
