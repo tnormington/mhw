@@ -30,7 +30,7 @@ export default ({ item, filters, items, open }) => {
               display: "flex",
               padding: "10px 0"
             }}>
-            {item.assets.image && (
+            {item.assets && item.assets.image && (
               <img
                 style={{
                   marginRight: "10px",

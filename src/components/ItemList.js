@@ -8,7 +8,9 @@ export default ({ label, items, selectedItems, previous, style }) => {
       <label className="sm" style={{ marginBottom: "6px" }}>
         {label}
       </label>
-      {previous && <Item item={previous} iconSrc={previous.assets.icon} />}
+      {previous && previous.assets && (
+        <Item item={previous} iconSrc={previous.assets.icon} />
+      )}
       {items.map(item => {
         const { quantity, item: i } = item
 

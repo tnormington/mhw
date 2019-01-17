@@ -1,6 +1,12 @@
 import React from "react"
 
-const linkStyle = { padding: "10px", margin: 0, display: "block" }
+const linkStyle = {
+  padding: "10px",
+  margin: 0,
+  display: "block",
+  whiteSpace: "nowrap",
+  textAlign: "right"
+}
 
 export default ({ href, title, icon, onClick, style }) => (
   <li>
@@ -13,10 +19,10 @@ export default ({ href, title, icon, onClick, style }) => (
         }
       }}
       style={{ ...linkStyle, ...style }}>
-      {icon && (
-        <i className={`fas fa-${icon} fa-fw`} style={{ marginRight: "10px" }} />
-      )}
       {title}
+      {icon && (
+        <i className={`fas fa-${icon} fa-fw`} style={{ marginLeft: "10px" }} />
+      )}
     </a>
   </li>
 )

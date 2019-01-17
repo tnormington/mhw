@@ -37,7 +37,7 @@ input {
 
 /* GRID LAYOUT */
 
-#root {
+.layout-2-col {
   /* min-height: 100vh;
   display: flex;
   flex-direction: column; */
@@ -50,7 +50,7 @@ input {
 }
 
 @media (max-width: 1200px) {
-  #root {
+  .layout-2-col {
     grid-template-columns: 500px auto;
   }
 }
