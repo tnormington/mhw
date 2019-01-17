@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import TwoColumn from "../components/layout/TwoColumn"
 
 export default class Armors extends Component {
   constructor(props) {
@@ -7,9 +8,18 @@ export default class Armors extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Armor!</h1>
-      </div>
+      <TwoColumn
+        left={
+          <div>
+            <h1>Armor Left</h1>
+          </div>
+        }
+        right={
+          <div>
+            <h1>Armor Right</h1>
+          </div>
+        }
+      />
     )
   }
 }

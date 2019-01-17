@@ -2,7 +2,9 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 import { Map, List } from "immutable"
+import axios from "axios"
 
+// COMPONENTS
 import TopBar from "./components/TopBar"
 
 // PAGES
@@ -30,8 +32,11 @@ export default class App extends Component {
     super(props)
 
     this.state = {
+      loading: true,
       infoMenuOpen: false,
-      userOptions: Map(defaultUserOptions)
+      userOptions: Map(defaultUserOptions),
+      weapons: List(),
+      armor: List()
     }
 
     this.handleInfoMenuToggleClick = () => {
@@ -40,9 +45,6 @@ export default class App extends Component {
 
     this.clearUserOptions = () => {
       window.localStorage.removeItem("mhw_user-settings")
-      // this.setState({ userOptions: })
-
-      // userOptions = mapAndMerge(defaultUserOptions)
       this.setState({ userOptions: defaultUserOptions })
     }
 
@@ -67,14 +69,34 @@ export default class App extends Component {
     )
   }
 
+  async componentWillMount() {
+    // Get all weapons and save data to global app state
+    // TODO: Write an API to collect and serve up live data
+    let weapons = List(),
+      armor = List()
+
+    if (window.location.hostname === "localhost") {
+      weapons = await axios.get("https://mhw-db.com/weapons")
+      weapons = weapons.data
+
+      armor = await axios.get("https://mhw-db.com/armor")
+      armor = armor.data
+    } else {
+      weapons = require("./data/allWeapons.json")
+    }
+
+    this.setState({
+      weapons: List(weapons),
+      armor: List(armor),
+      loading: false
+    })
+  }
+
   toggleUserOption(key, e, id) {
     e.stopPropagation()
     this.setState(prev => {
       let { userOptions } = prev
-      // console.log(userOptions)
       let userOption = userOptions.get(key)
-      // console.log("key: ", key)
-      // console.log(userOption)
 
       if (!userOption) {
         // create the userOption and add id to it
@@ -117,8 +139,6 @@ export default class App extends Component {
       JSON.parse(window.localStorage.getItem("mhw_user-settings"))
     )
 
-    // if (!userOptions.comparisons) userOptions.comparisons = []
-
     // Loop over each defaultUserOption,
     // check it the type
     // check if user has option set
@@ -129,7 +149,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { infoMenuOpen, userOptions } = this.state
+    const { infoMenuOpen, userOptions, weapons, armor, loading } = this.state
 
     const {
       handleInfoMenuToggleClick,
@@ -139,6 +159,8 @@ export default class App extends Component {
       toggleComparison,
       handleWeaponClick
     } = this
+
+    if (loading) return <div>Loading...</div>
 
     return (
       <Router>
@@ -165,10 +187,14 @@ export default class App extends Component {
                 toggleFavorite={toggleFavorite}
                 toggleComparison={toggleComparison}
                 handleWeaponClick={handleWeaponClick}
+                weapons={weapons}
               />
             )}
           />
-          <Route path="/armors/" render={props => <Armors {...props} />} />
+          <Route
+            path="/armors/"
+            render={props => <Armors {...props} armor={armor} />}
+          />
         </div>
       </Router>
     )

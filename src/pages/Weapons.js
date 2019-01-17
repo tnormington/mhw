@@ -7,28 +7,25 @@ import "react-virtualized-select/styles.css"
 
 // import "../App.css"
 
-import ReactPaginate from "react-paginate"
+// import ReactPaginate from "react-paginate"
 
-import axios from "axios"
+// import axios from "axios"
 
 import {
-  searchArray,
+  // searchArray,
   chunkList,
-  removeOrAddFromList,
-  mapAndMerge
+  removeOrAddFromList
+  // mapAndMerge
 } from "../util"
 
 import Filters from "../components/Filters"
-// import TabGroup from "../components/TabGroup"
 import OrderButtons from "../components/OrderButtons"
-import WeaponList from "../components/WeaponList"
+// import WeaponList from "../components/WeaponList"
 import TabGroup from "../components/TabGroup"
 import ItemWindow from "../components/ItemWindow"
 import WeaponListContainer from "../components/WeaponListContainer"
-import InfoModal from "../components/InfoModal"
-import InfoMenu from "../components/InfoMenu"
 
-// import colors from "./colors"
+import TwoColumn from "../components/layout/TwoColumn"
 
 const defaultFilters = Map({
   search: "",
@@ -54,7 +51,7 @@ class Weapons extends Component {
 
     this.state = {
       loading: true, // toggle this to hide/show the entire app
-      weapons: null, // a static list of weapons, if used as reference for other dynamic state props
+      // weapons: null, // a static list of weapons, if used as reference for other dynamic state props
       filteredWeapons: List(), // dynamic list of weapons to apply filters, chunk up, and display
       weaponTypes: List(), // static list of all weapon types
       filters: Map(defaultFilters), // dynamic map of varying filters
@@ -97,23 +94,25 @@ class Weapons extends Component {
   }
 
   async componentWillMount() {
-    // TODO: Write an API to collect and serve up live data
-    let data = []
-    if (window.location.hostname === "localhost") {
-      data = await axios.get("https://mhw-db.com/weapons")
-      data = data.data
-    } else {
-      data = require("../data/allWeapons.json")
-    }
+    // // TODO: Write an API to collect and serve up live data
+    // let data = []
+    // if (window.location.hostname === "localhost") {
+    //   data = await axios.get("https://mhw-db.com/weapons")
+    //   data = data.data
+    // } else {
+    //   data = require("../data/allWeapons.json")
+    // }
 
-    const filters = this.gatherWeaponFilters(data)
+    const { weapons } = this.props
 
-    const { itemsPerPage } = this.state
+    const filters = this.gatherWeaponFilters(weapons)
+
+    // const { itemsPerPage } = this.state
 
     this.setState({
-      weapons: List(data),
-      filteredWeapons: List(data),
-      pageCount: Math.floor(data.length / itemsPerPage),
+      // weapons: List(data),
+      filteredWeapons: List(weapons),
+      // pageCount: Math.floor(data.length / itemsPerPage),
       weaponTypes: filters.types,
       damageTypes: filters.damageTypes,
       elementTypes: filters.elements,
@@ -493,13 +492,17 @@ class Weapons extends Component {
   }
 
   filterWeapons() {
-    this.setState(prev => {
-      const filteredWeapons = prev.weapons.filter(this.checkItemFilter)
+    this.setState(
+      {
+        filteredWeapons: this.props.weapons.filter(this.checkItemFilter)
+        // const filteredWeapons = this.props.weapons.filter(this.checkItemFilter)
 
-      return {
-        filteredWeapons
-      }
-    }, this.orderWeapons)
+        // return {
+        //   filteredWeapons
+        // }
+      },
+      this.orderWeapons
+    )
   }
 
   // toggleUserOption(key, e, id) {
@@ -595,7 +598,7 @@ class Weapons extends Component {
       // userOptions,
       damageTypes,
       filteredWeapons,
-      weapons,
+      // weapons,
       materials,
       expanded,
       infoMenuOpen
@@ -628,7 +631,8 @@ class Weapons extends Component {
       toggleFavorite,
       toggleComparison,
       userOptions,
-      handleWeaponClick
+      handleWeaponClick,
+      weapons
     } = this.props
 
     // a list of weapon ids the user currently has selected
@@ -654,77 +658,81 @@ class Weapons extends Component {
       )
 
     return (
-      <div className="layout-2-col">
-        <div className="left-column">
-          <ItemWindow
-            filters={filters}
-            items={weapons}
-            open={selectedWeapon != null}
-            item={weapons.find(item => item.id === selectedWeapon)}
-          />
-          <Filters
-            filters={filters}
-            handleGroupClick={handleGroupClick}
-            handleSearchChange={handleSearchChange}
-            weaponTypes={weaponTypes}
-            handleWeaponTypeClick={handleWeaponTypeClick}
-            elementTypes={elementTypes}
-            handleElementTypeClick={handleElementTypeClick}
-            damageTypes={damageTypes}
-            handleDamageTypeClick={handleDamageTypeClick}
-            orders={orders}
-            order={order}
-            handleOrderClick={handleOrderClick}
-            filteredWeapons={filteredWeapons}
-            clearAllFilters={clearAllFilters}
-            clearUserOptions={clearUserOptions}
-            rarities={rarities}
-            handleRarityClick={handleRarityClick}
-            handleMaterialChange={handleMaterialChange}
-            materials={materials}
-            clearSearchFilter={clearSearchFilter}
-          />
-        </div>
-        <div className="right-column">
-          <div
-            style={{
-              padding: "10px 10px 0 10px",
-              display: "flex",
-              justifyContent: "space-between"
-            }}>
-            <OrderButtons
+      <TwoColumn
+        left={
+          <React.Fragment>
+            <ItemWindow
+              filters={filters}
+              items={weapons}
+              open={selectedWeapon != null}
+              item={weapons.find(item => item.id === selectedWeapon)}
+            />
+            <Filters
+              filters={filters}
+              handleGroupClick={handleGroupClick}
+              handleSearchChange={handleSearchChange}
+              weaponTypes={weaponTypes}
+              handleWeaponTypeClick={handleWeaponTypeClick}
+              elementTypes={elementTypes}
+              handleElementTypeClick={handleElementTypeClick}
+              damageTypes={damageTypes}
+              handleDamageTypeClick={handleDamageTypeClick}
               orders={orders}
               order={order}
               handleOrderClick={handleOrderClick}
+              filteredWeapons={filteredWeapons}
+              clearAllFilters={clearAllFilters}
+              clearUserOptions={clearUserOptions}
+              rarities={rarities}
+              handleRarityClick={handleRarityClick}
+              handleMaterialChange={handleMaterialChange}
+              materials={materials}
+              clearSearchFilter={clearSearchFilter}
             />
-            <div style={{ marginBottom: "10px" }}>
-              <TabGroup
-                activeTabs={filters.get("groups")}
-                tabs={["favorites", "comparisons"]}
-                handleTabClick={handleGroupClick}
-                label="Custom Groups"
+          </React.Fragment>
+        }
+        right={
+          <React.Fragment>
+            <div
+              style={{
+                padding: "10px 10px 0 10px",
+                display: "flex",
+                justifyContent: "space-between"
+              }}>
+              <OrderButtons
+                orders={orders}
+                order={order}
+                handleOrderClick={handleOrderClick}
               />
+              <div style={{ marginBottom: "10px" }}>
+                <TabGroup
+                  activeTabs={filters.get("groups")}
+                  tabs={["favorites", "comparisons"]}
+                  handleTabClick={handleGroupClick}
+                  label="Custom Groups"
+                />
+              </div>
             </div>
-          </div>
-          <WeaponListContainer
-            weapons={weapons}
-            toggleComparison={toggleComparison}
-            toggleFavorite={toggleFavorite}
-            userOptions={userOptions}
-            order={order}
-            orders={orders}
-            handleOrderClick={handleOrderClick}
-            handleCollapseClick={handleCollapseClick}
-            filters={filters}
-            expanded={expanded}
-            handleExpandAll={handleExpandAll}
-            handleWeaponClick={handleWeaponClick}
-            selectedWeapons={selectedWeapons}
-            selectedWeapon={selectedWeapon}
-            filteredWeapons={filteredWeapons}
-          />
-        </div>
-      </div>
+            <WeaponListContainer
+              weapons={weapons}
+              toggleComparison={toggleComparison}
+              toggleFavorite={toggleFavorite}
+              userOptions={userOptions}
+              order={order}
+              orders={orders}
+              handleOrderClick={handleOrderClick}
+              handleCollapseClick={handleCollapseClick}
+              filters={filters}
+              expanded={expanded}
+              handleExpandAll={handleExpandAll}
+              handleWeaponClick={handleWeaponClick}
+              selectedWeapons={selectedWeapons}
+              selectedWeapon={selectedWeapon}
+              filteredWeapons={filteredWeapons}
+            />
+          </React.Fragment>
+        }
+      />
     )
   }
 }

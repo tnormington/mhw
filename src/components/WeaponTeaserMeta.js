@@ -7,15 +7,8 @@ import SharpnessMeter from "./SharpnessMeter"
 import colors from "../colors"
 
 export default ({ weapon, full, selectedWeapon }) => {
-  // let attackValue = 0
-  // let attackDiff = 0,
-  //   attackValue = weapon.attack ? weapon.attack.display : "",
-  //   attackColor = ""
-
   let attackValue = weapon.attack.display,
     attackColor
-
-  console.log(selectedWeapon)
 
   if (
     selectedWeapon &&
@@ -25,8 +18,6 @@ export default ({ weapon, full, selectedWeapon }) => {
     const selectedAttack = selectedWeapon.attack.display,
       attack = weapon.attack.display,
       diff = attack - selectedAttack
-
-    console.log(selectedAttack, attack)
 
     if (diff != 0) {
       if (diff > 0) {
