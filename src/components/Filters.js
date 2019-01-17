@@ -12,7 +12,7 @@ export default class Filters extends Component {
   render() {
     const {
       filters,
-      handleGroupClick,
+      // handleGroupClick,
       handleSearchChange,
       weaponTypes,
       handleWeaponTypeClick,
@@ -20,12 +20,8 @@ export default class Filters extends Component {
       handleElementTypeClick,
       damageTypes,
       handleDamageTypeClick,
-      orders,
-      order,
-      handleOrderClick,
       filteredWeapons,
       clearAllFilters,
-      clearUserOptions,
       rarities,
       handleRarityClick,
       materials,
@@ -135,16 +131,6 @@ export default class Filters extends Component {
           }}
           onClick={clearAllFilters}>
           Reset All Filters <i className="fas fa-window-close" />
-        </button>
-        <button
-          style={{
-            marginBottom: "10px",
-            marginRight: "10px",
-            color: colors.red,
-            borderColor: colors.red
-          }}
-          onClick={clearUserOptions}>
-          Clear User Options <i className="fas fa-window-close" />
         </button>
       </div>
     )

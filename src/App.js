@@ -597,9 +597,6 @@ class App extends Component {
       damageTypes,
       filteredWeapons,
       weapons,
-      itemsPerPage,
-      pageCount,
-      page,
       materials,
       expanded,
       infoMenuOpen

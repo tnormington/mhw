@@ -90,22 +90,30 @@ export default class WeaponTeaser extends PureComponent {
               }`,
               marginBottom: "4px",
               paddingBottom: "4px",
-              transition: "all 0.15s ease-out"
+              transition: "all 0.15s ease-out",
+              position: "relative"
             }}>
             {weapon.name}
-            <RowActions
+            <div
               style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                flex: 1
-              }}
-              isCompared={isCompared}
-              isFavorite={isFavorite}
-              toggleComparison={toggleComparison}
-              toggleFavorite={toggleFavorite}
-              item={weapon}
-              open={open}
-            />
+                position: "absolute",
+                flex: 1,
+                top: "2px",
+                right: 0
+              }}>
+              <RowActions
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end"
+                }}
+                isCompared={isCompared}
+                isFavorite={isFavorite}
+                toggleComparison={toggleComparison}
+                toggleFavorite={toggleFavorite}
+                item={weapon}
+                open={open}
+              />
+            </div>
           </div>
           <WeaponTeaserMeta weapon={weapon} selectedWeapon={selectedWeapon} />
         </div>

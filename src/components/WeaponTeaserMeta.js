@@ -30,10 +30,10 @@ export default ({ weapon, full, selectedWeapon }) => {
 
     if (diff != 0) {
       if (diff > 0) {
-        attackValue = `${attack}(+${diff})`
+        attackValue = `${attack} (+${diff})`
         attackColor = colors.green
       } else {
-        attackValue = `${attack}(-${Math.abs(diff)})`
+        attackValue = `${attack} (-${Math.abs(diff)})`
         attackColor = colors.red
       }
     } else {
@@ -43,7 +43,7 @@ export default ({ weapon, full, selectedWeapon }) => {
   }
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", flexWrap: full ? "wrap" : "nowrap" }}>
       {full && <Meta label="Rarity" value={weapon.rarity} />}
       {attackValue && (
         <Meta label="Attack" value={attackValue} color={attackColor} />

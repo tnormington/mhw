@@ -8,7 +8,13 @@ import colors from "../colors"
 const links = [
   {
     href: "https://github.com/tnormington/mhw",
-    title: "More Information"
+    title: "More Information",
+    icon: "info-circle"
+  },
+  {
+    href: "https://github.com/tnormington/mhw/issues/new",
+    title: "Report An Issue",
+    icon: "bug"
   }
 ]
 
@@ -30,10 +36,15 @@ export default ({ open, onToggleClick, resetUserData }) => {
             padding: 0,
             margin: 0
           }}>
-          {links.map(({ href, title }) => (
-            <ListItem href={href} title={title} key={href} />
+          {links.map(({ href, title, icon }) => (
+            <ListItem href={href} title={title} key={href} icon={icon} />
           ))}
-          <ListItem onClick={resetUserData} title="Reset User Data" />
+          <ListItem
+            onClick={resetUserData}
+            title="Reset User Data"
+            icon="window-close"
+            style={{ color: colors.red }}
+          />
         </ul>
       </Collapsible>
       <button
