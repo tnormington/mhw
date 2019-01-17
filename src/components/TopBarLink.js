@@ -1,8 +1,16 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
+import colors from "../colors"
 
-export default ({ to, title }) => (
-  <Link style={{ padding: "10px", display: "block" }} to={to}>
+import "./TopBarLink.css"
+
+export default ({ to, title, exact }) => (
+  <NavLink
+    exact={exact}
+    className="top-bar__link"
+    activeClassName="active"
+    // activeStyle={{ color: colors.blue }}
+    to={to}>
     {title}
-  </Link>
+  </NavLink>
 )

@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 import { Map, List } from "immutable"
 
+import TopBar from "./components/TopBar"
+
+// PAGES
 import Dashboard from "./pages/Dashboard"
 import Weapons from "./pages/Weapons"
-import TopBar from "./components/TopBar"
+import Armors from "./pages/Armors"
 
 import { mapAndMerge } from "./util"
 
@@ -146,6 +149,7 @@ export default class App extends Component {
             clearUserOptions={clearUserOptions}
           />
 
+          {/* ROUTES */}
           <Route
             path="/"
             exact
@@ -164,6 +168,7 @@ export default class App extends Component {
               />
             )}
           />
+          <Route path="/armors/" render={props => <Armors {...props} />} />
         </div>
       </Router>
     )

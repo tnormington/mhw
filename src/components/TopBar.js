@@ -15,9 +15,10 @@ export default ({
       padding: "0 10px",
       boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)"
     }}>
-    <div style={{ display: "flex" }}>
-      <TopBarLink to="/" title="Dashboard" />
+    <div style={{ display: "flex", marginLeft: "-10px" }}>
+      <TopBarLink to="/" title="Dashboard" exact={true} />
       <TopBarLink to="/weapons/" title="Weapons" />
+      <TopBarLink to="/armors/" title="Armor" />
     </div>
     <InfoMenu
       open={infoMenuOpen}
