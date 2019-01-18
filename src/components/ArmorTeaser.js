@@ -53,21 +53,46 @@ export default class ArmorTeaser extends PureComponent {
   }
 
   render() {
-    const { armor, armorPiece, style, handleArmorClick, highlight } = this.props
+    const {
+      armor,
+      armorPiece,
+      style,
+      handleArmorClick,
+      highlight,
+      toggleComparison,
+      toggleFavorite,
+      toggleWishlist,
+      userOptions
+    } = this.props
 
     // setup flag variables
     let isFavorite = false,
-      isCompared = false
+      isCompared = false,
+      isWishlist = false
 
-    // // check favorites
-    // if (userOptions.has("favorites")) {
-    //   isFavorite = userOptions.get("favorites").includes(weapon.id)
-    // }
+    // check favorites
+    if (userOptions.has("favorites")) {
+      isFavorite = userOptions
+        .get("favorites")
+        .get("armor")
+        .includes(armorPiece.id)
+    }
 
-    // // check comparisons
-    // if (userOptions.has("comparisons")) {
-    //   isCompared = userOptions.get("comparisons").includes(weapon.id)
-    // }
+    // check comparisons
+    if (userOptions.has("comparisons")) {
+      isCompared = userOptions
+        .get("comparisons")
+        .get("armor")
+        .includes(armorPiece.id)
+    }
+
+    // check wishlist
+    if (userOptions.has("wishlist")) {
+      isWishlist = userOptions
+        .get("wishlist")
+        .get("armor")
+        .includes(armorPiece.id)
+    }
 
     // const hasIcon = armorPiece.assets && armorPiece.assets.icon
 
@@ -81,23 +106,25 @@ export default class ArmorTeaser extends PureComponent {
           <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              // borderBottom: `2px solid ${
-              //   highlight ? colors.lightGrey : colors.grey
-              // }`,
               marginBottom: "4px",
               paddingBottom: "4px",
-              transition: "all 0.15s ease-out",
               position: "relative"
             }}>
             {armorPiece.name}
-            <div
+            <RowActions
               style={{
-                position: "absolute",
-                flex: 1,
-                top: "2px",
-                right: 0
+                display: "flex",
+                justifyContent: "flex-end"
               }}
+              isCompared={isCompared}
+              isFavorite={isFavorite}
+              isWishlist={isWishlist}
+              toggleComparison={toggleComparison}
+              toggleFavorite={toggleFavorite}
+              toggleWishlist={toggleWishlist}
+              item={armorPiece}
             />
           </div>
           <ArmorTeaserMeta
@@ -106,44 +133,6 @@ export default class ArmorTeaser extends PureComponent {
           />
         </div>
       </Teaser>
-      // <div
-      //   onClick={() => handleArmorClick(armorPiece.id)}
-      //   className={`teaser ${highlight ? "active" : ""}`}
-      //   style={{
-      //     ...style,
-      //     display: "flex",
-      //     color: "#fff"
-      //   }}>
-      //   <Icon icon={armorPiece.type} size={30} />
-      //   <div style={{ marginLeft: this.imageSrc ? "" : "40px", width: "100%" }}>
-      //     <div
-      //       style={{
-      //         display: "flex",
-      //         alignItems: "center",
-      //         // borderBottom: `2px solid ${
-      //         //   highlight ? colors.lightGrey : colors.grey
-      //         // }`,
-      //         marginBottom: "4px",
-      //         paddingBottom: "4px",
-      //         transition: "all 0.15s ease-out",
-      //         position: "relative"
-      //       }}>
-      //       {armorPiece.name}
-      //       <div
-      //         style={{
-      //           position: "absolute",
-      //           flex: 1,
-      //           top: "2px",
-      //           right: 0
-      //         }}
-      //       />
-      //     </div>
-      //     <ArmorTeaserMeta
-      //       armorPiece={armorPiece}
-      //       selectedArmorPiece={armorPiece}
-      //     />
-      //   </div>
-      // </div>
     )
   }
 }

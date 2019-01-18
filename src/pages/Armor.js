@@ -68,7 +68,14 @@ export default class Armor extends Component {
 
   render() {
     const { filters, filteredArmor, armorTypes } = this.state
-    const { userOptions, armor, handleArmorClick } = this.props
+    const {
+      userOptions,
+      armor,
+      handleArmorClick,
+      toggleFavorite,
+      toggleComparison,
+      toggleWishlist
+    } = this.props
 
     const selectedArmor = userOptions.get("selectedArmor")
 
@@ -101,6 +108,7 @@ export default class Armor extends Component {
 
                   return (
                     <ArmorTeaser
+                      {...props}
                       style={{
                         ...style,
                         padding: "10px",
@@ -108,6 +116,9 @@ export default class Armor extends Component {
                       }}
                       armorPiece={armorPiece}
                       handleArmorClick={handleArmorClick}
+                      toggleFavorite={toggleFavorite}
+                      toggleComparison={toggleComparison}
+                      toggleWishlist={toggleWishlist}
                       highlight={highlight}
                       damageTypes={false}
                     />

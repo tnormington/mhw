@@ -118,7 +118,6 @@ export default class WeaponTeaser extends PureComponent {
                   toggleFavorite={toggleFavorite}
                   toggleWishlist={toggleWishlist}
                   item={weapon}
-                  open={open}
                 />
               </div>
             </div>

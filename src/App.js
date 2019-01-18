@@ -59,7 +59,9 @@ export default class App extends Component {
     }
 
     // bound methods
-    this.toggleWishlistWeapons = this.toggleListItemInUserOptions.bind(
+
+    // wishlist
+    this.toggleWishlistWeapon = this.toggleListItemInUserOptions.bind(
       this,
       "wishlist",
       "weapons"
@@ -69,16 +71,32 @@ export default class App extends Component {
       "wishlist",
       "armor"
     )
+
+    // favorite
     this.toggleFavoriteWeapon = this.toggleListItemInUserOptions.bind(
       this,
       "favorites",
       "weapons"
     )
+    this.toggleFavoriteArmor = this.toggleListItemInUserOptions.bind(
+      this,
+      "favorites",
+      "armor"
+    )
+
+    // comparison
     this.toggleComparisonWeapon = this.toggleListItemInUserOptions.bind(
       this,
       "comparisons",
       "weapons"
     )
+    this.toggleComparisonArmor = this.toggleListItemInUserOptions.bind(
+      this,
+      "comparisons",
+      "armor"
+    )
+
+    // item selection
     this.handleWeaponClick = this.handleSelectionClick.bind(
       this,
       "selectedWeapon"
@@ -115,22 +133,16 @@ export default class App extends Component {
 
   toggleListItemInUserOptions(mapKey, listKey, e, id) {
     e.stopPropagation()
-    console.log("mapKey: ", mapKey)
-    console.log("listKey: ", listKey)
-    console.log("e: ", e)
-    console.log("id: ", id)
+    // console.log("mapKey: ", mapKey)
+    // console.log("listKey: ", listKey)
+    // console.log("e: ", e)
+    // console.log("id: ", id)
 
     this.setState(prev => {
       // const map = prev[mapKey]
 
       const userOptions = prev.userOptions
 
-      // console.log(userOptions.get(mapKey))
-      // debugger
-      // userOptions: userOptions.set(
-      //   "wishlist",
-      //   toggleListInMapByKey(userOptions.get("wishlist"), key, id)
-      // )
       return {
         userOptions: userOptions.set(
           mapKey,
@@ -139,32 +151,6 @@ export default class App extends Component {
       }
     }, this.saveUserOptions)
   }
-
-  // toggleUserOption(key, e, id) {
-  //   e.stopPropagation()
-  //   this.setState(prev => {
-  //     let { userOptions } = prev
-  //     let userOption = userOptions.get(key)
-
-  //     if (!userOption) {
-  //       // create the userOption and add id to it
-  //       userOption = List()
-  //       userOption.push(id)
-  //     } else {
-  //       if (userOption.includes(id)) {
-  //         // remove the id
-  //         userOption = userOption.filter(favoriteId => favoriteId !== id)
-  //       } else {
-  //         // add it
-  //         userOption.push(id)
-  //       }
-  //     }
-
-  //     userOptions = userOptions.set(key, userOption)
-
-  //     return { userOptions }
-  //   }, this.saveUserOptions)
-  // }
 
   handleSelectionClick(key, id) {
     this.setState(prev => {
@@ -201,7 +187,9 @@ export default class App extends Component {
       clearUserOptions,
       toggleFavoriteWeapon,
       toggleComparisonWeapon,
-      toggleWishlistWeapons,
+      toggleFavoriteArmor,
+      toggleComparisonArmor,
+      toggleWishlistWeapon,
       toggleWishlistArmor,
       handleWeaponClick,
       handleArmorClick
@@ -235,7 +223,7 @@ export default class App extends Component {
                     userOptions={userOptions}
                     toggleFavorite={toggleFavoriteWeapon}
                     toggleComparison={toggleComparisonWeapon}
-                    toggleWishlistWeapons={toggleWishlistWeapons}
+                    toggleWishlist={toggleWishlistWeapon}
                     handleWeaponClick={handleWeaponClick}
                     weapons={weapons}
                   />
@@ -247,6 +235,9 @@ export default class App extends Component {
                   <Armor
                     {...props}
                     armor={armor}
+                    toggleFavorite={toggleFavoriteArmor}
+                    toggleComparison={toggleComparisonArmor}
+                    toggleWishlist={toggleWishlistArmor}
                     handleArmorClick={handleArmorClick}
                     userOptions={userOptions}
                   />

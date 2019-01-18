@@ -34,8 +34,7 @@ export default ({
   toggleFavorite,
   toggleWishlist,
   item,
-  style,
-  open
+  style
 }) => (
   <div style={{ ...style, position: "relative" }}>
     <ReactTooltip

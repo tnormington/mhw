@@ -552,7 +552,7 @@ class Weapons extends Component {
     const {
       toggleFavorite,
       toggleComparison,
-      toggleWishlistWeapons,
+      toggleWishlist,
       userOptions,
       handleWeaponClick,
       weapons
@@ -665,7 +665,7 @@ class Weapons extends Component {
                         key={weapon.id.toString()}
                         toggleComparison={toggleComparison}
                         toggleFavorite={toggleFavorite}
-                        toggleWishlist={toggleWishlistWeapons}
+                        toggleWishlist={toggleWishlist}
                         handleWeaponClick={handleWeaponClick}
                         weapon={weapon}
                         weapons={weapons}
