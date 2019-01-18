@@ -45,6 +45,8 @@ export default ({ elements, style }) => (
             break
         }
 
+        // const value = e.damage ? e.damage : e.
+
         return (
           <MetaValue
             style={style}

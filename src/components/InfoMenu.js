@@ -5,6 +5,8 @@ import ListItem from "./InfoMenuListItem"
 import Collapsible from "react-collapsible"
 import colors from "../colors"
 
+// TODO: Setup small info blurb above all links containing quick important stuff
+
 const links = [
   {
     href: "https://github.com/tnormington/mhw",

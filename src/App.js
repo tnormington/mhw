@@ -4,13 +4,17 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import { Map, List } from "immutable"
 import axios from "axios"
 
-// COMPONENTS
-import TopBar from "./components/TopBar"
+// VENDOR COMPONENTS
+import Loadable from "react-loadable"
 
 // PAGES
 import Dashboard from "./pages/Dashboard"
-import Weapons from "./pages/Weapons"
+// import Weapons from "./pages/Weapons" // this is loaded async
 import Armors from "./pages/Armors"
+
+// CUSTOM COMPONENTS
+import TopBar from "./components/TopBar"
+import Loader from "./components/Loader"
 
 import { mapAndMerge } from "./util"
 
@@ -25,6 +29,11 @@ const defaultUserOptions = Map({
   expandAll: false,
   selectedWeapon: null,
   selectedArmor: null
+})
+
+const LoadableWeapons = Loadable({
+  loading: Loader,
+  loader: () => import("./pages/Weapons")
 })
 
 export default class App extends Component {
@@ -83,6 +92,7 @@ export default class App extends Component {
       armor = armor.data
     } else {
       weapons = require("./data/allWeapons.json")
+      armor = require("./data/allArmor.json")
     }
 
     this.setState({
@@ -157,10 +167,9 @@ export default class App extends Component {
       saveUserOptions,
       toggleFavorite,
       toggleComparison,
-      handleWeaponClick
+      handleWeaponClick,
+      handleArmorClick
     } = this
-
-    if (loading) return <div>Loading...</div>
 
     return (
       <Router>
@@ -171,30 +180,44 @@ export default class App extends Component {
             clearUserOptions={clearUserOptions}
           />
 
-          {/* ROUTES */}
-          <Route
-            path="/"
-            exact
-            render={props => <Dashboard {...props} userOptions={userOptions} />}
-          />
-          <Route
-            path="/weapons/"
-            render={props => (
-              <Weapons
-                {...props}
-                userOptions={userOptions}
-                saveUserOptions={saveUserOptions}
-                toggleFavorite={toggleFavorite}
-                toggleComparison={toggleComparison}
-                handleWeaponClick={handleWeaponClick}
-                weapons={weapons}
+          {loading && <Loader />}
+
+          {!loading && (
+            <React.Fragment>
+              <Route
+                path="/"
+                exact
+                render={props => (
+                  <Dashboard {...props} userOptions={userOptions} />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/armors/"
-            render={props => <Armors {...props} armor={armor} />}
-          />
+              <Route
+                path="/weapons/"
+                render={props => (
+                  <LoadableWeapons
+                    {...props}
+                    userOptions={userOptions}
+                    saveUserOptions={saveUserOptions}
+                    toggleFavorite={toggleFavorite}
+                    toggleComparison={toggleComparison}
+                    handleWeaponClick={handleWeaponClick}
+                    weapons={weapons}
+                  />
+                )}
+              />
+              <Route
+                path="/armors/"
+                render={props => (
+                  <Armors
+                    {...props}
+                    armor={armor}
+                    handleArmorClick={handleArmorClick}
+                    userOptions={userOptions}
+                  />
+                )}
+              />
+            </React.Fragment>
+          )}
         </div>
       </Router>
     )

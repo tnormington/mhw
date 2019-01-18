@@ -6,18 +6,10 @@ import SharpnessMeter from "./SharpnessMeter"
 import WeaponTeaserMeta from "./WeaponTeaserMeta"
 
 export default ({ item, filters, items, open }) => {
-  // let item = false
-
-  // if (selectedItems.size > 0) {
-  //   item = items.find(i => selectedItems.first() === i.id)
-  // }
-
   let selectedMaterials = false
   if (filters) {
     selectedMaterials = filters.get("materials")
   }
-
-  // console.log("item: ", item)
 
   return (
     <div className="item-window" style={{ background: colors.darkGrey }}>

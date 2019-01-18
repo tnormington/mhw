@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from "react"
 
 import Meta from "./Meta"
 import ElementsMeta from "./ElementsMeta"
-import "./WeaponTeaser.css"
+import "./Teaser.css"
 import SharpnessMeter from "./SharpnessMeter"
 import ItemList from "./ItemList"
 
@@ -66,7 +66,7 @@ export default class WeaponTeaser extends PureComponent {
           color: "#fff",
           backgroundColor: highlight ? colors.medGrey : ""
         }}>
-        {1 === 0 && hasIcon && (
+        {hasIcon && (
           <img
             style={{
               marginRight: "10px",

@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { List, Map } from "immutable"
 
+// import Loadable from 'react-loadable'
+
 // Global Styles
 import "react-select/dist/react-select.css"
 import "react-virtualized-select/styles.css"
@@ -21,9 +23,15 @@ import {
 import Filters from "../components/Filters"
 import OrderButtons from "../components/OrderButtons"
 // import WeaponList from "../components/WeaponList"
+
 import TabGroup from "../components/TabGroup"
 import ItemWindow from "../components/ItemWindow"
-import WeaponListContainer from "../components/WeaponListContainer"
+// import WeaponListContainer from "../components/WeaponListContainer"
+
+import WeaponList from "../components/WeaponList"
+import SizeContainer from "../components/SizeContainer"
+import TeaserList from "../components/TeaserList"
+import WeaponTeaser from "../components/WeaponTeaser"
 
 import TwoColumn from "../components/layout/TwoColumn"
 
@@ -505,58 +513,6 @@ class Weapons extends Component {
     )
   }
 
-  // toggleUserOption(key, e, id) {
-  //   // e.preventDefault()
-  //   e.stopPropagation()
-  //   this.setState(
-  //     prev => {
-  //       let { userOptions } = prev
-  //       // console.log(userOptions)
-  //       let userOption = userOptions.get(key)
-  //       // console.log("key: ", key)
-  //       // console.log(userOption)
-
-  //       if (!userOption) {
-  //         // create the userOption and add id to it
-  //         userOption = List()
-  //         userOption.push(id)
-  //       } else {
-  //         if (userOption.includes(id)) {
-  //           // remove the id
-  //           userOption = userOption.filter(favoriteId => favoriteId !== id)
-  //         } else {
-  //           // add it
-  //           userOption.push(id)
-  //         }
-  //       }
-
-  //       userOptions = userOptions.set(key, userOption)
-
-  //       return { userOptions }
-  //     },
-  //     () => {
-  //       this.filterWeapons()
-  //       this.saveUserOptions()
-  //     }
-  //   )
-  // }
-
-  // saveUserOptions() {
-  //   const { userOptions } = this.state
-  //   window.localStorage.setItem(
-  //     "mhw_user-settings",
-  //     JSON.stringify(userOptions.toJSON())
-  //   )
-  // }
-
-  // clearUserOptions() {
-  //   window.localStorage.removeItem("mhw_user-settings")
-  //   // this.setState({ userOptions: })
-
-  //   // userOptions = mapAndMerge(defaultUserOptions)
-  //   this.setState({ userOptions: defaultUserOptions })
-  // }
-
   handleSearchChange(e) {
     const val = e.target.value
     this.setState(prev => {
@@ -713,22 +669,55 @@ class Weapons extends Component {
                 />
               </div>
             </div>
-            <WeaponListContainer
-              weapons={weapons}
+            <SizeContainer
               toggleComparison={toggleComparison}
               toggleFavorite={toggleFavorite}
               userOptions={userOptions}
-              order={order}
-              orders={orders}
-              handleOrderClick={handleOrderClick}
-              handleCollapseClick={handleCollapseClick}
               filters={filters}
-              expanded={expanded}
-              handleExpandAll={handleExpandAll}
               handleWeaponClick={handleWeaponClick}
               selectedWeapons={selectedWeapons}
               selectedWeapon={selectedWeapon}
               filteredWeapons={filteredWeapons}
+              render={props => (
+                <TeaserList
+                  {...props}
+                  teasers={weapons}
+                  itemSize={83}
+                  renderTeaser={({ index, style }) => {
+                    const weapon = filteredWeapons.get(index)
+
+                    let selectedMaterials = false
+                    if (filters) {
+                      selectedMaterials = filters.get("materials")
+                    }
+
+                    let highlight = false
+                    if (selectedWeapon === weapon.id) {
+                      highlight = true
+                    }
+
+                    return (
+                      <WeaponTeaser
+                        {...props}
+                        key={weapon.id.toString()}
+                        weapon={weapon}
+                        weapons={weapons}
+                        selectedMaterials={selectedMaterials}
+                        selectedWeapon={weapons.find(
+                          w => w.id === selectedWeapon
+                        )}
+                        open={expanded.includes(weapon.id)}
+                        highlight={highlight}
+                        style={{
+                          ...style,
+                          padding: "10px",
+                          paddingRight: "24px"
+                        }}
+                      />
+                    )
+                  }}
+                />
+              )}
             />
           </React.Fragment>
         }

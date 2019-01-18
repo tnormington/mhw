@@ -68,16 +68,6 @@ input {
   /* max-height: 100%; */
 }
 
-.weapon-list {
-  /* grid-column-start: 2; */
-  width: 100%;
-  height: 100%;
-  /* grid-row-start: 1;
-  grid-row-end: span 2; */
-  /* grid-row: 1 / span 2; */
-  /* grid- */
-}
-
 .item-window {
   /* grid-row: 1; */
   padding: 0 10px;
