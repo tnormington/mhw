@@ -149,8 +149,12 @@ export function itemFilterMethod(item, filters, userOptions) {
   // check search keywords
 
   if (search) {
-    result = false
-    if (item.name.toLowerCase().includes(search.toLowerCase())) result = true
+    // TODO: find a library that can fuzzy search objects
+    if (item.name.toLowerCase().includes(search.toLowerCase())) {
+      result = true
+    } else {
+      return false
+    }
   }
 
   // check item groups

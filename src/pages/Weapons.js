@@ -66,7 +66,7 @@ class Weapons extends Component {
       filteredWeapons: List(), // dynamic list of weapons to apply filters, chunk up, and display
       weaponTypes: List(), // static list of all weapon types
       filters: Map(defaultFilters), // dynamic map of varying filters
-      // TODO: move order into the filters Map
+      // TODO: move order into the filters Map... MAYBE?
       order: List(), // dynamic list of order objects set by user, used to set weapon list order
       orders: List(["rarity", "attack", "elemental damage"]), // a static list of possible order properties
       // userOptions: Map(defaultUserOptions), //
@@ -90,12 +90,12 @@ class Weapons extends Component {
     this.clearAllFilters = this.clearAllFilters.bind(this)
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.filterWeapons = this.filterWeapons.bind(this)
-    this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleCollapseClick = this.handleCollapseClick.bind(this)
     this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
     this.clearSearchFilter = this.clearSearchFilter.bind(this)
     this.handleInfoMenuToggleClick = this.handleInfoMenuToggleClick.bind(this)
+    // this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
     // this.handleExpandAll = this.handleExpandAll.bind(this)
     // this.handleWeaponClick = this.handleWeaponClick.bind(this)
     // this.toggleFavorite = this.toggleUserOption.bind(this, "favorites")
@@ -516,13 +516,13 @@ class Weapons extends Component {
     )
   }
 
-  getCurrentPageItems() {
-    const { page, itemsPerPage, filteredWeapons } = this.state
+  // getCurrentPageItems() {
+  //   const { page, itemsPerPage, filteredWeapons } = this.state
 
-    if (filteredWeapons.size <= itemsPerPage) return filteredWeapons
-    const chunkedList = chunkList(filteredWeapons, itemsPerPage)
-    return chunkedList.get(page)
-  }
+  //   if (filteredWeapons.size <= itemsPerPage) return filteredWeapons
+  //   const chunkedList = chunkList(filteredWeapons, itemsPerPage)
+  //   return chunkedList.get(page)
+  // }
 
   handlePageChange(data) {
     // const { filteredWeapons, itemsPerPage } = this.state

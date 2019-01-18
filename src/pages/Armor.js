@@ -24,10 +24,22 @@ export default class Armor extends Component {
       armorTypes: filters.armorTypes
     }
 
+    this.clearSearchFilter = () => {
+      this.setState(
+        prev => ({
+          filters: prev.filters.set("search", "")
+        }),
+        this.filterArmor
+      )
+    }
+
     this.handleArmorTypeClick = label => {
-      this.setState(prev => ({
-        filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
-      }))
+      this.setState(
+        prev => ({
+          filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
+        }),
+        this.filterArmor
+      )
     }
 
     this.filterArmor = () => {
@@ -83,6 +95,7 @@ export default class Armor extends Component {
       <TwoColumn
         left={
           <Filters
+            clearSearchFilter={this.clearSearchFilter}
             armorTypes={armorTypes}
             filteredItems={filteredArmor}
             filters={filters}
