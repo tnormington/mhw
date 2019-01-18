@@ -1,6 +1,6 @@
 import React from "react"
 
-import './InfoMenuListItem.css'
+import "./InfoMenuListItem.css"
 
 export default ({ href, title, icon, onClick, style, color }) => (
   <li>
@@ -12,11 +12,9 @@ export default ({ href, title, icon, onClick, style, color }) => (
           onClick()
         }
       }}
-      className={`info-menu__list-item ${color ? color : ''}`}>
+      className={`info-menu__list-item ${color ? color : ""}`}>
       {title}
-      {icon && (
-        <i className={`fas fa-${icon} fa-fw`} style={{ marginLeft: "10px" }} />
-      )}
+      {icon && <i className={`${icon} fa-fw`} style={{ marginLeft: "10px" }} />}
     </a>
   </li>
 )

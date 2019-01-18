@@ -109,6 +109,7 @@ export function toggleListInMapByKey(map, listKey, valueInList) {
  * @param {Object} item The current item in the .filter method
  * @param {Map} filter A Map of the current applied filters
  * @param {Map} userOptions A Map of the current applied userOptions
+ * @return {boolean} Returns true if the item should remain in the list, false to filter it out
  */
 export function itemFilterMethod(item, filters, userOptions) {
   const weaponTypes = filters.get("weaponTypes"),
@@ -119,7 +120,8 @@ export function itemFilterMethod(item, filters, userOptions) {
     favorites = userOptions.get("favorites"),
     comparisons = userOptions.get("comparisons"),
     materials = filters.get("materials"),
-    search = filters.get("search")
+    search = filters.get("search"),
+    armorTypes = filters.get("armorTypes")
 
   // default let all items through
   let result = true
@@ -188,6 +190,14 @@ export function itemFilterMethod(item, filters, userOptions) {
     // weaponMaterials.forEach(weaponMat => {
 
     // })
+  }
+
+  if (armorTypes.size) {
+    if (armorTypes.includes(item.type)) {
+      result = true
+    } else {
+      return false
+    }
   }
 
   return result

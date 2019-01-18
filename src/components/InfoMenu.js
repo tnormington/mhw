@@ -11,12 +11,17 @@ const links = [
   {
     href: "https://github.com/tnormington/mhw",
     title: "More Information",
-    icon: "info-circle"
+    icon: "fas fa-info-circle"
   },
   {
     href: "https://github.com/tnormington/mhw/issues/new",
     title: "Report An Issue",
-    icon: "bug"
+    icon: "fas fa-bug"
+  },
+  {
+    href: "https://trello.com/b/0kGZx3Zl/mhw-db",
+    title: "Check the Trello board",
+    icon: "fab fa-trello"
   }
 ]
 
@@ -30,7 +35,7 @@ export default ({ open, onToggleClick, resetUserData }) => {
       <div
         style={{
           position: "absolute",
-          top: "calc(100% + 10px)",
+          top: "calc(100% + 15px)",
           right: 0,
           zIndex: 300,
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)"
@@ -49,7 +54,7 @@ export default ({ open, onToggleClick, resetUserData }) => {
             <ListItem
               onClick={resetUserData}
               title="Reset User Data"
-              icon="window-close"
+              icon="fas fa-window-close"
               // style={{ color: colors.red }}
               color="red"
             />

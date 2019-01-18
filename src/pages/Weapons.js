@@ -494,13 +494,10 @@ class Weapons extends Component {
   }
 
   filterWeapons() {
-    const { userOptions } = this.props
-    const { filters } = this.state
-
     this.setState(
       {
         filteredWeapons: this.props.weapons.filter(item =>
-          itemFilterMethod(item, filters, userOptions)
+          itemFilterMethod(item, this.state.filters, this.props.userOptions)
         )
       },
       this.orderWeapons

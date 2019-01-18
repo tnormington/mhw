@@ -10,7 +10,7 @@ import { defaultFilters } from "../defaults"
 
 import { Map, List } from "immutable"
 
-import { toggleListInMapByKey } from "../util"
+import { toggleListInMapByKey, itemFilterMethod } from "../util"
 
 export default class Armor extends Component {
   constructor(props) {
@@ -33,7 +33,9 @@ export default class Armor extends Component {
     this.filterArmor = () => {
       this.setState(
         {
-          filteredArmor: this.state.armor.filter(this.itemFilter)
+          filteredArmor: this.state.armor.filter(item =>
+            itemFilterMethod(item, this.state.filters, this.props.userOptions)
+          )
         },
         this.orderArmor
       )
