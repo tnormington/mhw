@@ -38,7 +38,8 @@ export default class Filters extends Component {
         className="filters"
         style={{
           padding: "10px 10px 0 10px",
-          overflowY: "scroll"
+          overflowY: "scroll",
+          flex: "1 1 auto"
         }}>
         <div style={{ position: "relative" }}>
           <label style={{ marginBottom: "6px", display: "block" }}>

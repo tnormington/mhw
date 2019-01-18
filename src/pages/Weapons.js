@@ -552,29 +552,6 @@ class Weapons extends Component {
     } = this.state
 
     const {
-      checkItemFilter,
-      clearAllFilters,
-      clearUserOptions,
-      getCurrentPageItems,
-      handleCollapseClick,
-      handleDamageTypeClick,
-      handleElementTypeClick,
-      handleGroupClick,
-      handleOrderClick,
-      handlePageChange,
-      handleRarityClick,
-      handleSearchChange,
-      handleMaterialChange,
-      handleWeaponTypeClick,
-      handleExpandAll,
-      clearSearchFilter,
-      handleInfoMenuToggleClick
-      // toggleComparison,
-      // toggleFavorite,
-      // handleWeaponClick,
-    } = this
-
-    const {
       toggleFavorite,
       toggleComparison,
       userOptions,
@@ -586,7 +563,7 @@ class Weapons extends Component {
     const selectedWeapons = userOptions.get("selectedWeapons")
     // a single id representing the selected weapon, for display in the item window
     const selectedWeapon = userOptions.get("selectedWeapon")
-    const currentPageItems = getCurrentPageItems()
+    const currentPageItems = this.getCurrentPageItems()
 
     // console.log(selectedWeapons)
 
@@ -615,21 +592,21 @@ class Weapons extends Component {
               item={weapons.find(item => item.id === selectedWeapon)}
             />
             <Filters
-              clearAllFilters={clearAllFilters}
-              clearSearchFilter={clearSearchFilter}
-              clearUserOptions={clearUserOptions}
+              clearAllFilters={this.clearAllFilters}
+              clearSearchFilter={this.clearSearchFilter}
+              clearUserOptions={this.clearUserOptions}
               damageTypes={damageTypes}
               elementTypes={elementTypes}
               filteredItems={filteredWeapons}
               filters={filters}
-              handleDamageTypeClick={handleDamageTypeClick}
-              handleElementTypeClick={handleElementTypeClick}
-              handleGroupClick={handleGroupClick}
-              handleMaterialChange={handleMaterialChange}
-              handleOrderClick={handleOrderClick}
-              handleRarityClick={handleRarityClick}
-              handleSearchChange={handleSearchChange}
-              handleWeaponTypeClick={handleWeaponTypeClick}
+              handleDamageTypeClick={this.handleDamageTypeClick}
+              handleElementTypeClick={this.handleElementTypeClick}
+              handleGroupClick={this.handleGroupClick}
+              handleMaterialChange={this.handleMaterialChange}
+              handleOrderClick={this.handleOrderClick}
+              handleRarityClick={this.handleRarityClick}
+              handleSearchChange={this.handleSearchChange}
+              handleWeaponTypeClick={this.handleWeaponTypeClick}
               materials={materials}
               order={order}
               orders={orders}
@@ -649,13 +626,13 @@ class Weapons extends Component {
               <OrderButtons
                 orders={orders}
                 order={order}
-                handleOrderClick={handleOrderClick}
+                handleOrderClick={this.handleOrderClick}
               />
               <div style={{ marginBottom: "10px" }}>
                 <TabGroup
                   activeTabs={filters.get("groups")}
                   tabs={["favorites", "comparisons"]}
-                  handleTabClick={handleGroupClick}
+                  handleTabClick={this.handleGroupClick}
                   label="Custom Groups"
                 />
               </div>
