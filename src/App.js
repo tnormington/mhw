@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
-import { Map, List } from "immutable"
+import { Map, List, fromJS } from "immutable"
 import axios from "axios"
 
 // VENDOR COMPONENTS
@@ -11,25 +11,18 @@ import Loadable from "react-loadable"
 import Dashboard from "./pages/Dashboard"
 // import Weapons from "./pages/Weapons" // this is loaded async
 import Armor from "./pages/Armor"
+import Wishlist from "./pages/Wishlist"
 
 // CUSTOM COMPONENTS
 import TopBar from "./components/TopBar"
 import Loader from "./components/Loader"
 
-import { mapAndMerge } from "./util"
+import { mapAndMerge, toggleListInMapByKey } from "./util"
 
 import "./App.css"
 
 // Defaults
-
-const defaultUserOptions = Map({
-  favorites: [],
-  comparisons: [],
-  selectedWeapons: List(),
-  expandAll: false,
-  selectedWeapon: null,
-  selectedArmor: null
-})
+import { defaultUserOptions } from "./defaults"
 
 const LoadableWeapons = Loadable({
   loading: Loader,
@@ -66,8 +59,26 @@ export default class App extends Component {
     }
 
     // bound methods
-    this.toggleFavorite = this.toggleUserOption.bind(this, "favorites")
-    this.toggleComparison = this.toggleUserOption.bind(this, "comparisons")
+    this.toggleWishlistWeapons = this.toggleListItemInUserOptions.bind(
+      this,
+      "wishlist",
+      "weapons"
+    )
+    this.toggleWishlistArmor = this.toggleListItemInUserOptions.bind(
+      this,
+      "wishlist",
+      "armor"
+    )
+    this.toggleFavoriteWeapon = this.toggleListItemInUserOptions.bind(
+      this,
+      "favorites",
+      "weapons"
+    )
+    this.toggleComparisonWeapon = this.toggleListItemInUserOptions.bind(
+      this,
+      "comparisons",
+      "weapons"
+    )
     this.handleWeaponClick = this.handleSelectionClick.bind(
       this,
       "selectedWeapon"
@@ -102,31 +113,58 @@ export default class App extends Component {
     })
   }
 
-  toggleUserOption(key, e, id) {
+  toggleListItemInUserOptions(mapKey, listKey, e, id) {
     e.stopPropagation()
+    console.log("mapKey: ", mapKey)
+    console.log("listKey: ", listKey)
+    console.log("e: ", e)
+    console.log("id: ", id)
+
     this.setState(prev => {
-      let { userOptions } = prev
-      let userOption = userOptions.get(key)
+      // const map = prev[mapKey]
 
-      if (!userOption) {
-        // create the userOption and add id to it
-        userOption = List()
-        userOption.push(id)
-      } else {
-        if (userOption.includes(id)) {
-          // remove the id
-          userOption = userOption.filter(favoriteId => favoriteId !== id)
-        } else {
-          // add it
-          userOption.push(id)
-        }
+      const userOptions = prev.userOptions
+
+      // console.log(userOptions.get(mapKey))
+      // debugger
+      // userOptions: userOptions.set(
+      //   "wishlist",
+      //   toggleListInMapByKey(userOptions.get("wishlist"), key, id)
+      // )
+      return {
+        userOptions: userOptions.set(
+          mapKey,
+          toggleListInMapByKey(userOptions.get(mapKey), listKey, id)
+        )
       }
-
-      userOptions = userOptions.set(key, userOption)
-
-      return { userOptions }
     }, this.saveUserOptions)
   }
+
+  // toggleUserOption(key, e, id) {
+  //   e.stopPropagation()
+  //   this.setState(prev => {
+  //     let { userOptions } = prev
+  //     let userOption = userOptions.get(key)
+
+  //     if (!userOption) {
+  //       // create the userOption and add id to it
+  //       userOption = List()
+  //       userOption.push(id)
+  //     } else {
+  //       if (userOption.includes(id)) {
+  //         // remove the id
+  //         userOption = userOption.filter(favoriteId => favoriteId !== id)
+  //       } else {
+  //         // add it
+  //         userOption.push(id)
+  //       }
+  //     }
+
+  //     userOptions = userOptions.set(key, userOption)
+
+  //     return { userOptions }
+  //   }, this.saveUserOptions)
+  // }
 
   handleSelectionClick(key, id) {
     this.setState(prev => {
@@ -145,16 +183,13 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    let userOptions = Map(
+    let userOptions = fromJS(
       JSON.parse(window.localStorage.getItem("mhw_user-settings"))
     )
+    // console.log("userOptions: ", userOptions)
 
-    // Loop over each defaultUserOption,
-    // check it the type
-    // check if user has option set
-    // set key to correct type
+    userOptions = defaultUserOptions.merge(userOptions)
 
-    userOptions = mapAndMerge(defaultUserOptions, userOptions)
     this.setState({ userOptions })
   }
 
@@ -164,8 +199,10 @@ export default class App extends Component {
     const {
       handleInfoMenuToggleClick,
       clearUserOptions,
-      toggleFavorite,
-      toggleComparison,
+      toggleFavoriteWeapon,
+      toggleComparisonWeapon,
+      toggleWishlistWeapons,
+      toggleWishlistArmor,
       handleWeaponClick,
       handleArmorClick
     } = this
@@ -196,8 +233,9 @@ export default class App extends Component {
                   <LoadableWeapons
                     {...props}
                     userOptions={userOptions}
-                    toggleFavorite={toggleFavorite}
-                    toggleComparison={toggleComparison}
+                    toggleFavorite={toggleFavoriteWeapon}
+                    toggleComparison={toggleComparisonWeapon}
+                    toggleWishlistWeapons={toggleWishlistWeapons}
                     handleWeaponClick={handleWeaponClick}
                     weapons={weapons}
                   />
@@ -211,6 +249,18 @@ export default class App extends Component {
                     armor={armor}
                     handleArmorClick={handleArmorClick}
                     userOptions={userOptions}
+                  />
+                )}
+              />
+
+              <Route
+                path="/wishlist/"
+                render={props => (
+                  <Wishlist
+                    {...props}
+                    weapons={weapons}
+                    armor={armor}
+                    wishlist={userOptions.get("wishlist")}
                   />
                 )}
               />

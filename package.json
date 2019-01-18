@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "immutability-helper": "^2.9.0",
     "immutable": "^4.0.0-rc.12",
+    "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-collapsible": "^2.3.2",
     "react-dom": "^16.7.0",

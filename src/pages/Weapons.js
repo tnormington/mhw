@@ -552,6 +552,7 @@ class Weapons extends Component {
     const {
       toggleFavorite,
       toggleComparison,
+      toggleWishlistWeapons,
       userOptions,
       handleWeaponClick,
       weapons
@@ -636,17 +637,12 @@ class Weapons extends Component {
               </div>
             </div>
             <SizeContainer
-              toggleComparison={toggleComparison}
-              toggleFavorite={toggleFavorite}
               userOptions={userOptions}
-              filters={filters}
-              handleWeaponClick={handleWeaponClick}
-              selectedWeapons={selectedWeapons}
-              selectedWeapon={selectedWeapon}
-              filteredWeapons={filteredWeapons}
               render={props => (
                 <TeaserList
                   {...props}
+                  filteredWeapons={filteredWeapons}
+                  filters={filters}
                   teasers={filteredWeapons}
                   selectedItem={selectedWeapon}
                   itemSize={83}
@@ -667,9 +663,14 @@ class Weapons extends Component {
                       <WeaponTeaser
                         {...props}
                         key={weapon.id.toString()}
+                        toggleComparison={toggleComparison}
+                        toggleFavorite={toggleFavorite}
+                        toggleWishlist={toggleWishlistWeapons}
+                        handleWeaponClick={handleWeaponClick}
                         weapon={weapon}
                         weapons={weapons}
                         selectedMaterials={selectedMaterials}
+                        selectedWeapons={selectedWeapons}
                         selectedWeapon={weapons.find(
                           w => w.id === selectedWeapon
                         )}

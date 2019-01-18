@@ -20,5 +20,5 @@
 }
 
 .info-menu__list-item:hover i {
-  transform: scale(1.1);
+  transform: scale(1.1) rotateY(180deg);
 }

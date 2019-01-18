@@ -50,7 +50,7 @@ export function removeOrAddFromList(list, item) {
 
 export function mapAndMerge(defaults, fresh) {
   if (!Map.isMap(defaults) || !Map.isMap(fresh))
-    throw "must pass Map to mapAndMerge util method"
+    throw "must pass Map to mapAndMerge"
 
   let result
 
@@ -75,6 +75,25 @@ export function mapAndMerge(defaults, fresh) {
   return result
 }
 
+/**
+ * @param {Object} obj The Object you want recursively make immutable
+ * @return {Map} A Map of the obj with all recursive children
+ */
+// export function makeImmutable(obj) {
+//   // TODO: use recursion to loop through each property and convert to the same data type as the default
+//   if (typeof obj != "object") throw "must provide object"
+
+//   let result = Map(obj)
+
+//   result = result.map(property => {
+//     if(typeof property === 'array') return List(property)
+//     if(typeof property === 'object') return Map(property)
+
+//   })
+
+//   return result
+// }
+
 // // compare numbers a to b, return a string of the difference ie. a = 3 b = 5; output would be '-2'
 // export function compareNumbersToString(a, b) {
 
@@ -84,6 +103,7 @@ export function mapAndMerge(defaults, fresh) {
  * @param {Map} map A Map containing atleast one list
  * @param {String} listKey The key inside of map that is the list you want to search
  * @param {String|Number} valueInList The value you would like to either add/remove from the List
+ * @return {Map} Returns a new Map with the value added/removed from the List
  */
 
 export function toggleListInMapByKey(map, listKey, valueInList) {

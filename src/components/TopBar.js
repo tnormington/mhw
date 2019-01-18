@@ -21,6 +21,11 @@ export default ({
       <TopBarLink to="/" title="Dashboard" exact={true} />
       <TopBarLink to="/weapons/" title="Weapons" />
       <TopBarLink to="/armor/" title="Armor" />
+      <TopBarLink
+        to="/wishlist/"
+        title="Wishlist"
+        icon="fas fa-clipboard-list"
+      />
     </div>
     <InfoMenu
       open={infoMenuOpen}

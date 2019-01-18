@@ -3,11 +3,36 @@ import colors from "../colors"
 
 import ReactTooltip from "react-tooltip"
 
+const RowActionButton = ({
+  active,
+  item,
+  listName,
+  activeColor,
+  icon,
+  onClick
+}) => (
+  <button
+    data-for={`row-action-tooltip_${item.id}`}
+    data-tip={`${active ? "Remove from" : "Add to"} ${listName}`}
+    className="no-pad"
+    style={{
+      marginLeft: "10px",
+      color: active ? activeColor : "",
+      border: "none",
+      zIndex: 10
+    }}
+    onClick={onClick}>
+    <i className={`${icon}`} />
+  </button>
+)
+
 export default ({
   isCompared,
   isFavorite,
+  isWishlist,
   toggleComparison,
   toggleFavorite,
+  toggleWishlist,
   item,
   style,
   open
@@ -19,32 +44,31 @@ export default ({
       getContent={tip => tip}
     />
 
-    <button
-      data-for={`row-action-tooltip_${item.id}`}
-      data-tip={`${isCompared ? "Remove from" : "Add to"} comparison list`}
-      className="no-active no-pad"
-      style={{
-        marginLeft: "10px",
-        color: isCompared ? "#287CD8" : "",
-        border: "none",
-        zIndex: 10
-      }}
-      onClick={e => toggleComparison(e, item.id)}>
-      <i className="fas fa-clipboard-list" />
-    </button>
+    <RowActionButton
+      onClick={e => toggleComparison(e, item.id)}
+      active={isCompared}
+      item={item}
+      listName="comparisons list"
+      activeColor={colors.blue}
+      icon="fas fa-exchange-alt"
+    />
 
-    <button
-      data-for={`row-action-tooltip_${item.id}`}
-      data-tip={`${isFavorite ? "Remove from" : "Add to"} favorite list`}
-      className="no-pad"
-      style={{
-        marginLeft: "10px",
-        color: isFavorite ? "#DB9839" : "",
-        border: "none",
-        zIndex: 10
-      }}
-      onClick={e => toggleFavorite(e, item.id)}>
-      <i className={isFavorite ? "fas fa-star" : "far fa-star"} />
-    </button>
+    <RowActionButton
+      onClick={e => toggleFavorite(e, item.id)}
+      active={isFavorite}
+      item={item}
+      listName="favorites"
+      activeColor={colors.orange}
+      icon={isFavorite ? "fas fa-star" : "far fa-star"}
+    />
+
+    <RowActionButton
+      onClick={e => toggleWishlist(e, item.id)}
+      active={isWishlist}
+      item={item}
+      listName="wishlist"
+      activeColor={colors.green}
+      icon="fas fa-clipboard-list"
+    />
   </div>
 )

@@ -1,7 +1,7 @@
 import React from "react"
 // import "./Tab.css"
 
-import Icon from './Icon'
+import Icon from "./Icon"
 
 import greatSword from "../icons/mhw_greatsword-icon.png"
 import longSword from "../icons/mhw_longswords-icon.png"
@@ -57,13 +57,12 @@ export default ({ label, onClick, active, clean, style }) => {
       break
     case "comparisons":
       faIcon = (
-        <i style={{ marginLeft: "10px" }} className="fas fa-clipboard-list" />
+        <i style={{ marginLeft: "10px" }} className="fas fa-exchange-alt" />
       )
       break
     default:
       break
   }
-
 
   return (
     <button
@@ -71,7 +70,7 @@ export default ({ label, onClick, active, clean, style }) => {
       className={`tab ${active ? "active" : ""}`}
       onClick={() => onClick(label)}>
       {clean ? label.replace(/-/g, " ") : label}
-      <Icon style={{ marginLeft: '6px'}} icon={label} size={30} />
+      <Icon style={{ marginLeft: "6px" }} icon={label} size={30} />
       {faIcon}
     </button>
   )

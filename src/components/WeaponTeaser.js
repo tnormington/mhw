@@ -25,8 +25,9 @@ export default class WeaponTeaser extends PureComponent {
       weapons,
       weapon,
       toggleFavorite,
-      userOptions,
+      toggleWishlist,
       toggleComparison,
+      userOptions,
       style,
       selectedMaterials,
       handleCollapseClick,
@@ -38,17 +39,29 @@ export default class WeaponTeaser extends PureComponent {
 
     // setup flag variables
     let isFavorite = false,
-      isCompared = false
+      isCompared = false,
+      isWishlist = false
 
     // check favorites
-    if (userOptions.has("favorites")) {
-      isFavorite = userOptions.get("favorites").includes(weapon.id)
-    }
+    if (userOptions.has("favorites"))
+      isFavorite = userOptions
+        .get("favorites")
+        .get("weapons")
+        .includes(weapon.id)
 
     // check comparisons
-    if (userOptions.has("comparisons")) {
-      isCompared = userOptions.get("comparisons").includes(weapon.id)
-    }
+    if (userOptions.has("comparisons"))
+      isCompared = userOptions
+        .get("comparisons")
+        .get("weapons")
+        .includes(weapon.id)
+
+    // check wishlist
+    if (userOptions.has("wishlist"))
+      isWishlist = userOptions
+        .get("wishlist")
+        .get("weapons")
+        .includes(weapon.id)
 
     const hasIcon = weapon.assets && weapon.assets.icon
 
@@ -100,8 +113,10 @@ export default class WeaponTeaser extends PureComponent {
                   }}
                   isCompared={isCompared}
                   isFavorite={isFavorite}
+                  isWishlist={isWishlist}
                   toggleComparison={toggleComparison}
                   toggleFavorite={toggleFavorite}
+                  toggleWishlist={toggleWishlist}
                   item={weapon}
                   open={open}
                 />
