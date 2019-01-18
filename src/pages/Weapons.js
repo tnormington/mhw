@@ -93,10 +93,10 @@ class Weapons extends Component {
     this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
     this.handleCollapseClick = this.handleCollapseClick.bind(this)
-    this.handleExpandAll = this.handleExpandAll.bind(this)
     this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
     this.clearSearchFilter = this.clearSearchFilter.bind(this)
     this.handleInfoMenuToggleClick = this.handleInfoMenuToggleClick.bind(this)
+    // this.handleExpandAll = this.handleExpandAll.bind(this)
     // this.handleWeaponClick = this.handleWeaponClick.bind(this)
     // this.toggleFavorite = this.toggleUserOption.bind(this, "favorites")
     // this.toggleComparison = this.toggleUserOption.bind(this, "comparisons")
@@ -219,34 +219,32 @@ class Weapons extends Component {
     )
   }
 
-  handleExpandAll() {
-    const allIds = this.state.weapons.map(item => item.id)
-    this.setState(prev => {
-      const expandAll = prev.userOptions.get("expandAll")
+  // handleExpandAll() {
+  //   const allIds = this.state.weapons.map(item => item.id)
+  //   this.setState(prev => {
+  //     const expandAll = prev.userOptions.get("expandAll")
 
-      return {
-        expanded: expandAll ? List() : allIds,
-        userOptions: prev.userOptions.set("expandAll", !expandAll)
-      }
-    }, this.props.saveUserOptions)
-  }
+  //     return {
+  //       expanded: expandAll ? List() : allIds,
+  //       userOptions: prev.userOptions.set("expandAll", !expandAll)
+  //     }
+  //   }, this.props.saveUserOptions)
+  // }
 
-  // TODO: setup mass selection of weapons for bulk actions
-  // ie: set multiple weapons as favorite in 1 click
-  toggleWeaponToSelectedList(id) {
-    this.setState(prev => {
-      let selectedWeapons = prev.userOptions.get("selectedWeapons")
+  // toggleWeaponToSelectedList(id) {
+  //   this.setState(prev => {
+  //     let selectedWeapons = prev.userOptions.get("selectedWeapons")
 
-      selectedWeapons = removeOrAddFromList(List(selectedWeapons), id)
+  //     selectedWeapons = removeOrAddFromList(List(selectedWeapons), id)
 
-      const userOptions = prev.userOptions.set(
-        "selectedWeapons",
-        selectedWeapons
-      )
+  //     const userOptions = prev.userOptions.set(
+  //       "selectedWeapons",
+  //       selectedWeapons
+  //     )
 
-      return { userOptions }
-    }, this.props.saveUserOptions)
-  }
+  //     return { userOptions }
+  //   }, this.props.saveUserOptions)
+  // }
 
   // handleWeaponClick(id) {
   //   this.setState(prev => {
@@ -650,6 +648,7 @@ class Weapons extends Component {
                 <TeaserList
                   {...props}
                   teasers={filteredWeapons}
+                  selectedItem={selectedWeapon}
                   itemSize={83}
                   renderTeaser={({ index, style }) => {
                     const weapon = filteredWeapons.get(index)

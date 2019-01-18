@@ -36,7 +36,7 @@ export default ({
     <button
       data-for={`row-action-tooltip_${item.id}`}
       data-tip={`${isFavorite ? "Remove from" : "Add to"} favorite list`}
-      className="no-active no-pad"
+      className="no-pad"
       style={{
         marginLeft: "10px",
         color: isFavorite ? "#DB9839" : "",

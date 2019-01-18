@@ -58,10 +58,10 @@ export default class App extends Component {
     }
 
     this.saveUserOptions = () => {
-      const { userOptions } = this.state
+      // const { userOptions } = this.state
       window.localStorage.setItem(
         "mhw_user-settings",
-        JSON.stringify(userOptions.toJSON())
+        JSON.stringify(this.state.userOptions.toJSON())
       )
     }
 
@@ -141,7 +141,7 @@ export default class App extends Component {
           userOptions: prev.userOptions.set(key, id)
         }
       }
-    })
+    }, this.saveUserOptions)
   }
 
   componentDidMount() {
@@ -164,7 +164,6 @@ export default class App extends Component {
     const {
       handleInfoMenuToggleClick,
       clearUserOptions,
-      saveUserOptions,
       toggleFavorite,
       toggleComparison,
       handleWeaponClick,
@@ -197,7 +196,6 @@ export default class App extends Component {
                   <LoadableWeapons
                     {...props}
                     userOptions={userOptions}
-                    saveUserOptions={saveUserOptions}
                     toggleFavorite={toggleFavorite}
                     toggleComparison={toggleComparison}
                     handleWeaponClick={handleWeaponClick}
