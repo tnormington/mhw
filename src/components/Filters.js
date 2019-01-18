@@ -6,6 +6,9 @@ import OrderButtons from "./OrderButtons"
 // import Select from "react-select"
 import Select from "react-virtualized-select"
 
+// include the css overrides
+import "./ReactSelect.css"
+
 import colors from "../colors"
 
 export default class Filters extends Component {
