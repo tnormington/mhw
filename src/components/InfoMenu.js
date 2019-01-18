@@ -14,9 +14,16 @@ const links = [
     icon: "fas fa-info-circle"
   },
   {
-    href: "https://github.com/tnormington/mhw/issues/new",
+    href:
+      "https://github.com/tnormington/mhw/issues/new?assignees=&labels=&template=bug_report.md&title=",
     title: "Report An Issue",
     icon: "fas fa-bug"
+  },
+  {
+    href:
+      "https://github.com/tnormington/mhw/issues/new?assignees=&labels=&template=feature_request.md&title=",
+    title: "Request A Feature",
+    icon: "fas fa-comment"
   },
   {
     href: "https://trello.com/b/0kGZx3Zl/mhw-db",
