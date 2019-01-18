@@ -1,29 +1,29 @@
 /* This stylesheet contains the overrides for the react-select component,
 it needs to be included in any component that uses it */
 
-.Select-placeholder {
+body .Select-placeholder {
   color: #3a4765;
 }
 
-.Select-control {
+body .Select-control {
   background-color: transparent;
   border-radius: 0;
   border-color: #3a4765;
   color: #fff;
 }
 
-.Select.is-open .Select-control {
+body .Select.is-open .Select-control {
   background: #3a4765;
   border-color: #3a4765;
 }
 
-.Select.is-focused:not(.is-open) > .Select-control {
+body .Select.is-focused:not(.is-open) > .Select-control {
   box-shadow: none;
   border-color: #fff;
   background: transparent;
 }
 
-.Select-menu-outer {
+body .Select-menu-outer {
   background-color: #3a4765;
   border-color: #3a4765;
   /* Fix a strange 1px offset on dropdown */

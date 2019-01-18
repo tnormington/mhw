@@ -50,7 +50,8 @@ export default ({ open, onToggleClick, resetUserData }) => {
               onClick={resetUserData}
               title="Reset User Data"
               icon="window-close"
-              style={{ color: colors.red }}
+              // style={{ color: colors.red }}
+              color="red"
             />
           </ul>
         </Collapsible>

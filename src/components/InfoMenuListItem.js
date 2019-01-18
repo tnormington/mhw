@@ -1,14 +1,8 @@
 import React from "react"
 
-const linkStyle = {
-  padding: "10px",
-  margin: 0,
-  display: "block",
-  whiteSpace: "nowrap",
-  textAlign: "right"
-}
+import './InfoMenuListItem.css'
 
-export default ({ href, title, icon, onClick, style }) => (
+export default ({ href, title, icon, onClick, style, color }) => (
   <li>
     <a
       href={href ? href : "#"}
@@ -18,7 +12,7 @@ export default ({ href, title, icon, onClick, style }) => (
           onClick()
         }
       }}
-      style={{ ...linkStyle, ...style }}>
+      className={`info-menu__list-item ${color ? color : ''}`}>
       {title}
       {icon && (
         <i className={`fas fa-${icon} fa-fw`} style={{ marginLeft: "10px" }} />

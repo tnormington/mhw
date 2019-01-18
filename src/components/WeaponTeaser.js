@@ -11,17 +11,13 @@ import colors from "../colors"
 import Collapsible from "react-collapsible"
 import RowActions from "./RowActions"
 import WeaponTeaserMeta from "./WeaponTeaserMeta"
+import Teaser from "./Teaser"
+
+// import "./Teaser.css"
 
 export default class WeaponTeaser extends PureComponent {
   constructor(props) {
     super(props)
-
-    // this.ref = React.createRef()
-    // this.props.addHeight(this.ref.clientHeight)
-  }
-
-  componentDidMount() {
-    // console.log(this.ref)
   }
 
   render() {
@@ -57,67 +53,64 @@ export default class WeaponTeaser extends PureComponent {
     const hasIcon = weapon.assets && weapon.assets.icon
 
     return (
-      <div
+      <Teaser
         onClick={() => handleWeaponClick(weapon.id)}
-        className="weapon-teaser"
-        style={{
-          ...style,
-          display: "flex",
-          color: "#fff",
-          backgroundColor: highlight ? colors.medGrey : ""
-        }}>
-        {hasIcon && (
-          <img
-            style={{
-              marginRight: "10px",
-              width: "30px",
-              height: "30px",
-              objectFit: "contain",
-              flex: "0 0 30px"
-            }}
-            src={weapon.assets.icon}
-            alt={`Icon for ${weapon.name}`}
-          />
-        )}
+        highlight={highlight}
+        style={style}>
+        <React.Fragment>
+          {hasIcon && (
+            <img
+              style={{
+                marginRight: "10px",
+                width: "30px",
+                height: "30px",
+                objectFit: "contain",
+                flex: "0 0 30px"
+              }}
+              src={weapon.assets.icon}
+              alt={`Icon for ${weapon.name}`}
+            />
+          )}
 
-        <div style={{ marginLeft: hasIcon ? "" : "40px", width: "100%" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              borderBottom: `2px solid ${
-                highlight ? colors.lightGrey : colors.grey
-              }`,
-              marginBottom: "4px",
-              paddingBottom: "4px",
-              transition: "all 0.15s ease-out",
-              position: "relative"
-            }}>
-            {weapon.name}
+          <div style={{ marginLeft: hasIcon ? "" : "40px", width: "100%" }}>
             <div
               style={{
-                position: "absolute",
-                flex: 1,
-                top: "2px",
-                right: 0
+                display: "flex",
+                alignItems: "center",
+                // borderBottom: `2px solid ${
+                //   highlight ? colors.lightGrey : colors.grey
+                // }`,
+                marginBottom: "4px",
+                paddingBottom: "4px",
+                transition: "all 0.15s ease-out",
+                position: "relative"
               }}>
-              <RowActions
+              {weapon.name}
+              <div
                 style={{
-                  display: "flex",
-                  justifyContent: "flex-end"
-                }}
-                isCompared={isCompared}
-                isFavorite={isFavorite}
-                toggleComparison={toggleComparison}
-                toggleFavorite={toggleFavorite}
-                item={weapon}
-                open={open}
-              />
+                  position: "absolute",
+                  flex: 1,
+                  top: "2px",
+                  right: 0
+                }}>
+                <RowActions
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end"
+                  }}
+                  isCompared={isCompared}
+                  isFavorite={isFavorite}
+                  toggleComparison={toggleComparison}
+                  toggleFavorite={toggleFavorite}
+                  item={weapon}
+                  open={open}
+                />
+              </div>
             </div>
+            <WeaponTeaserMeta weapon={weapon} selectedWeapon={selectedWeapon} />
           </div>
-          <WeaponTeaserMeta weapon={weapon} selectedWeapon={selectedWeapon} />
-        </div>
-      </div>
+        </React.Fragment>
+      </Teaser>
     )
   }
 }

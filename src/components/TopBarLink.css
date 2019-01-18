@@ -2,7 +2,7 @@
   padding: 10px;
   display: block;
   text-decoration: none;
-  color: #fff;
+  color: #a3c5f0;
 }
 
 .top-bar__link:hover {
@@ -14,5 +14,5 @@
 }
 
 .top-bar__link.active {
-  color: #287cd8;
+  color: #fff;
 }

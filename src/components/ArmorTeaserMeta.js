@@ -5,37 +5,8 @@ import MetaValue from "./MetaValue"
 
 import { elementColors } from "../colors"
 
-// import head from '../icons/mhw-helm-headgear-wiki.png'
-// import waist from '../icons/mhw-waist-belt-wiki.png'
-// import legs from '../icons/mhw-feet-boots-greaves.png'
-// import gauntlets from '../icons/mhw-arm-gauntlets-wiki.png'
-// import charms from '../icons/mhw-charms-wiki.png'
-// import decorations from '../icons/mhw-decorations-wiki.png'
-// import boots from '../icons/mhw-feet-boots-greaves.png'
-// import palico from '../icons/mhw-palico-equipment-skills.png'
-// import torso from '../icons/mhw-torso-chest-plate-wiki.png'
-
 export default ({ armorPiece, full, selectedArmorPiece }) => {
   const { defense, rank, resistances: r, type } = armorPiece
-
-  // let imageSrc = false
-  // switch(type) {
-  //   case 'waist':
-  //     imageSrc = waist
-  //     break;
-  //   case 'legs':
-  //     imageSrc = legs
-  //     break;
-  //   case 'head':
-  //     imageSrc = head
-  //     break;
-  //   case 'head':
-  //     imageSrc = head
-  //     break;
-  //   default:
-  //     break;
-
-  // }
 
   return (
     <div style={{ display: "flex", flexWrap: full ? "wrap" : "nowrap" }}>

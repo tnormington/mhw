@@ -9,7 +9,6 @@ export default ({ to, title, exact }) => (
     exact={exact}
     className="top-bar__link"
     activeClassName="active"
-    // activeStyle={{ color: colors.blue }}
     to={to}>
     {title}
   </NavLink>

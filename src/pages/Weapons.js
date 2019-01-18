@@ -705,6 +705,7 @@ class Weapons extends Component {
                           ...style,
                           padding: "10px",
                           paddingRight: "24px"
+                          // paddingLeft: "6px"
                         }}
                       />
                     )
