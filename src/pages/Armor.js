@@ -29,6 +29,23 @@ export default class Armor extends Component {
         filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
       }))
     }
+
+    this.filterArmor = () => {
+      this.setState(
+        {
+          filteredArmor: this.state.armor.filter(this.itemFilter)
+        },
+        this.orderArmor
+      )
+    }
+
+    this.orderArmor = () => {
+      // TODO
+    }
+
+    this.itemFilter = item => {
+      console.log(item)
+    }
   }
 
   gatherArmorFilters(armor) {

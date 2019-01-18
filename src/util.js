@@ -24,36 +24,6 @@ export const chunkList = (list, chunkSize = 5) => {
   )
 }
 
-// export const checkForOrderObject = order => {
-//   if (order.length > 0) {
-//     const removeMe = []
-//     // loop through each order object checking for a match
-//     // Check matching key directions and change if 'ASC', remove if 'DESC'
-//     order.forEach((item, i) => {
-//       if (item.key === obj.key) {
-//         if (item.direction === "ASC") {
-//           item.direction = "DESC"
-//           return
-//         }
-
-//         if (item.direction === "DESC") {
-//           removeMe.push(i)
-//         }
-//       }
-//     })
-
-//     // remove any order objects targetted in earlier loop
-//     if (removeMe.length > 0) {
-//       removeMe.forEach(i => order.splice(i, 1))
-//     }
-//   } else {
-//     order.push(obj)
-//   }
-
-//   return {
-//     order
-//   }
-
 export const basicCopy = item => {
   return JSON.parse(JSON.stringify(item))
 }
@@ -130,6 +100,94 @@ export function toggleListInMapByKey(map, listKey, valueInList) {
   } else {
     // add the value
     result = result.update(listKey, l => l.push(valueInList))
+  }
+
+  return result
+}
+
+/**
+ * @param {Object} item The current item in the .filter method
+ * @param {Map} filter A Map of the current applied filters
+ * @param {Map} userOptions A Map of the current applied userOptions
+ */
+export function itemFilterMethod(item, filters, userOptions) {
+  const weaponTypes = filters.get("weaponTypes"),
+    elementTypes = filters.get("elementTypes"),
+    rarity = filters.get("rarity"),
+    damageTypes = filters.get("damageTypes"),
+    groups = filters.get("groups"),
+    favorites = userOptions.get("favorites"),
+    comparisons = userOptions.get("comparisons"),
+    materials = filters.get("materials"),
+    search = filters.get("search")
+
+  // default let all items through
+  let result = true
+
+  // check search keywords
+
+  if (search) {
+    result = false
+    if (item.name.toLowerCase().includes(search.toLowerCase())) result = true
+  }
+
+  // check item groups
+  if (groups.size > 0) {
+    if (groups.includes("favorites") && !favorites.includes(item.id))
+      return false
+    if (groups.includes("comparisons") && !comparisons.includes(item.id))
+      return false
+  }
+
+  // check weapon types
+  if (weaponTypes.size > 0 && !weaponTypes.includes(item.type)) return false
+
+  // check rarity
+  if (rarity.size > 0 && !rarity.includes(item.rarity)) return false
+
+  // Check damage types
+  if (damageTypes.size > 0 && !damageTypes.includes(item.attributes.damageType))
+    return false
+
+  if (elementTypes.size > 0) {
+    const weaponElements = List(item.elements).map(e => e.type)
+
+    if (elementTypes.isSubset(weaponElements)) {
+      result = true
+    } else {
+      return false
+    }
+  }
+
+  // check selected materials
+
+  if (materials.size) {
+    const { craftingMaterials, upgradeMaterials } = item.crafting
+
+    const weaponMaterials = item.crafting.craftable
+      ? craftingMaterials
+      : upgradeMaterials
+
+    // materials.forEach(mat => {
+    //   if (weaponMaterials.every(weaponMat => mat.value === weaponMat.item.id))
+    //     result = true
+    // })
+
+    const selectedMaterialIdList = materials.map(mat => mat.value)
+    const weaponMaterialIdList = List(weaponMaterials.map(mat => mat.item.id))
+
+    if (selectedMaterialIdList.isSubset(weaponMaterialIdList)) {
+      result = true
+    } else {
+      return false
+    }
+    // console.log(selectedMaterialIdList.toJS())
+    // console.log(weaponMaterialIdList.toJS())
+    // debugger
+
+    // weaponMaterials.forEach(weaponMat => {
+
+    // })
   }
 
   return result

@@ -1,5 +1,5 @@
 .teaser {
-  transition: all 0.15s ease-out;
+  transition: all 0.3s ease-out;
   position: relative;
 }
 
@@ -25,10 +25,14 @@
   opacity: 1;
 }
 
-.teaser.active:after {
+.teaser.active {
+  background: #1f2533;
+}
+
+/* .teaser.active:after {
   background: #1f2533;
   opacity: 1;
-}
+} */
 
 .teaser:active {
   background: #343f57;
