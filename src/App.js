@@ -206,7 +206,7 @@ export default class App extends Component {
                 )}
               />
               <Route
-                path="/armors/"
+                path="/armor/"
                 render={props => (
                   <Armors
                     {...props}

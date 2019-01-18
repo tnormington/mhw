@@ -20,7 +20,7 @@ export default ({
     <div style={{ display: "flex", marginLeft: "-10px" }}>
       <TopBarLink to="/" title="Dashboard" exact={true} />
       <TopBarLink to="/weapons/" title="Weapons" />
-      <TopBarLink to="/armors/" title="Armor" />
+      <TopBarLink to="/armor/" title="Armor" />
     </div>
     <InfoMenu
       open={infoMenuOpen}
