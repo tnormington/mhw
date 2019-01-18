@@ -562,7 +562,7 @@ class Weapons extends Component {
     const selectedWeapons = userOptions.get("selectedWeapons")
     // a single id representing the selected weapon, for display in the item window
     const selectedWeapon = userOptions.get("selectedWeapon")
-    const currentPageItems = this.getCurrentPageItems()
+    // const currentPageItems = this.getCurrentPageItems()
 
     // console.log(selectedWeapons)
 

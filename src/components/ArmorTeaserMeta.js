@@ -4,9 +4,10 @@ import Meta from "./Meta"
 import MetaValue from "./MetaValue"
 
 import { elementColors } from "../colors"
+import SlotsMeta from "./SlotsMeta"
 
 export default ({ armorPiece, full, selectedArmorPiece }) => {
-  const { defense, rank, resistances: r, type } = armorPiece
+  const { defense, rank, resistances: r, type, rarity } = armorPiece
 
   return (
     <div style={{ display: "flex", flexWrap: full ? "wrap" : "nowrap" }}>
@@ -44,6 +45,10 @@ export default ({ armorPiece, full, selectedArmorPiece }) => {
         </div>
       </div>
       <Meta label="Rank" value={rank} />
+      <Meta label="Rarity" value={rarity} />
+      {armorPiece.slots.length > 0 && (
+        <SlotsMeta label="Slots" slots={armorPiece.slots} />
+      )}
     </div>
   )
 }

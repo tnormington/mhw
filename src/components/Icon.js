@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react"
 
-import { titleize } from '../util'
+import { titleize } from "../util"
 
 // Icon
 import head from "../icons/mhw-helm-headgear-wiki.png"
@@ -22,11 +22,14 @@ import chargeBlade from "../icons/mhw_charge-blade-icon.png"
 import insectGlaive from "../icons/mhw_insect-glaive-icon.png"
 import heavyBowgun from "../icons/mhw_heavy-bowgun-icon.png"
 import bow from "../icons/mhw_bow-icon.png"
+import gem1 from "../icons/gem_level_1.png"
+import gem2 from "../icons/gem_level_2.png"
+import gem3 from "../icons/gem_level_3.png"
 
-export default ({icon, size, style}) => {
+export default ({ icon, size, style }) => {
   let imgSrc = false
 
-  if(!size) size = 20
+  if (!size) size = 20
 
   switch (icon) {
     case "great-sword":
@@ -89,21 +92,35 @@ export default ({icon, size, style}) => {
     case "chest":
       imgSrc = chest
       break
+    case "gem-level-1":
+      imgSrc = gem1
+      break
+    case "gem-level-2":
+      imgSrc = gem2
+      break
+    case "gem-level-3":
+      imgSrc = gem3
+      break
     default:
       break
   }
 
-  if(!imgSrc) {
-    console.warn('no icon found');
+  if (!imgSrc) {
+    console.warn("no icon found")
     return null
   }
 
   return (
-    <div style={{  ...style, width: `${size}px`, height: `${size}px` }}>
-      <img 
+    <div style={{ ...style, width: `${size}px`, height: `${size}px` }}>
+      <img
         src={imgSrc}
-        style={{ width: `${size}px`, height: `${size}px`, objectFit: 'contain'}}
-        alt='Icon of' />
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+          objectFit: "contain"
+        }}
+        alt="Icon of"
+      />
     </div>
   )
 }

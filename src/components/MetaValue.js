@@ -55,6 +55,7 @@ export default ({ value, color, style, makeTitle }) => {
     <div
       style={{
         ...style,
+        transition: "all 0.15s ease-out",
         color: color ? color : colors.lightGrey,
         fontSize: "12px",
         display: "flex",
