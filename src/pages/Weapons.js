@@ -681,7 +681,7 @@ class Weapons extends Component {
               render={props => (
                 <TeaserList
                   {...props}
-                  teasers={weapons}
+                  teasers={filteredWeapons}
                   itemSize={83}
                   renderTeaser={({ index, style }) => {
                     const weapon = filteredWeapons.get(index)
