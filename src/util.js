@@ -109,3 +109,28 @@ export function mapAndMerge(defaults, fresh) {
 // export function compareNumbersToString(a, b) {
 
 // }
+
+/**
+ * @param {Map} map A Map containing atleast one list
+ * @param {String} listKey The key inside of map that is the list you want to search
+ * @param {String|Number} valueInList The value you would like to either add/remove from the List
+ */
+
+export function toggleListInMapByKey(map, listKey, valueInList) {
+  if (!Map.isMap(map)) throw "must provide an immutable Map as first argument"
+  const list = map.get(listKey)
+  if (!list) throw `no List found at ${listKey} in ${map}`
+  if (!List.isList(list))
+    throw `item found at ${listKey} in ${map} is not a list`
+
+  let result = Map(map)
+  if (list.includes(valueInList)) {
+    // remove the value
+    result = result.update(listKey, l => l.delete(l.indexOf(valueInList)))
+  } else {
+    // add the value
+    result = result.update(listKey, l => l.push(valueInList))
+  }
+
+  return result
+}

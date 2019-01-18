@@ -4,19 +4,62 @@ import SizeContainer from "../components/SizeContainer"
 import TeaserList from "../components/TeaserList"
 import ArmorTeaser from "../components/ArmorTeaser"
 
-export default class Armors extends Component {
+import Filters from "../components/Filters"
+
+import { defaultFilters } from "../defaults"
+
+import { Map, List } from "immutable"
+
+import { toggleListInMapByKey } from "../util"
+
+export default class Armor extends Component {
   constructor(props) {
     super(props)
+
+    const filters = this.gatherArmorFilters(props.armor)
+
+    this.state = {
+      filters: Map(defaultFilters),
+      filteredArmor: List(props.armor),
+      armorTypes: filters.armorTypes
+    }
+
+    this.handleArmorTypeClick = label => {
+      this.setState(prev => ({
+        filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
+      }))
+    }
+  }
+
+  gatherArmorFilters(armor) {
+    if (!List.isList(armor)) throw "armor is not an immutable List"
+
+    let armorTypes = List()
+
+    armor.forEach(a => {
+      if (!armorTypes.includes(a.type)) armorTypes = armorTypes.push(a.type)
+    })
+    return {
+      armorTypes
+    }
   }
 
   render() {
+    const { filters, filteredArmor, armorTypes } = this.state
     const { userOptions, armor, handleArmorClick } = this.props
 
     const selectedArmor = userOptions.get("selectedArmor")
 
     return (
       <TwoColumn
-        left={<div style={{ padding: "10px" }}>Work In Progress...</div>}
+        left={
+          <Filters
+            armorTypes={armorTypes}
+            filteredItems={filteredArmor}
+            filters={filters}
+            handleArmorTypeClick={this.handleArmorTypeClick}
+          />
+        }
         right={
           <SizeContainer
             userOptions={userOptions}
@@ -26,9 +69,7 @@ export default class Armors extends Component {
                 teasers={armor}
                 itemSize={150}
                 renderTeaser={({ index, style }) => {
-                  // TODO: make an ArmorTeaser component
-                  // will also need to make this pull from filtered/ordered list instead
-                  const armorPiece = armor.get(index)
+                  const armorPiece = filteredArmor.get(index)
 
                   let highlight = false
                   if (selectedArmor === armorPiece.id) {
@@ -45,6 +86,7 @@ export default class Armors extends Component {
                       armorPiece={armorPiece}
                       handleArmorClick={handleArmorClick}
                       highlight={highlight}
+                      damageTypes={false}
                     />
                   )
                 }}

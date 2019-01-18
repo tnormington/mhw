@@ -16,7 +16,8 @@ import "react-virtualized-select/styles.css"
 import {
   // searchArray,
   chunkList,
-  removeOrAddFromList
+  removeOrAddFromList,
+  toggleListInMapByKey
   // mapAndMerge
 } from "../util"
 
@@ -35,15 +36,16 @@ import WeaponTeaser from "../components/WeaponTeaser"
 
 import TwoColumn from "../components/layout/TwoColumn"
 
-const defaultFilters = Map({
-  search: "",
-  weaponTypes: List(),
-  elementTypes: List(),
-  rarity: List(),
-  damageTypes: List(),
-  groups: List(),
-  materials: List()
-})
+import { defaultFilters } from "../defaults"
+// const defaultFilters = Map({
+//   search: "",
+//   weaponTypes: List(),
+//   elementTypes: List(),
+//   rarity: List(),
+//   damageTypes: List(),
+//   groups: List(),
+//   materials: List()
+// })
 
 // const defaultUserOptions = Map({
 //   favorites: [],
@@ -198,21 +200,12 @@ class Weapons extends Component {
   }
 
   handleTabClick(key, tab) {
-    this.setState(prev => {
-      let filterValues = prev.filters.get(key)
-      if (filterValues.includes(tab)) {
-        // remove
-        filterValues = filterValues.delete(filterValues.indexOf(tab))
-      } else {
-        // add
-        filterValues = filterValues.push(tab)
-      }
-
-      // prev.filters[key] = filterValues
-      const filters = prev.filters.set(key, filterValues)
-      // console.log("filters: ", filters.toJS())
-      return { filters }
-    }, this.filterWeapons)
+    this.setState(
+      prev => ({
+        filters: toggleListInMapByKey(prev.filters, key, tab)
+      }),
+      this.filterWeapons
+    )
   }
 
   handleSelectChange(key, value) {
@@ -624,26 +617,26 @@ class Weapons extends Component {
               item={weapons.find(item => item.id === selectedWeapon)}
             />
             <Filters
-              filters={filters}
-              handleGroupClick={handleGroupClick}
-              handleSearchChange={handleSearchChange}
-              weaponTypes={weaponTypes}
-              handleWeaponTypeClick={handleWeaponTypeClick}
-              elementTypes={elementTypes}
-              handleElementTypeClick={handleElementTypeClick}
-              damageTypes={damageTypes}
-              handleDamageTypeClick={handleDamageTypeClick}
-              orders={orders}
-              order={order}
-              handleOrderClick={handleOrderClick}
-              filteredWeapons={filteredWeapons}
               clearAllFilters={clearAllFilters}
-              clearUserOptions={clearUserOptions}
-              rarities={rarities}
-              handleRarityClick={handleRarityClick}
-              handleMaterialChange={handleMaterialChange}
-              materials={materials}
               clearSearchFilter={clearSearchFilter}
+              clearUserOptions={clearUserOptions}
+              damageTypes={damageTypes}
+              elementTypes={elementTypes}
+              filteredItems={filteredWeapons}
+              filters={filters}
+              handleDamageTypeClick={handleDamageTypeClick}
+              handleElementTypeClick={handleElementTypeClick}
+              handleGroupClick={handleGroupClick}
+              handleMaterialChange={handleMaterialChange}
+              handleOrderClick={handleOrderClick}
+              handleRarityClick={handleRarityClick}
+              handleSearchChange={handleSearchChange}
+              handleWeaponTypeClick={handleWeaponTypeClick}
+              materials={materials}
+              order={order}
+              orders={orders}
+              rarities={rarities}
+              weaponTypes={weaponTypes}
             />
           </React.Fragment>
         }

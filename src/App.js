@@ -10,7 +10,7 @@ import Loadable from "react-loadable"
 // PAGES
 import Dashboard from "./pages/Dashboard"
 // import Weapons from "./pages/Weapons" // this is loaded async
-import Armors from "./pages/Armors"
+import Armor from "./pages/Armor"
 
 // CUSTOM COMPONENTS
 import TopBar from "./components/TopBar"
@@ -208,7 +208,7 @@ export default class App extends Component {
               <Route
                 path="/armor/"
                 render={props => (
-                  <Armors
+                  <Armor
                     {...props}
                     armor={armor}
                     handleArmorClick={handleArmorClick}

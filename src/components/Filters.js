@@ -14,22 +14,23 @@ import colors from "../colors"
 export default class Filters extends Component {
   render() {
     const {
+      armorTypes,
       filters,
-      // handleGroupClick,
-      handleSearchChange,
-      weaponTypes,
-      handleWeaponTypeClick,
-      elementTypes,
-      handleElementTypeClick,
-      damageTypes,
-      handleDamageTypeClick,
-      filteredWeapons,
       clearAllFilters,
-      rarities,
-      handleRarityClick,
-      materials,
+      clearSearchFilter,
+      damageTypes,
+      elementTypes,
+      filteredItems,
+      handleArmorTypeClick,
+      handleDamageTypeClick,
+      handleElementTypeClick,
       handleMaterialChange,
-      clearSearchFilter
+      handleRarityClick,
+      handleSearchChange,
+      handleWeaponTypeClick,
+      materials,
+      rarities,
+      weaponTypes
     } = this.props
 
     return (
@@ -63,6 +64,16 @@ export default class Filters extends Component {
             </button>
           )}
         </div>
+
+        {armorTypes && (
+          <TabGroup
+            activeTabs={filters.get("armorTypes")}
+            tabs={armorTypes}
+            handleTabClick={handleArmorTypeClick}
+            label="Armor Type"
+            clean={true}
+          />
+        )}
 
         {weaponTypes && (
           <TabGroup
@@ -99,7 +110,7 @@ export default class Filters extends Component {
           />
         )}
 
-        {materials.size && (
+        {materials && materials.size && (
           <React.Fragment>
             <label style={{ marginBottom: "6px", display: "block" }}>
               Materials
@@ -124,7 +135,7 @@ export default class Filters extends Component {
             padding: "5px 6px",
             fontSize: "14px",
             marginRight: "10px"
-          }}>{`${filteredWeapons.size} results`}</span>
+          }}>{`${filteredItems.size} results`}</span>
         <button
           style={{
             marginBottom: "10px",
