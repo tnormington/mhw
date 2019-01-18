@@ -33,7 +33,7 @@ export default class Armor extends Component {
     this.filterArmor = () => {
       this.setState(
         {
-          filteredArmor: this.state.armor.filter(item =>
+          filteredArmor: this.props.armor.filter(item =>
             itemFilterMethod(item, this.state.filters, this.props.userOptions)
           )
         },
@@ -45,8 +45,11 @@ export default class Armor extends Component {
       // TODO
     }
 
-    this.itemFilter = item => {
-      console.log(item)
+    this.handleSearchChange = e => {
+      const val = e.target.value
+      this.setState(prev => {
+        return { filters: prev.filters.set("search", val) }
+      }, this.filterArmor)
     }
   }
 
@@ -77,6 +80,7 @@ export default class Armor extends Component {
             filteredItems={filteredArmor}
             filters={filters}
             handleArmorTypeClick={this.handleArmorTypeClick}
+            handleSearchChange={this.handleSearchChange}
           />
         }
         right={
@@ -85,7 +89,7 @@ export default class Armor extends Component {
             render={props => (
               <TeaserList
                 {...props}
-                teasers={armor}
+                teasers={filteredArmor}
                 itemSize={150}
                 renderTeaser={({ index, style }) => {
                   const armorPiece = filteredArmor.get(index)
