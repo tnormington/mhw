@@ -143,6 +143,14 @@ export function itemFilterMethod(item, filters, userOptions) {
     search = filters.get("search"),
     armorTypes = filters.get("armorTypes")
 
+  const favWeapons = favorites.get("weapons"),
+    favArmor = favorites.get("armor"),
+    compWeapons = comparisons.get("weapons"),
+    compArmor = comparisons.get("armor")
+
+  // console.log("groups: ", groups)
+  // console.log("favWeapons: ", favWeapons.toArray())
+  // debugger
   // default let all items through
   let result = true
 
@@ -159,9 +167,15 @@ export function itemFilterMethod(item, filters, userOptions) {
 
   // check item groups
   if (groups.size > 0) {
-    if (groups.includes("favorites") && !favorites.includes(item.id))
+    if (
+      groups.includes("favorites") &&
+      (!favWeapons.includes(item.id) && !favArmor.includes(item.id))
+    )
       return false
-    if (groups.includes("comparisons") && !comparisons.includes(item.id))
+    if (
+      groups.includes("comparisons") &&
+      (!compWeapons.includes(item.id) && !compArmor.includes(item.id))
+    )
       return false
   }
 
