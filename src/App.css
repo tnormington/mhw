@@ -5,7 +5,8 @@
 }
 
 body,
-html {
+html,
+#root {
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -19,6 +20,11 @@ body {
   color: #fff;
   font-family: "Noto Sans", sans-serif;
   /* padding-left: 50%; */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
 
 a {

@@ -212,7 +212,7 @@ export default class App extends Component {
 
     return (
       <Router>
-        <div>
+        <React.Fragment>
           <TopBar
             infoMenuOpen={infoMenuOpen}
             handleInfoMenuToggleClick={handleInfoMenuToggleClick}
@@ -273,7 +273,7 @@ export default class App extends Component {
               />
             </React.Fragment>
           )}
-        </div>
+        </React.Fragment>
       </Router>
     )
   }
