@@ -19,6 +19,8 @@ import Loader from "./components/Loader"
 
 import { mapAndMerge, toggleListInMapByKey } from "./util"
 
+import { USER_SETTINGS_KEY } from "./constants"
+
 import "./App.css"
 
 // Defaults
@@ -46,14 +48,14 @@ export default class App extends Component {
     }
 
     this.clearUserOptions = () => {
-      window.localStorage.removeItem("mhw_user-settings")
+      window.localStorage.removeItem(USER_SETTINGS_KEY)
       this.setState({ userOptions: defaultUserOptions })
     }
 
     this.saveUserOptions = () => {
       // const { userOptions } = this.state
       window.localStorage.setItem(
-        "mhw_user-settings",
+        USER_SETTINGS_KEY,
         JSON.stringify(this.state.userOptions.toJSON())
       )
     }
@@ -176,7 +178,7 @@ export default class App extends Component {
 
   componentDidMount() {
     let userOptions = fromJS(
-      JSON.parse(window.localStorage.getItem("mhw_user-settings"))
+      JSON.parse(window.localStorage.getItem(USER_SETTINGS_KEY))
     )
     // console.log("userOptions: ", userOptions)
 
