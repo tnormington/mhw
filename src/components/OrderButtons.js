@@ -30,7 +30,7 @@ export default class OrderButtons extends Component {
               return (
                 <button
                   // style={{ marginRight: "10px", marginBottom: "10px" }}
-                  style={{ marginLeft: "-1px", marginTop: "-1px" }}
+                  style={{ marginLeft: "-1px", marginTop: "-1px", zIndex: 200 }}
                   key={key}
                   onClick={() => handleOrderClick(key)}
                   className={direction ? "active" : ""}>

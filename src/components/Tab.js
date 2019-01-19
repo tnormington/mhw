@@ -64,11 +64,18 @@ export default ({ label, onClick, active, clean, style }) => {
       break
   }
 
+  // if (typeof onClick != "function") {
+  //   console.log(onClick)
+  //   debugger
+  // }
+
   return (
     <button
       style={{ ...style, color: color }}
       className={`tab ${active ? "active" : ""}`}
-      onClick={() => onClick(label)}>
+      onClick={() => {
+        if (onClick) onClick(label)
+      }}>
       {clean ? label.replace(/-/g, " ") : label}
       <Icon style={{ marginLeft: "6px" }} icon={label} size={30} />
       {faIcon}

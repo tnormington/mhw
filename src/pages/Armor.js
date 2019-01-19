@@ -28,6 +28,7 @@ export default class Armor extends Component {
       filters: Map(defaultFilters),
       filteredArmor: List(props.armor),
       armorTypes: filters.armorTypes,
+      rarities: filters.rarities,
       order: List(),
       orders: List(["defense"])
     }
@@ -41,14 +42,14 @@ export default class Armor extends Component {
       )
     }
 
-    this.handleArmorTypeClick = label => {
-      this.setState(
-        prev => ({
-          filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
-        }),
-        this.filterArmor
-      )
-    }
+    // this.handleArmorTypeClick = label => {
+    //   this.setState(
+    //     prev => ({
+    //       filters: toggleListInMapByKey(prev.filters, "armorTypes", label)
+    //     }),
+    //     this.filterArmor
+    //   )
+    // }
 
     this.filterArmor = () => {
       this.setState(
@@ -101,23 +102,58 @@ export default class Armor extends Component {
         return { filters: prev.filters.set("search", val) }
       }, this.filterArmor)
     }
+
+    // this.handleRarityClick = this.handleOrderClick.bind(this, "rarity")
+    this.handleArmorTypeClick = this.handleFilterClick.bind(this, "armorTypes")
+    this.handleRarityClick = this.handleFilterClick.bind(this, "rarity")
   }
+
+  handleFilterClick(filterKey, label) {
+    this.setState(
+      prev => ({
+        filters: toggleListInMapByKey(prev.filters, filterKey, label)
+      }),
+      this.filterArmor
+    )
+  }
+
+  // handleOrderClick(orderKey) {
+  //   const obj = {
+  //     key: orderKey,
+  //     direction: "DESC"
+  //   }
+
+  //   this.setState(
+  //     prev => ({ order: updateOrderList(prev, obj) }),
+  //     this.orderArmor
+  //   )
+  // }
 
   gatherArmorFilters(armor) {
     if (!List.isList(armor)) throw "armor is not an immutable List"
 
-    let armorTypes = List()
+    let armorTypes = List(),
+      rarities = List()
 
     armor.forEach(a => {
       if (!armorTypes.includes(a.type)) armorTypes = armorTypes.push(a.type)
+      if (!rarities.includes(a.rarity)) rarities = rarities.push(a.rarity)
     })
     return {
-      armorTypes
+      armorTypes,
+      rarities
     }
   }
 
   render() {
-    const { filters, filteredArmor, armorTypes, order, orders } = this.state
+    const {
+      filters,
+      filteredArmor,
+      armorTypes,
+      order,
+      orders,
+      rarities
+    } = this.state
     const {
       userOptions,
       armor,
@@ -136,9 +172,11 @@ export default class Armor extends Component {
           <Filters
             clearSearchFilter={this.clearSearchFilter}
             armorTypes={armorTypes}
+            rarities={rarities}
             filteredItems={filteredArmor}
             filters={filters}
             handleArmorTypeClick={this.handleArmorTypeClick}
+            handleRarityClick={this.handleRarityClick}
             handleSearchChange={this.handleSearchChange}
           />
         }
