@@ -86,7 +86,8 @@ export default class Armor extends Component {
       handleArmorClick,
       toggleFavorite,
       toggleComparison,
-      toggleWishlist
+      toggleWishlist,
+      skills
     } = this.props
 
     const selectedArmor = userOptions.get("selectedArmor")
@@ -134,6 +135,7 @@ export default class Armor extends Component {
                       toggleWishlist={toggleWishlist}
                       highlight={highlight}
                       damageTypes={false}
+                      skills={skills}
                     />
                   )
                 }}

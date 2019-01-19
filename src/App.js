@@ -111,7 +111,8 @@ export default class App extends Component {
     // Get all weapons and save data to global app state
     // TODO: Write an API to collect and serve up live data
     let weapons = List(),
-      armor = List()
+      armor = List(),
+      skills = List()
 
     if (window.location.hostname === "localhost") {
       weapons = await axios.get("https://mhw-db.com/weapons")
@@ -119,14 +120,19 @@ export default class App extends Component {
 
       armor = await axios.get("https://mhw-db.com/armor")
       armor = armor.data
+
+      skills = await axios.get("https://mhw-db.com/skills")
+      skills = skills.data
     } else {
       weapons = require("./data/allWeapons.json")
       armor = require("./data/allArmor.json")
+      skills = require("./data/skills.json")
     }
 
     this.setState({
       weapons: List(weapons),
       armor: List(armor),
+      skills: List(skills),
       loading: false
     })
   }
@@ -180,7 +186,14 @@ export default class App extends Component {
   }
 
   render() {
-    const { infoMenuOpen, userOptions, weapons, armor, loading } = this.state
+    const {
+      infoMenuOpen,
+      userOptions,
+      weapons,
+      armor,
+      loading,
+      skills
+    } = this.state
 
     const {
       handleInfoMenuToggleClick,
@@ -240,6 +253,7 @@ export default class App extends Component {
                     toggleWishlist={toggleWishlistArmor}
                     handleArmorClick={handleArmorClick}
                     userOptions={userOptions}
+                    skills={skills}
                   />
                 )}
               />

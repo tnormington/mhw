@@ -5,8 +5,9 @@ import MetaValue from "./MetaValue"
 
 import { elementColors } from "../colors"
 import SlotsMeta from "./SlotsMeta"
+import SkillLevel from "./SkillLevel"
 
-export default ({ armorPiece, full, selectedArmorPiece }) => {
+export default ({ armorPiece, full, selectedArmorPiece, skills }) => {
   const { defense, rank, resistances: r, type, rarity } = armorPiece
 
   return (
@@ -48,6 +49,25 @@ export default ({ armorPiece, full, selectedArmorPiece }) => {
       <Meta label="Rarity" value={rarity} />
       {armorPiece.slots.length > 0 && (
         <SlotsMeta label="Slots" slots={armorPiece.slots} />
+      )}
+      {armorPiece.skills.length > 0 && (
+        <div>
+          {console.log(armorPiece.skills)}
+          <label className="sm" style={{ display: "block" }}>
+            Skills
+          </label>
+          <div>
+            {armorPiece.skills.map(s => (
+              <div key={s.id} style={{ marginBottom: "4px" }}>
+                <MetaValue
+                  style={{ marginBottom: "4px" }}
+                  value={s.skillName}
+                />
+                <SkillLevel skills={skills} skill={s} />
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )
