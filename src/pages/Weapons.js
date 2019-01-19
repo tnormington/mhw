@@ -18,7 +18,9 @@ import {
   chunkList,
   removeOrAddFromList,
   toggleListInMapByKey,
-  itemFilterMethod
+  itemFilterMethod,
+  itemOrderMethod,
+  updateOrderList
   // mapAndMerge
 } from "../util"
 
@@ -105,25 +107,12 @@ class Weapons extends Component {
   }
 
   async componentWillMount() {
-    // // TODO: Write an API to collect and serve up live data
-    // let data = []
-    // if (window.location.hostname === "localhost") {
-    //   data = await axios.get("https://mhw-db.com/weapons")
-    //   data = data.data
-    // } else {
-    //   data = require("../data/allWeapons.json")
-    // }
-
     const { weapons } = this.props
 
     const filters = this.gatherWeaponFilters(weapons)
 
-    // const { itemsPerPage } = this.state
-
     this.setState({
-      // weapons: List(data),
       filteredWeapons: List(weapons),
-      // pageCount: Math.floor(data.length / itemsPerPage),
       weaponTypes: filters.types,
       damageTypes: filters.damageTypes,
       elementTypes: filters.elements,
@@ -131,19 +120,6 @@ class Weapons extends Component {
       materials: filters.materials,
       loading: false
     })
-  }
-
-  componentDidMount() {
-    // let userOptions = Map(
-    //   JSON.parse(window.localStorage.getItem("mhw_user-settings"))
-    // )
-    // // if (!userOptions.comparisons) userOptions.comparisons = []
-    // // Loop over each defaultUserOption,
-    // // check it the type
-    // // check if user has option set
-    // // set key to correct type
-    // userOptions = mapAndMerge(defaultUserOptions, userOptions)
-    // this.setState({ userOptions })
   }
 
   gatherWeaponFilters(weapons) {
@@ -390,44 +366,12 @@ class Weapons extends Component {
       direction: "DESC"
     }
 
-    this.setState(prev => {
-      let { order } = prev
-
-      if (order.size > 0) {
-        const removeMe = []
-        let foundItem = false
-        // loop through each order object checking for a match
-        // Check matching key directions and change if 'ASC', remove if 'DESC'
-        order.forEach((item, i) => {
-          if (item.key === obj.key) {
-            foundItem = true
-            if (item.direction === "DESC") {
-              item.direction = "ASC"
-              return
-            }
-
-            if (item.direction === "ASC") {
-              removeMe.push(i)
-            }
-          }
-        })
-
-        // if the item was not found in loop, we need to add it
-        if (!foundItem) order = order.push(obj)
-
-        // remove any order objects targetted in earlier loop
-        if (removeMe.length > 0)
-          order = order.filter((_, i) => !removeMe.includes(i))
-        // removeMe.forEach(i => order.splice(i, 1))
-        // }
-      } else {
-        order = order.push(obj)
-      }
-
-      return {
-        order
-      }
-    }, this.orderWeapons) // order weapons in .setState CB after an order button is clicked
+    this.setState(
+      prev => ({
+        order: updateOrderList(prev, obj)
+      }),
+      this.orderWeapons
+    ) // order weapons in .setState CB after an order button is clicked
   }
 
   orderWeapons() {
@@ -439,38 +383,9 @@ class Weapons extends Component {
       if (order.size > 0) {
         order.forEach(o => {
           // order the weapons by each order object
-          filteredWeapons = filteredWeapons.sort((a, b) => {
-            let aVal = a[o.key]
-            let bVal = b[o.key]
-            // handle attack ordering
-            if (o.key === "attack") {
-              aVal = a.attack.display
-              bVal = b.attack.display
-            }
-
-            // handle elemental damage
-            if (o.key === "elemental damage") {
-              // if there are no elements on the a item, we push a back
-              if (!a.elements) return false
-              // if there are no elements on the second item, we leave a in the front
-              if (!b.elements) return true
-
-              aVal = a.elements.reduce(
-                (total, element) => total + element.damage,
-                0
-              )
-              bVal = b.elements.reduce(
-                (total, element) => total + element.damage,
-                0
-              )
-            }
-
-            if (o.direction === "ASC") {
-              return aVal - bVal
-            } else {
-              return bVal - aVal
-            }
-          })
+          filteredWeapons = filteredWeapons.sort((a, b) =>
+            itemOrderMethod(a, b, o)
+          )
         })
       }
 

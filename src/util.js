@@ -240,3 +240,75 @@ export function itemFilterMethod(item, filters, userOptions) {
 
   return result
 }
+
+export function itemOrderMethod(a, b, order) {
+  let aVal = a[order.key]
+  let bVal = b[order.key]
+
+  // handle attack ordering
+  if (order.key === "attack") {
+    aVal = a.attack.display
+    bVal = b.attack.display
+  }
+
+  // handle elemental damage
+  if (order.key === "elemental damage") {
+    // if there are no elements on the a item, we push a back
+    if (!a.elements) return false
+    // if there are no elements on the second item, we leave a in the front
+    if (!b.elements) return true
+
+    aVal = a.elements.reduce((total, element) => total + element.damage, 0)
+    bVal = b.elements.reduce((total, element) => total + element.damage, 0)
+  }
+
+  if (order.key === "defense") {
+    // console.log(a.defense, b.defense)
+    aVal = a.defense.base
+    bVal = b.defense.base
+  }
+
+  if (order.direction === "ASC") {
+    return aVal - bVal
+  } else {
+    return bVal - aVal
+  }
+}
+
+// TODO: Refactor Me!
+export function updateOrderList(prev, orderObject) {
+  let { order } = prev
+
+  if (order.size > 0) {
+    const removeMe = []
+    let foundItem = false
+    // loop through each order object checking for a match
+    // Check matching key directions and change if 'ASC', remove if 'DESC'
+    order.forEach((item, i) => {
+      if (item.key === orderObject.key) {
+        foundItem = true
+        if (item.direction === "DESC") {
+          item.direction = "ASC"
+          return
+        }
+
+        if (item.direction === "ASC") {
+          removeMe.push(i)
+        }
+      }
+    })
+
+    // if the item was not found in loop, we need to add it
+    if (!foundItem) order = order.push(orderObject)
+
+    // remove any orderObjects targetted in earlier loop
+    if (removeMe.length > 0)
+      order = order.filter((_, i) => !removeMe.includes(i))
+    // removeMe.forEach(i => order.splice(i, 1))
+    // }
+  } else {
+    order = order.push(orderObject)
+  }
+
+  return order
+}

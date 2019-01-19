@@ -2,7 +2,7 @@ import React from "react"
 import Icon from "./Icon"
 
 export default ({ slots, label }) => (
-  <div>
+  <div style={{ marginRight: "10px" }}>
     {label && (
       <label className="sm" style={{ display: "block" }}>
         {label}

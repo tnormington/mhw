@@ -3,6 +3,7 @@ import TwoColumn from "../components/layout/TwoColumn"
 import SizeContainer from "../components/SizeContainer"
 import TeaserList from "../components/TeaserList"
 import ArmorTeaser from "../components/ArmorTeaser"
+import OrderButtons from "../components/OrderButtons"
 
 import Filters from "../components/Filters"
 
@@ -10,7 +11,12 @@ import { defaultFilters } from "../defaults"
 
 import { Map, List } from "immutable"
 
-import { toggleListInMapByKey, itemFilterMethod } from "../util"
+import {
+  toggleListInMapByKey,
+  itemFilterMethod,
+  updateOrderList,
+  itemOrderMethod
+} from "../util"
 
 export default class Armor extends Component {
   constructor(props) {
@@ -21,7 +27,9 @@ export default class Armor extends Component {
     this.state = {
       filters: Map(defaultFilters),
       filteredArmor: List(props.armor),
-      armorTypes: filters.armorTypes
+      armorTypes: filters.armorTypes,
+      order: List(),
+      orders: List(["defense"])
     }
 
     this.clearSearchFilter = () => {
@@ -55,6 +63,36 @@ export default class Armor extends Component {
 
     this.orderArmor = () => {
       // TODO
+      console.log("ordering armor")
+
+      this.setState(prev => {
+        let { filteredArmor, order } = prev
+
+        console.log("order: ", order.toArray())
+        if (order.size) {
+          order.forEach(o => {
+            filteredArmor = filteredArmor.sort((a, b) =>
+              itemOrderMethod(a, b, o)
+            )
+          })
+        }
+
+        return {
+          filteredArmor
+        }
+      })
+    }
+
+    this.handleOrderClick = orderKey => {
+      const obj = {
+        key: orderKey,
+        direction: "DESC"
+      }
+
+      this.setState(
+        prev => ({ order: updateOrderList(prev, obj) }),
+        this.orderArmor
+      )
     }
 
     this.handleSearchChange = e => {
@@ -79,7 +117,7 @@ export default class Armor extends Component {
   }
 
   render() {
-    const { filters, filteredArmor, armorTypes } = this.state
+    const { filters, filteredArmor, armorTypes, order, orders } = this.state
     const {
       userOptions,
       armor,
@@ -105,43 +143,52 @@ export default class Armor extends Component {
           />
         }
         right={
-          <SizeContainer
-            userOptions={userOptions}
-            render={props => (
-              <TeaserList
-                {...props}
-                teasers={filteredArmor}
-                itemSize={150}
-                renderTeaser={({ index, style }) => {
-                  const armorPiece = filteredArmor.get(index)
-
-                  let highlight = false
-                  if (selectedArmor === armorPiece.id) {
-                    highlight = true
-                  }
-
-                  return (
-                    <ArmorTeaser
-                      {...props}
-                      style={{
-                        ...style,
-                        padding: "10px",
-                        paddingRight: "24px"
-                      }}
-                      armorPiece={armorPiece}
-                      handleArmorClick={handleArmorClick}
-                      toggleFavorite={toggleFavorite}
-                      toggleComparison={toggleComparison}
-                      toggleWishlist={toggleWishlist}
-                      highlight={highlight}
-                      damageTypes={false}
-                      skills={skills}
-                    />
-                  )
-                }}
+          <React.Fragment>
+            <div style={{ padding: "10px" }}>
+              <OrderButtons
+                orders={orders}
+                order={order}
+                handleOrderClick={this.handleOrderClick}
               />
-            )}
-          />
+            </div>
+            <SizeContainer
+              userOptions={userOptions}
+              render={props => (
+                <TeaserList
+                  {...props}
+                  teasers={filteredArmor}
+                  itemSize={150}
+                  renderTeaser={({ index, style }) => {
+                    const armorPiece = filteredArmor.get(index)
+
+                    let highlight = false
+                    if (selectedArmor === armorPiece.id) {
+                      highlight = true
+                    }
+
+                    return (
+                      <ArmorTeaser
+                        {...props}
+                        style={{
+                          ...style,
+                          padding: "10px",
+                          paddingRight: "24px"
+                        }}
+                        armorPiece={armorPiece}
+                        handleArmorClick={handleArmorClick}
+                        toggleFavorite={toggleFavorite}
+                        toggleComparison={toggleComparison}
+                        toggleWishlist={toggleWishlist}
+                        highlight={highlight}
+                        damageTypes={false}
+                        skills={skills}
+                      />
+                    )
+                  }}
+                />
+              )}
+            />
+          </React.Fragment>
         }
       />
     )
