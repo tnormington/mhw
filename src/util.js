@@ -268,6 +268,15 @@ export function itemOrderMethod(a, b, order) {
     bVal = b.defense.base
   }
 
+  if (order.key === "slots") {
+    aVal = a.slots.reduce((total, s) => {
+      return total + s.rank
+    }, 0)
+    bVal = b.slots.reduce((total, s) => {
+      return total + s.rank
+    }, 0)
+  }
+
   if (order.direction === "ASC") {
     return aVal - bVal
   } else {

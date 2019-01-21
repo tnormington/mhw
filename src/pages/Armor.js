@@ -30,7 +30,7 @@ export default class Armor extends Component {
       armorTypes: filters.armorTypes,
       rarities: filters.rarities,
       order: List(),
-      orders: List(["defense"])
+      orders: List(["defense", "rarity", "slots"])
     }
 
     this.clearSearchFilter = () => {
@@ -116,18 +116,6 @@ export default class Armor extends Component {
       this.filterArmor
     )
   }
-
-  // handleOrderClick(orderKey) {
-  //   const obj = {
-  //     key: orderKey,
-  //     direction: "DESC"
-  //   }
-
-  //   this.setState(
-  //     prev => ({ order: updateOrderList(prev, obj) }),
-  //     this.orderArmor
-  //   )
-  // }
 
   gatherArmorFilters(armor) {
     if (!List.isList(armor)) throw "armor is not an immutable List"
