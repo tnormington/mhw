@@ -141,7 +141,8 @@ export function itemFilterMethod(item, filters, userOptions) {
     comparisons = userOptions.get("comparisons"),
     materials = filters.get("materials"),
     search = filters.get("search"),
-    armorTypes = filters.get("armorTypes")
+    armorTypes = filters.get("armorTypes"),
+    ranks = filters.get("ranks")
 
   const favWeapons = favorites.get("weapons"),
     favArmor = favorites.get("armor"),
@@ -232,6 +233,14 @@ export function itemFilterMethod(item, filters, userOptions) {
 
   if (armorTypes.size) {
     if (armorTypes.includes(item.type)) {
+      result = true
+    } else {
+      return false
+    }
+  }
+
+  if (ranks.size) {
+    if (ranks.includes(item.rank)) {
       result = true
     } else {
       return false

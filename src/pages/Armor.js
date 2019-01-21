@@ -29,6 +29,7 @@ export default class Armor extends Component {
       filteredArmor: List(props.armor),
       armorTypes: filters.armorTypes,
       rarities: filters.rarities,
+      ranks: filters.ranks,
       order: List(),
       orders: List(["defense", "rarity", "slots"])
     }
@@ -106,6 +107,7 @@ export default class Armor extends Component {
     // this.handleRarityClick = this.handleOrderClick.bind(this, "rarity")
     this.handleArmorTypeClick = this.handleFilterClick.bind(this, "armorTypes")
     this.handleRarityClick = this.handleFilterClick.bind(this, "rarity")
+    this.handleRankClick = this.handleFilterClick.bind(this, "ranks")
   }
 
   handleFilterClick(filterKey, label) {
@@ -121,15 +123,18 @@ export default class Armor extends Component {
     if (!List.isList(armor)) throw "armor is not an immutable List"
 
     let armorTypes = List(),
-      rarities = List()
+      rarities = List(),
+      ranks = List()
 
     armor.forEach(a => {
       if (!armorTypes.includes(a.type)) armorTypes = armorTypes.push(a.type)
       if (!rarities.includes(a.rarity)) rarities = rarities.push(a.rarity)
+      if (!ranks.includes(a.rank)) ranks = ranks.push(a.rank)
     })
     return {
       armorTypes,
-      rarities
+      rarities,
+      ranks
     }
   }
 
@@ -140,7 +145,8 @@ export default class Armor extends Component {
       armorTypes,
       order,
       orders,
-      rarities
+      rarities,
+      ranks
     } = this.state
     const {
       userOptions,
@@ -161,11 +167,13 @@ export default class Armor extends Component {
             clearSearchFilter={this.clearSearchFilter}
             armorTypes={armorTypes}
             rarities={rarities}
+            ranks={ranks}
             filteredItems={filteredArmor}
             filters={filters}
             handleArmorTypeClick={this.handleArmorTypeClick}
             handleRarityClick={this.handleRarityClick}
             handleSearchChange={this.handleSearchChange}
+            handleRankClick={this.handleRankClick}
           />
         }
         right={

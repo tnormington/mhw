@@ -30,7 +30,9 @@ export default class Filters extends Component {
       handleWeaponTypeClick,
       materials,
       rarities,
-      weaponTypes
+      weaponTypes,
+      handleRankClick,
+      ranks
     } = this.props
 
     return (
@@ -65,6 +67,15 @@ export default class Filters extends Component {
             </button>
           )}
         </div>
+
+        {ranks && (
+          <TabGroup
+            activeTabs={filters.get("ranks")}
+            tabs={ranks}
+            handleTabClick={handleRankClick}
+            label="Rank"
+          />
+        )}
 
         {armorTypes && (
           <TabGroup

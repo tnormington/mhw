@@ -8,7 +8,8 @@ export const defaultFilters = Map({
   materials: List(),
   rarity: List(),
   search: "",
-  weaponTypes: List()
+  weaponTypes: List(),
+  ranks: List()
 })
 
 export const defaultUserOptions = Map({
