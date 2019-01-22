@@ -40,11 +40,30 @@ export default ({ weapon, full, selectedWeapon }) => {
         <Meta label="Attack" value={attackValue} color={attackColor} />
       )}
       <Meta label="Weapon Type" value={weapon.type} makeTitle={true} />
-      <Meta
-        label="Damage Type"
-        value={weapon.attributes.damageType}
-        makeTitle={true}
-      />
+      {weapon.attributes.damageType && (
+        <Meta
+          label="Damage Type"
+          value={weapon.attributes.damageType}
+          makeTitle={true}
+        />
+      )}
+      {weapon.attributes.affinity && (
+        <Meta label="Affinity" value={weapon.attributes.affinity + "%"} />
+      )}
+      {weapon.attributes.phialType && (
+        <Meta
+          label="Phial Type"
+          value={weapon.attributes.phialType}
+          makeTitle={true}
+        />
+      )}
+      {weapon.attributes.deviation && (
+        <Meta
+          label="Deviation"
+          value={weapon.attributes.deviation}
+          makeTitle={true}
+        />
+      )}
       {weapon.elements.length > 0 && (
         <ElementsMeta
           style={{ marginRight: "10px" }}
