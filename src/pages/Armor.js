@@ -11,6 +11,8 @@ import { defaultFilters } from "../defaults"
 
 import { Map, List } from "immutable"
 
+import { debounce } from "lodash"
+
 import {
   toggleListInMapByKey,
   itemFilterMethod,
@@ -129,15 +131,7 @@ export default class Armor extends Component {
     this.handleSkillChange = this.handleSelectChange.bind(this, "skills")
 
     // resistances
-    this.handleResRangeChange = (key, rangeObject) => {
-      // console.log(
-      //   "handleResRangeChange",
-      //   "key",
-      //   key,
-      //   "rangeObject",
-      //   rangeObject
-      // )
-
+    this.handleResRangeChange = debounce((key, rangeObject) => {
       // the rangeObject returned from the react-input component doesn't have an active prop
       // hard-code the prop here, it must be active if the inut is being changed
       rangeObject.active = true
@@ -148,7 +142,7 @@ export default class Armor extends Component {
         }),
         this.filterArmor
       )
-    }
+    }, 16)
   }
 
   handleSelectChange(key, value) {
