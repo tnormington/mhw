@@ -8,7 +8,7 @@ export default ({ level, maxLevel }) => {
 
   for (let count = 0; count < maxLevel; count++) {
     let active = false
-    if (count <= level) active = true
+    if (count < level) active = true
 
     levels.push(
       <div

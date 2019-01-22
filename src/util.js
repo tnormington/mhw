@@ -143,7 +143,8 @@ export function itemFilterMethod(item, filters, userOptions) {
     search = filters.get("search"),
     armorTypes = filters.get("armorTypes"),
     ranks = filters.get("ranks"),
-    slots = filters.get("slots")
+    slots = filters.get("slots"),
+    skills = filters.get("skills")
 
   const favWeapons = favorites.get("weapons"),
     favArmor = favorites.get("armor"),
@@ -210,31 +211,46 @@ export function itemFilterMethod(item, filters, userOptions) {
       ? craftingMaterials
       : upgradeMaterials
 
-    // materials.forEach(mat => {
-    //   if (weaponMaterials.every(weaponMat => mat.value === weaponMat.item.id))
-    //     result = true
-    // })
-
     const selectedMaterialIdList = materials.map(mat => mat.value)
     const weaponMaterialIdList = List(weaponMaterials.map(mat => mat.item.id))
 
     if (selectedMaterialIdList.isSubset(weaponMaterialIdList)) {
-      result = true
+      // result = true
     } else {
       return false
     }
-    // console.log(selectedMaterialIdList.toJS())
-    // console.log(weaponMaterialIdList.toJS())
+  }
+
+  if (skills.size) {
+    if (!item.skills.length) return false
+
+    const selectedSlugList = skills.map(s => s.value)
+    const itemSkillSlugList = List(item.skills).map(s => s.slug)
+
     // debugger
-
-    // weaponMaterials.forEach(weaponMat => {
-
+    if (!selectedSlugList.isSubset(itemSkillSlugList)) {
+      return false
+    } else {
+      // console.log("selectedSlugList", selectedSlugList.toJS())
+      // console.log("itemSkillSlugList", itemSkillSlugList.toJS())
+      // console.log("result", result)
+      // result = true
+    }
+    // let skillResult = false
+    // item.skills.forEach(iSkill => {
+    //   if (selectedSlugList.includes(iSkill.slug)) skillResult = true
     // })
+
+    // if (!skillResult) return false
+
+    // result = skillResult
+    // result = skillResult
+    // if(selectedSlugList.isSubset())
   }
 
   if (armorTypes.size) {
     if (armorTypes.includes(item.type)) {
-      result = true
+      // result = true
     } else {
       return false
     }
@@ -242,7 +258,7 @@ export function itemFilterMethod(item, filters, userOptions) {
 
   if (ranks.size) {
     if (ranks.includes(item.rank)) {
-      result = true
+      // result = true
     } else {
       return false
     }
@@ -255,8 +271,11 @@ export function itemFilterMethod(item, filters, userOptions) {
       if (slots.includes(slot.rank)) slotResult = true
     })
 
+    if (!slotResult) return false
     result = slotResult
   }
+
+  // console.log("result at end", result)
 
   return result
 }
