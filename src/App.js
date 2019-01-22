@@ -21,7 +21,7 @@ import { mapAndMerge, toggleListInMapByKey } from "./util"
 
 import { USER_SETTINGS_KEY } from "./constants"
 
-import "./App.css"
+import "./App.sass"
 import "react-select/dist/react-select.css"
 import "react-virtualized-select/styles.css"
 import "./components/ReactSelect.css"

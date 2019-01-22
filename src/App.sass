@@ -1,0 +1,187 @@
+*,
+*:before,
+*:after 
+  box-sizing: border-box
+
+
+body,
+html,
+#root 
+  margin: 0
+  padding: 0
+  height: 100vh
+  width: 100vw
+  overflow: hidden
+
+
+body 
+  background: #1f2533
+  color: #fff
+  font-family: "Noto Sans", sans-serif
+
+
+#root 
+  display: flex
+  flex-direction: column
+
+
+a 
+  color: #287cd8
+  transition: all 0.15s ease-out
+
+
+a:hover 
+  text-decoration: none
+
+
+input 
+  color: #fff
+
+
+
+.layout-2-col 
+  display: grid
+  grid-template-columns: 700px auto
+  grid-template-rows: auto
+  height: 100vh
+  width: 100vw
+
+
+@media (max-width: 1200px) 
+  .layout-2-col 
+    grid-template-columns: 500px auto
+  
+
+$topbarH: 43px
+
+
+.left-column 
+  grid-column: 1
+  display: flex
+  flex-direction: column
+  height: calc(100vh - #{$topbarH})
+
+
+.right-column 
+  grid-column: 2
+  display: flex
+  flex-direction: column
+  height: calc(100vh - #{$topbarH})
+
+
+.item-window 
+  padding: 0 10px
+
+
+label 
+  font-size: 12px
+  text-transform: uppercase
+  color: #6d7da1
+
+
+label.sm 
+  font-size: 10px
+
+
+button 
+  padding: 6px
+  white-space: nowrap
+  outline: none
+  border: 1px solid #3a4765
+  background: transparent
+  color: #6d7da1
+  text-transform: uppercase
+  font-weight: 600
+  font-size: 14px
+  cursor: pointer
+  transition: all 0.15s ease-out
+
+
+button.fab 
+  width: 30px
+  height: 30px
+  border-radius: 50%
+  background: #6d7da1
+  color: #121724
+  display: flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2)
+
+
+button.no-pad 
+  padding: 0
+
+
+button:hover,
+button:focus 
+  border-color: #fff
+  color: #fff
+  z-index: 200
+
+
+button:active:not(.no-active) 
+  background: #121724
+
+
+button.active 
+  background: #3a4765
+  color: #fff
+
+
+input[type="text"] 
+  outline: none
+  border: none
+  padding: 10px
+  color: #fff
+  background: #121724
+  border: 1px solid #3a4765
+
+
+input[type="text"]::placeholder 
+  color: #3a4765
+  font-size: 14px
+
+
+// .pagination 
+//   background: #1f2533
+
+
+// .pagination ul 
+//   display: flex
+//   list-style-type: none
+//   margin: 0
+//   padding: 0
+
+
+// .pagination li 
+//   flex: 1
+//   display: flex
+//   align-items: center
+//   transition: all 0.15s ease-out
+//   border: 1px solid #3a4765
+//   margin-left: -1px
+
+
+// .pagination a 
+//   display: flex
+//   align-items: center
+//   justify-content: center
+//   width: 100%
+//   padding: 6px
+//   color: #3a4765
+//   font-weight: 900
+//   transition: all 0.15s ease-out
+
+
+// .pagination li:hover a 
+//   color: #fff
+
+
+// .pagination li.selected 
+//   background: #3a4765
+
+
+// .pagination li.selected a 
+//   color: #fff
+
