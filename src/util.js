@@ -144,7 +144,8 @@ export function itemFilterMethod(item, filters, userOptions) {
     armorTypes = filters.get("armorTypes"),
     ranks = filters.get("ranks"),
     slots = filters.get("slots"),
-    skills = filters.get("skills")
+    skills = filters.get("skills"),
+    resistances = filters.get("resistances")
 
   const favWeapons = favorites.get("weapons"),
     favArmor = favorites.get("armor"),
@@ -272,10 +273,28 @@ export function itemFilterMethod(item, filters, userOptions) {
     })
 
     if (!slotResult) return false
-    result = slotResult
+    // result = slotResult
   }
 
-  // console.log("result at end", result)
+  // filter out any inactive res filter Maps
+  const activeResFilters = resistances.filter(r => r.get("active"))
+
+  // loop over active res filter Maps and filter item by min and max
+  if (activeResFilters.size) {
+    let resResult = true
+    activeResFilters.forEach((resFilter, key) => {
+      const min = resFilter.get("min"),
+        max = resFilter.get("max"),
+        itemRes = item.resistances[key]
+
+      if (itemRes < min || itemRes > max) {
+        resResult = false
+        return
+      }
+    })
+
+    if (!resResult) return false
+  }
 
   return result
 }

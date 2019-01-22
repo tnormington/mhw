@@ -52,9 +52,12 @@ export default class Armor extends Component {
     this.handleResActiveToggle = key => {
       console.log("toggling active resistance", key)
       const path = ["resistances", key, "active"]
-      this.setState(prev => ({
-        filters: prev.filters.setIn(path, !prev.filters.getIn(path))
-      }))
+      this.setState(
+        prev => ({
+          filters: prev.filters.setIn(path, !prev.filters.getIn(path))
+        }),
+        this.filterArmor
+      )
     }
 
     // this.handleArmorTypeClick = label => {
@@ -139,9 +142,12 @@ export default class Armor extends Component {
       // hard-code the prop here, it must be active if the inut is being changed
       rangeObject.active = true
 
-      this.setState(prev => ({
-        filters: prev.filters.setIn(["resistances", key], Map(rangeObject))
-      }))
+      this.setState(
+        prev => ({
+          filters: prev.filters.setIn(["resistances", key], Map(rangeObject))
+        }),
+        this.filterArmor
+      )
     }
   }
 
