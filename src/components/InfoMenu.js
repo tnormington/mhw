@@ -45,12 +45,25 @@ export default ({ open, onToggleClick, resetUserData }) => {
           top: "calc(100% + 15px)",
           right: 0,
           zIndex: 300,
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)"
+          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
+          background: colors.grey,
+          width: "500px"
         }}>
         <Collapsible transitionTime={200} open={open}>
+          <div
+            style={{
+              padding: "10px",
+              textAlign: "right",
+              borderBottom: `2px solid ${colors.medGrey}`
+            }}>
+            All persistent user data is currently saved to your browser
+            localStorage. This means it will only be available when accessing it
+            from the same browser on the same device. It also means, if you
+            clear your browser storage it will wipe all persistant data saved in
+            this app.
+          </div>
           <ul
             style={{
-              background: colors.grey,
               listStyleType: "none",
               padding: 0,
               margin: 0
