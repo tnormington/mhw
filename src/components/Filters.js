@@ -2,12 +2,14 @@ import React, { Component } from "react"
 
 import TabGroup from "./TabGroup"
 import OrderButtons from "./OrderButtons"
+import SkillOption from "./SkillOption"
+import SkillValue from "./SkillValue"
 
 // import Select from "react-select"
 import Select from "react-virtualized-select"
 
 // include the css overrides
-import "./ReactSelect.css"
+// import "./ReactSelect.css"
 
 import colors from "../colors"
 
@@ -32,7 +34,11 @@ export default class Filters extends Component {
       rarities,
       weaponTypes,
       handleRankClick,
-      ranks
+      ranks,
+      slots,
+      handleSlotClick,
+      skillOptions,
+      handleSkillChange
     } = this.props
 
     return (
@@ -87,6 +93,15 @@ export default class Filters extends Component {
           />
         )}
 
+        {slots && (
+          <TabGroup
+            activeTabs={filters.get("slots")}
+            tabs={slots}
+            handleTabClick={handleSlotClick}
+            label="Gem Slots"
+          />
+        )}
+
         {weaponTypes && (
           <TabGroup
             activeTabs={filters.get("weaponTypes")}
@@ -120,6 +135,25 @@ export default class Filters extends Component {
             label="Damage Type"
             clean={true}
           />
+        )}
+
+        {skillOptions && skillOptions.size && (
+          <React.Fragment>
+            <label style={{ marginBottom: "6px", display: "block" }}>
+              Skills
+            </label>
+            <div style={{ marginBottom: "10px" }}>
+              <Select
+                multi={true}
+                placeholder="Filter by skill"
+                options={skillOptions.toJS()}
+                optionRenderer={SkillOption}
+                valueComponent={SkillValue}
+                value={filters.get("skills").toJS()}
+                onChange={handleSkillChange}
+              />
+            </div>
+          </React.Fragment>
         )}
 
         {materials && materials.size && (

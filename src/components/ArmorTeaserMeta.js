@@ -52,7 +52,6 @@ export default ({ armorPiece, full, selectedArmorPiece, skills }) => {
       )}
       {armorPiece.skills.length > 0 && (
         <div>
-          {console.log(armorPiece.skills)}
           <label className="sm" style={{ display: "block" }}>
             Skills
           </label>

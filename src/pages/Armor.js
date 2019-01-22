@@ -30,6 +30,8 @@ export default class Armor extends Component {
       armorTypes: filters.armorTypes,
       rarities: filters.rarities,
       ranks: filters.ranks,
+      skillOptions: filters.skills,
+      slots: [1, 2, 3],
       order: List(),
       orders: List(["defense", "rarity", "slots"])
     }
@@ -108,6 +110,17 @@ export default class Armor extends Component {
     this.handleArmorTypeClick = this.handleFilterClick.bind(this, "armorTypes")
     this.handleRarityClick = this.handleFilterClick.bind(this, "rarity")
     this.handleRankClick = this.handleFilterClick.bind(this, "ranks")
+    this.handleSlotClick = this.handleFilterClick.bind(this, "slots")
+    this.handleSkillChange = this.handleSelectChange.bind(this, "skills")
+  }
+
+  handleSelectChange(key, value) {
+    this.setState(
+      prev => ({
+        filters: prev.filters.set(key, List(value))
+      }),
+      this.filterArmor
+    )
   }
 
   handleFilterClick(filterKey, label) {
@@ -124,17 +137,36 @@ export default class Armor extends Component {
 
     let armorTypes = List(),
       rarities = List(),
-      ranks = List()
+      ranks = List(),
+      skills = List()
 
     armor.forEach(a => {
       if (!armorTypes.includes(a.type)) armorTypes = armorTypes.push(a.type)
       if (!rarities.includes(a.rarity)) rarities = rarities.push(a.rarity)
       if (!ranks.includes(a.rank)) ranks = ranks.push(a.rank)
+
+      if (a.skills.length > 0) {
+        a.skills.forEach(s => {
+          const sObj = {
+            label: s.skillName,
+            value: s.slug,
+            level: s.level
+          }
+
+          if (!skills.find(sk => sk.value == sObj.value))
+            skills = skills.push(sObj)
+        })
+
+        skills = skills.sort((a, b) => {
+          return a.label > b.label
+        })
+      }
     })
     return {
       armorTypes,
       rarities,
-      ranks
+      ranks,
+      skills
     }
   }
 
@@ -146,7 +178,9 @@ export default class Armor extends Component {
       order,
       orders,
       rarities,
-      ranks
+      ranks,
+      slots,
+      skillOptions
     } = this.state
     const {
       userOptions,
@@ -170,9 +204,13 @@ export default class Armor extends Component {
             ranks={ranks}
             filteredItems={filteredArmor}
             filters={filters}
+            slots={slots}
+            skillOptions={skillOptions}
+            handleSlotClick={this.handleSlotClick}
             handleArmorTypeClick={this.handleArmorTypeClick}
             handleRarityClick={this.handleRarityClick}
             handleSearchChange={this.handleSearchChange}
+            handleSkillChange={this.handleSkillChange}
             handleRankClick={this.handleRankClick}
           />
         }

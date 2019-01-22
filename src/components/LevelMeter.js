@@ -12,6 +12,7 @@ export default ({ level, maxLevel }) => {
 
     levels.push(
       <div
+        key={count}
         style={{
           width: `${SIZE}px`,
           height: `${SIZE}px`,

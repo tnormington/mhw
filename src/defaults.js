@@ -9,7 +9,9 @@ export const defaultFilters = Map({
   rarity: List(),
   search: "",
   weaponTypes: List(),
-  ranks: List()
+  ranks: List(),
+  slots: List(),
+  skills: List()
 })
 
 export const defaultUserOptions = Map({

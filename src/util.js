@@ -24,26 +24,26 @@ export const chunkList = (list, chunkSize = 5) => {
   )
 }
 
-export const basicCopy = item => {
-  return JSON.parse(JSON.stringify(item))
-}
+// export const basicCopy = item => {
+//   return JSON.parse(JSON.stringify(item))
+// }
 
-export function removeOrAddFromList(list, item) {
-  if (!List.isList(list))
-    throw "must provide list to removeOrAddFromList util method"
+// export function removeOrAddFromList(list, item) {
+//   if (!List.isList(list))
+//     throw "must provide list to removeOrAddFromList util method"
 
-  if (list.includes(item)) {
-    // remove it
-    console.log("items exists, removing...")
-    list = list.delete(list.indexOf(item))
-  } else {
-    // add it
-    console.log("item does not exist, adding...")
-    list = list.push(item)
-  }
+//   if (list.includes(item)) {
+//     // remove it
+//     console.log("items exists, removing...")
+//     list = list.delete(list.indexOf(item))
+//   } else {
+//     // add it
+//     console.log("item does not exist, adding...")
+//     list = list.push(item)
+//   }
 
-  return list
-}
+//   return list
+// }
 
 // map over properties in fresh Map and set to data type of default
 // if there are no properties in fresh array, set to default property
@@ -142,7 +142,8 @@ export function itemFilterMethod(item, filters, userOptions) {
     materials = filters.get("materials"),
     search = filters.get("search"),
     armorTypes = filters.get("armorTypes"),
-    ranks = filters.get("ranks")
+    ranks = filters.get("ranks"),
+    slots = filters.get("slots")
 
   const favWeapons = favorites.get("weapons"),
     favArmor = favorites.get("armor"),
@@ -245,6 +246,16 @@ export function itemFilterMethod(item, filters, userOptions) {
     } else {
       return false
     }
+  }
+
+  if (slots.size) {
+    if (item.slots.length === 0) return false
+    let slotResult = false
+    item.slots.forEach(slot => {
+      if (slots.includes(slot.rank)) slotResult = true
+    })
+
+    result = slotResult
   }
 
   return result
