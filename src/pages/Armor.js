@@ -25,16 +25,20 @@ export default class Armor extends Component {
     const filters = this.gatherArmorFilters(props.armor)
 
     this.state = {
-      filters: Map(defaultFilters),
+      // overwrite with min/max values pulled from armor list
+      filters: Map(defaultFilters).set("resistances", filters.resistances),
       filteredArmor: List(props.armor),
       armorTypes: filters.armorTypes,
       rarities: filters.rarities,
       ranks: filters.ranks,
       skillOptions: filters.skills,
+      resistances: filters.resistances,
       slots: [1, 2, 3],
       order: List(),
       orders: List(["defense", "rarity", "slots"])
     }
+
+    console.log(this.state.filters.toJS())
 
     this.clearSearchFilter = () => {
       this.setState(
@@ -43,6 +47,14 @@ export default class Armor extends Component {
         }),
         this.filterArmor
       )
+    }
+
+    this.handleResActiveToggle = key => {
+      console.log("toggling active resistance", key)
+      const path = ["resistances", key, "active"]
+      this.setState(prev => ({
+        filters: prev.filters.setIn(path, !prev.filters.getIn(path))
+      }))
     }
 
     // this.handleArmorTypeClick = label => {
@@ -112,6 +124,25 @@ export default class Armor extends Component {
     this.handleRankClick = this.handleFilterClick.bind(this, "ranks")
     this.handleSlotClick = this.handleFilterClick.bind(this, "slots")
     this.handleSkillChange = this.handleSelectChange.bind(this, "skills")
+
+    // resistances
+    this.handleResRangeChange = (key, rangeObject) => {
+      // console.log(
+      //   "handleResRangeChange",
+      //   "key",
+      //   key,
+      //   "rangeObject",
+      //   rangeObject
+      // )
+
+      // the rangeObject returned from the react-input component doesn't have an active prop
+      // hard-code the prop here, it must be active if the inut is being changed
+      rangeObject.active = true
+
+      this.setState(prev => ({
+        filters: prev.filters.setIn(["resistances", key], Map(rangeObject))
+      }))
+    }
   }
 
   handleSelectChange(key, value) {
@@ -138,7 +169,15 @@ export default class Armor extends Component {
     let armorTypes = List(),
       rarities = List(),
       ranks = List(),
-      skills = List()
+      skills = List(),
+      resistances = defaultFilters.get("resistances"),
+      dragon = List(),
+      fire = List(),
+      ice = List(),
+      thunder = List(),
+      water = List()
+
+    // const elements = List('dragon', 'fire', 'ice', 'thunder', 'water')
 
     armor.forEach(a => {
       if (!armorTypes.includes(a.type)) armorTypes = armorTypes.push(a.type)
@@ -161,12 +200,34 @@ export default class Armor extends Component {
           return a.label > b.label
         })
       }
+
+      dragon = dragon.push(a.resistances.dragon)
+      fire = fire.push(a.resistances.fire)
+      ice = ice.push(a.resistances.ice)
+      thunder = thunder.push(a.resistances.thunder)
+      water = water.push(a.resistances.water)
     })
+
+    resistances = resistances.setIn(["dragon", "min"], dragon.min())
+    resistances = resistances.setIn(["dragon", "max"], dragon.max())
+    resistances = resistances.setIn(["fire", "min"], fire.min())
+    resistances = resistances.setIn(["fire", "max"], fire.max())
+    resistances = resistances.setIn(["ice", "min"], ice.min())
+    resistances = resistances.setIn(["ice", "max"], ice.max())
+    resistances = resistances.setIn(["thunder", "min"], thunder.min())
+    resistances = resistances.setIn(["thunder", "max"], thunder.max())
+    resistances = resistances.setIn(["water", "min"], water.min())
+    resistances = resistances.setIn(["water", "max"], water.max())
+
+    console.log("resistances", resistances.toJS())
+    // debugger
+
     return {
       armorTypes,
       rarities,
       ranks,
-      skills
+      skills,
+      resistances
     }
   }
 
@@ -180,7 +241,8 @@ export default class Armor extends Component {
       rarities,
       ranks,
       slots,
-      skillOptions
+      skillOptions,
+      resistances
     } = this.state
     const {
       userOptions,
@@ -212,6 +274,9 @@ export default class Armor extends Component {
             handleSearchChange={this.handleSearchChange}
             handleSkillChange={this.handleSkillChange}
             handleRankClick={this.handleRankClick}
+            handleResRangeChange={this.handleResRangeChange}
+            resistances={resistances}
+            toggleActiveRes={this.handleResActiveToggle}
           />
         }
         right={

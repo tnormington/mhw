@@ -11,7 +11,34 @@ export const defaultFilters = Map({
   weaponTypes: List(),
   ranks: List(),
   slots: List(),
-  skills: List()
+  skills: List(),
+  resistances: Map({
+    dragon: Map({
+      active: false,
+      min: 0,
+      max: 0
+    }),
+    fire: Map({
+      active: false,
+      min: 0,
+      max: 0
+    }),
+    ice: Map({
+      active: false,
+      min: 0,
+      max: 0
+    }),
+    thunder: Map({
+      active: false,
+      min: 0,
+      max: 0
+    }),
+    water: Map({
+      active: false,
+      min: 0,
+      max: 0
+    })
+  })
 })
 
 export const defaultUserOptions = Map({

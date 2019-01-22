@@ -4,9 +4,12 @@ import TabGroup from "./TabGroup"
 import OrderButtons from "./OrderButtons"
 import SkillOption from "./SkillOption"
 import SkillValue from "./SkillValue"
+import ResRange from "./ResRange"
 
 // import Select from "react-select"
 import Select from "react-virtualized-select"
+// import InputRange from "react-input-range"
+// import "react-input-range/lib/css/index.css"
 
 // include the css overrides
 // import "./ReactSelect.css"
@@ -38,8 +41,13 @@ export default class Filters extends Component {
       slots,
       handleSlotClick,
       skillOptions,
-      handleSkillChange
+      handleSkillChange,
+      handleResRangeChange,
+      resistances,
+      toggleActiveRes
     } = this.props
+
+    const resKeys = resistances.keySeq(k => k)
 
     return (
       <div
@@ -170,6 +178,36 @@ export default class Filters extends Component {
                 onChange={handleMaterialChange}
               />
             </div>
+          </React.Fragment>
+        )}
+
+        {resistances && (
+          <React.Fragment>
+            <label style={{ marginBottom: "6px", display: "block" }}>
+              Resistances
+            </label>
+            {resKeys
+              // .map((r, k) => r.set("name", k))
+              // .toArray()
+              .map(key => {
+                // const key = res.name
+                // console.log("key", key)
+                const res = resistances.get(key)
+                // console.log("res", res.toJS())
+                const filterPath = ["resistances", key]
+                const resFilter = filters.getIn(filterPath)
+                return (
+                  <ResRange
+                    key={key}
+                    value={resFilter.toJS()}
+                    resFilter={resFilter}
+                    res={res}
+                    label={key}
+                    onChange={e => handleResRangeChange(key, e)}
+                    toggleActiveRes={toggleActiveRes}
+                  />
+                )
+              })}
           </React.Fragment>
         )}
 

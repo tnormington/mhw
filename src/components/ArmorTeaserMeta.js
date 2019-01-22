@@ -60,7 +60,7 @@ export default ({ armorPiece, full, selectedArmorPiece, skills }) => {
               <div key={s.id} style={{ marginBottom: "4px" }}>
                 <MetaValue
                   style={{ marginBottom: "4px" }}
-                  value={s.skillName}
+                  value={s.skillName + " " + s.level}
                 />
                 <SkillLevel skills={skills} skill={s} />
               </div>
