@@ -92,11 +92,11 @@ class Weapons extends Component {
     this.clearAllFilters = this.clearAllFilters.bind(this)
     this.handleSearchChange = this.handleSearchChange.bind(this)
     this.filterWeapons = this.filterWeapons.bind(this)
-    this.handlePageChange = this.handlePageChange.bind(this)
     this.handleCollapseClick = this.handleCollapseClick.bind(this)
     this.checkExpandAllUserOption = this.checkExpandAllUserOption.bind(this)
     this.clearSearchFilter = this.clearSearchFilter.bind(this)
     this.handleInfoMenuToggleClick = this.handleInfoMenuToggleClick.bind(this)
+    // this.handlePageChange = this.handlePageChange.bind(this)
     // this.getCurrentPageItems = this.getCurrentPageItems.bind(this)
     // this.handleExpandAll = this.handleExpandAll.bind(this)
     // this.handleWeaponClick = this.handleWeaponClick.bind(this)
@@ -194,49 +194,6 @@ class Weapons extends Component {
       this.filterWeapons
     )
   }
-
-  // handleExpandAll() {
-  //   const allIds = this.state.weapons.map(item => item.id)
-  //   this.setState(prev => {
-  //     const expandAll = prev.userOptions.get("expandAll")
-
-  //     return {
-  //       expanded: expandAll ? List() : allIds,
-  //       userOptions: prev.userOptions.set("expandAll", !expandAll)
-  //     }
-  //   }, this.props.saveUserOptions)
-  // }
-
-  // toggleWeaponToSelectedList(id) {
-  //   this.setState(prev => {
-  //     let selectedWeapons = prev.userOptions.get("selectedWeapons")
-
-  //     selectedWeapons = removeOrAddFromList(List(selectedWeapons), id)
-
-  //     const userOptions = prev.userOptions.set(
-  //       "selectedWeapons",
-  //       selectedWeapons
-  //     )
-
-  //     return { userOptions }
-  //   }, this.props.saveUserOptions)
-  // }
-
-  // handleWeaponClick(id) {
-  //   this.setState(prev => {
-  //     if (prev.userOptions.get("selectedWeapon") === id) {
-  //       // remove as selected weapon
-  //       return {
-  //         userOptions: prev.userOptions.set("selectedWeapon", null)
-  //       }
-  //     } else {
-  //       // make selected weapon
-  //       return {
-  //         userOptions: prev.userOptions.set("selectedWeapon", id)
-  //       }
-  //     }
-  //   })
-  // }
 
   handleInfoMenuToggleClick() {
     this.setState(prev => ({ infoMenuOpen: !prev.infoMenuOpen }))
@@ -431,20 +388,12 @@ class Weapons extends Component {
     )
   }
 
-  // getCurrentPageItems() {
-  //   const { page, itemsPerPage, filteredWeapons } = this.state
-
-  //   if (filteredWeapons.size <= itemsPerPage) return filteredWeapons
-  //   const chunkedList = chunkList(filteredWeapons, itemsPerPage)
-  //   return chunkedList.get(page)
+  // handlePageChange(data) {
+  //   // const { filteredWeapons, itemsPerPage } = this.state
+  //   this.setState({
+  //     page: data.selected
+  //   })
   // }
-
-  handlePageChange(data) {
-    // const { filteredWeapons, itemsPerPage } = this.state
-    this.setState({
-      page: data.selected
-    })
-  }
 
   render() {
     const {
