@@ -4,6 +4,7 @@ import SizeContainer from "../components/SizeContainer"
 import TeaserList from "../components/TeaserList"
 import ArmorTeaser from "../components/ArmorTeaser"
 import OrderButtons from "../components/OrderButtons"
+import ItemWindow from "../components/ItemWindow"
 
 import Filters from "../components/Filters"
 
@@ -259,25 +260,34 @@ export default class Armor extends Component {
     return (
       <TwoColumn
         left={
-          <Filters
-            clearSearchFilter={this.clearSearchFilter}
-            armorTypes={armorTypes}
-            rarities={rarities}
-            ranks={ranks}
-            filteredItems={filteredArmor}
-            filters={filters}
-            slots={slots}
-            skillOptions={skillOptions}
-            handleSlotClick={this.handleSlotClick}
-            handleArmorTypeClick={this.handleArmorTypeClick}
-            handleRarityClick={this.handleRarityClick}
-            handleSearchChange={this.handleSearchChange}
-            handleSkillChange={this.handleSkillChange}
-            handleRankClick={this.handleRankClick}
-            handleResRangeChange={this.handleResRangeChange}
-            resistances={resistances}
-            toggleActiveRes={this.handleResActiveToggle}
-          />
+          <React.Fragment>
+            <ItemWindow
+              filters={filters}
+              items={armor}
+              open={selectedArmor != null}
+              item={armor.find(item => item.id === selectedArmor)}
+              skills={skills}
+            />
+            <Filters
+              clearSearchFilter={this.clearSearchFilter}
+              armorTypes={armorTypes}
+              rarities={rarities}
+              ranks={ranks}
+              filteredItems={filteredArmor}
+              filters={filters}
+              slots={slots}
+              skillOptions={skillOptions}
+              handleSlotClick={this.handleSlotClick}
+              handleArmorTypeClick={this.handleArmorTypeClick}
+              handleRarityClick={this.handleRarityClick}
+              handleSearchChange={this.handleSearchChange}
+              handleSkillChange={this.handleSkillChange}
+              handleRankClick={this.handleRankClick}
+              handleResRangeChange={this.handleResRangeChange}
+              resistances={resistances}
+              toggleActiveRes={this.handleResActiveToggle}
+            />
+          </React.Fragment>
         }
         right={
           <React.Fragment>

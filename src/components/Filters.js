@@ -47,7 +47,8 @@ export default class Filters extends Component {
       toggleActiveRes
     } = this.props
 
-    const resKeys = resistances.keySeq(k => k)
+    let resKeys = false
+    if (resistances) resKeys = resistances.keySeq(k => k)
 
     return (
       <div

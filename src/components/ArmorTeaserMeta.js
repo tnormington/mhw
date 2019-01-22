@@ -45,7 +45,7 @@ export default ({ armorPiece, full, selectedArmorPiece, skills }) => {
           />
         </div>
       </div>
-      <Meta label="Rank" value={rank} />
+      {full && <Meta label="Rank" value={rank} />}
       <Meta label="Rarity" value={rarity} />
       {armorPiece.slots.length > 0 && (
         <SlotsMeta label="Slots" slots={armorPiece.slots} />

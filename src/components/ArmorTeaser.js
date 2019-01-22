@@ -95,6 +95,7 @@ export default class ArmorTeaser extends PureComponent {
             armorPiece={armorPiece}
             selectedArmorPiece={armorPiece}
             skills={skills}
+            full={false}
           />
         </div>
       </Teaser>
